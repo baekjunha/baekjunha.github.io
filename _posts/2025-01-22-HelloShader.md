@@ -255,6 +255,8 @@ glEnableVertexAttribArray(1);
 4.색상 속성: 3 * sizeof(float) (위치 데이터 다음부터 색상 시작)  
 ```
 
+  
+
  
 # 색상 변화의 원리: Fragment Interpolation
 
