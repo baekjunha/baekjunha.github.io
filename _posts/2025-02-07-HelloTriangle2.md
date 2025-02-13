@@ -1,430 +1,966 @@
-## OpenGL 시작하기: 윈도우 생성과 설정 가이드
+- [Hello Triangle (OpenGL 튜토리얼)](#hello-triangle-opengl-튜토리얼)
+  - [1. 그래픽 파이프라인 개요](#1-그래픽-파이프라인-개요)
+  - [2. 그래픽 파이프라인 단계별 설명](#2-그래픽-파이프라인-단계별-설명)
+  - [3. 셰이더 (Shader) 이해](#3-셰이더-shader-이해)
+    - [3.1. 정점 셰이더 (Vertex Shader) 코드 예시](#31-정점-셰이더-vertex-shader-코드-예시)
+    - [3.2. 프래그먼트 셰이더 (Fragment Shader) 코드 예시](#32-프래그먼트-셰이더-fragment-shader-코드-예시)
+    - [3.3. 셰이더 컴파일](#33-셰이더-컴파일)
+  - [4. 셰이더 프로그램 링크](#4-셰이더-프로그램-링크)
+  - [5. 버텍스 데이터와 셰이더 연결](#5-버텍스-데이터와-셰이더-연결)
+    - [5.1. 버텍스 속성 연결](#51-버텍스-속성-연결)
+    - [5.2. 전체적인 흐름](#52-전체적인-흐름)
+  - [6. VAO (Vertex Array Object)](#6-vao-vertex-array-object)
+    - [6.1. VAO의 역할](#61-vao의-역할)
+    - [6.2. VAO의 장점](#62-vao의-장점)
+    - [6.3. VAO 사용 절차](#63-vao-사용-절차)
+    - [6.4. VAO 사용의 효과](#64-vao-사용의-효과)
+    - [6.5. glDrawArrays 함수](#65-gldrawarrays-함수)
+    - [6.6. VAO 요약](#66-vao-요약)
+  - [7. VBO (Vertex Buffer Object) 심층 이해](#7-vbo-vertex-buffer-object-심층-이해)
+    - [7.1. 정점 데이터 준비](#71-정점-데이터-준비)
+    - [7.2. GPU 메모리 공간 생성](#72-gpu-메모리-공간-생성)
+    - [7.3. 데이터를 GPU로 전송](#73-데이터를-gpu로-전송)
+    - [7.4. 데이터 관리 방법 설정](#74-데이터-관리-방법-설정)
+    - [7.5. 결과](#75-결과)
+    - [7.6. 최종 코드 예제](#76-최종-코드-예제)
+    - [7.7. 핵심 요약](#77-핵심-요약)
+  - [8. VAO를 사용한 다중 객체 관리의 이점](#8-vao를-사용한-다중-객체-관리의-이점)
+    - [8.1. 문제 상황](#81-문제-상황)
+    - [8.2. 해결책: VAO](#82-해결책-vao)
+    - [8.3. VAO로 해결하는 방법](#83-vao로-해결하는-방법)
+    - [8.4. 예시](#84-예시)
+    - [8.5. VAO 사용의 장점](#85-vao-사용의-장점)
+    - [8.6. 결론](#86-결론)
+  - [9. VAO, VBO, 정점 속성 설정의 관계 정리](#9-vao-vbo-정점-속성-설정의-관계-정리)
+    - [9.1. VAO, VBO, 정점 속성 설정의 관계 정리](#91-vao-vbo-정점-속성-설정의-관계-정리)
+    - [9.2. 코드 예시](#92-코드-예시)
+    - [9.3. 코드 설명](#93-코드-설명)
+    - [9.4. 요약](#94-요약)
+  - [10. VAO가 VBO와 속성을 묶는 과정 (단계별 설명)](#10-vao가-vbo와-속성을-묶는-과정-단계별-설명)
+    - [10.1. VAO의 역할](#101-vao의-역할)
+    - [10.2. VAO, VBO, 정점 속성의 관계](#102-vao-vbo-정점-속성의-관계)
+    - [10.3. VAO가 VBO와 속성을 묶는 방법](#103-vao가-vbo와-속성을-묶는-방법)
+    - [10.4. VAO와 VBO를 연결하는 과정](#104-vao와-vbo를-연결하는-과정)
+    - [10.5. VAO 사용](#105-vao-사용)
+    - [10.6. 전체 코드 예제](#106-전체-코드-예제)
+    - [10.7. VAO의 장점](#107-vao의-장점)
+    - [10.8. 비유로 이해하기](#108-비유로-이해하기)
+  - [11. 우리가 기다려온 삼각형 (glDrawArrays)](#11-우리가-기다려온-삼각형-gldrawarrays)
+  - [12. EBO (Element Buffer Object)](#12-ebo-element-buffer-object)
+    - [12.1. EBO의 역할](#121-ebo의-역할)
+    - [12.2. EBO와 VAO의 관계](#122-ebo와-vao의-관계)
+    - [12.3. 최종 초기화 및 드로잉 코드](#123-최종-초기화-및-드로잉-코드)
+    - [12.4. EBO 요약](#124-ebo-요약)
+    - [12.5. EBO를 포함한 전체 코드 예시](#125-ebo를-포함한-전체-코드-예시)
+    - [12.6. EBO 사용 효과](#126-ebo-사용-효과)
+  - [13. 핵심 정리: 삼각형 그리기를 위한 3가지 요소](#13-핵심-정리-삼각형-그리기를-위한-3가지-요소)
+    - [13.1. 전체 과정](#131-전체-과정)
+    - [13.2. 정리](#132-정리)
+
+## Hello Triangle (OpenGL 튜토리얼)
+
+이 문서는 OpenGL에서 3D 좌표를 화면의 2D 픽셀로 변환하여 삼각형을 그리는 과정을 설명합니다. OpenGL의 핵심인 그래픽 파이프라인을 이해하고, 이를 활용하여 기본적인 렌더링을 수행하는 방법을 배울 수 있습니다.
+
+### 1. 그래픽 파이프라인 개요
+
+OpenGL에서는 모든 것이 3D 공간에 존재하지만, 최종적으로 화면에 보이는 것은 2D 픽셀입니다. 따라서 3D 좌표를 2D 픽셀로 변환하는 과정이 필수적이며, 이는 **그래픽 파이프라인(Graphics Pipeline)**에 의해 관리됩니다.
+
+그래픽 파이프라인은 크게 두 부분으로 나뉩니다.
+
+*   **3D 좌표 -> 2D 좌표 변환:** 3차원 공간의 좌표를 2차원 평면에 투영합니다.
+*   **2D 좌표 -> 픽셀 변환:** 2차원 좌표를 기반으로 실제 픽셀의 색상을 결정합니다.
+
+그래픽 파이프라인은 여러 단계로 구성되어 있으며, 각 단계는 이전 단계의 출력을 입력으로 사용합니다. 각 단계는 특정 작업만 수행하도록 고도로 특화되어 있으며, 병렬로 실행하기 용이합니다. 이러한 병렬 구조 덕분에 현대 GPU는 수천 개의 코어를 활용하여 데이터를 빠르게 처리할 수 있습니다.
+
+각 단계를 처리하는 작은 프로그램을 **셰이더(Shader)**라고 부릅니다. 개발자는 일부 셰이더를 직접 작성하여 파이프라인의 동작을 제어할 수 있습니다. 셰이더는 OpenGL 셰이딩 언어(GLSL)로 작성됩니다.
+
+**[이미지: 그래픽 파이프라인 다이어그램]**
+
+### 2. 그래픽 파이프라인 단계별 설명
+
+다음은 그래픽 파이프라인의 각 단계에 대한 간략한 설명입니다. 파란색으로 표시된 단계는 개발자가 직접 셰이더를 작성하여 제어할 수 있는 부분입니다.
+
+1.  **정점 데이터 (Vertex Data):**
+
+    *   그래픽 파이프라인의 입력 데이터입니다.
+    *   3D 좌표와 추가적인 속성(색상, 텍스처 좌표 등)을 포함하는 **정점(Vertex)**들의 모음으로 구성됩니다.
+    *   OpenGL은 이 데이터를 어떻게 렌더링할지 알기 위해 렌더링 형태를 지정하는 **프리미티브(Primitive)** 정보를 필요로 합니다. (점, 선, 삼각형 등)
+
+2.  **정점 셰이더 (Vertex Shader):** (개발자 제어 가능)
+
+    *   하나의 정점을 입력으로 받아 3D 좌표를 변환합니다.
+    *   정점의 속성에 대한 기본적인 처리를 수행할 수 있습니다.
+
+3.  **기하 셰이더 (Geometry Shader):** (선택 사항, 개발자 제어 가능)
+
+    *   프리미티브를 구성하는 정점들의 모음을 입력으로 받아 새로운 정점을 생성하거나 새로운 프리미티브를 만들 수 있습니다.
+
+4.  **프리미티브 조립 (Primitive Assembly):**
+
+    *   정점 셰이더(또는 기하 셰이더)에서 출력된 정점들을 사용하여 지정된 프리미티브 형태(삼각형, 선 등)를 구성합니다.
+
+5.  **래스터화 (Rasterization):**
 
-**1. OpenGL 소개**
+    *   프리미티브를 화면의 픽셀에 매핑하여 **프래그먼트(Fragment)**를 생성합니다.
+    *   프래그먼트는 픽셀을 렌더링하는 데 필요한 모든 데이터를 포함합니다.
+    *   래스터화 단계 전에 **클리핑(Clipping)**이 수행되어 화면 바깥쪽에 있는 프래그먼트를 제거하여 성능을 향상시킵니다.
 
-*   OpenGL이란 무엇인가?
-*   OpenGL 사양 (Specification)
-*   OpenGL 구현: 그래픽 카드 제조업체와 드라이버 업데이트의 중요성
-*   OpenGL 사양 문서 활용
+6.  **프래그먼트 셰이더 (Fragment Shader):** (개발자 제어 가능)
 
-**2. 중요한 개념: 코어 프로파일 vs. 즉각 모드**
+    *   픽셀의 최종 색상을 계산합니다.
+    *   조명, 그림자, 텍스처 등 복잡한 OpenGL 효과를 계산할 수 있습니다.
 
-*   이전 방식: 즉각 모드 (Immediate Mode)의 간편함과 비효율성
-*   코어 프로파일 (Core-Profile): 현대적인 접근 방식의 유연성과 효율성
-*   OpenGL 3.3 코어 프로파일 학습의 중요성
+7.  **알파 테스트 및 블렌딩 (Alpha Test and Blending):**
 
-**3. OpenGL 버전과 확장**
+    *   프래그먼트 셰이더에서 계산된 색상을 기반으로 최종 픽셀 색상을 결정합니다.
+    *   깊이 값(Depth Value)을 검사하여 다른 객체와의 전후 관계를 처리합니다.
+    *   알파 값(불투명도)을 사용하여 객체를 혼합합니다.
 
-*   OpenGL 최신 버전 (OpenGL 4.6 등)
-*   과거 버전 (OpenGL 3.3) 학습의 의미
-*   OpenGL 확장(Extension) 활용
+### 3. 셰이더 (Shader) 이해
 
-**4. OpenGL의 핵심 개념**
+**셰이더**는 그래픽 하드웨어에서 실행되는 프로그램으로, 그래픽 처리의 특정 단계를 담당합니다. 주로 사용되는 셰이더는 **정점 셰이더**와 **프래그먼트 셰이더**입니다.
 
-*   상태 머신 (State Machine): OpenGL 컨텍스트 이해
-*   객체 (Object): OpenGL 상태 관리의 추상화
+*   **정점 셰이더:** 각 정점의 위치를 처리합니다.
+*   **프래그먼트 셰이더:** 각 픽셀에 대한 색상을 결정합니다.
 
-**5. 프로젝트 준비: 윈도우 생성**
+#### 3.1. 정점 셰이더 (Vertex Shader) 코드 예시
 
-*   운영체제 독립적인 OpenGL
-*   GLFW 라이브러리 소개 및 선택
-*   GLFW 설치 및 빌드 과정
-*   CMake 사용 방법
-*   Visual Studio 프로젝트 설정 및 빌드
-*   라이브러리 연결 방법 (Linking)
-    *   IDE 설정 방법
-    *   Windows, Linux 환경별 OpenGL 라이브러리 연결
-*   GLAD 라이브러리 설정
-    *   GLAD 웹 서비스 사용
-    *   GLAD 파일 프로젝트에 추가
+```glsl
+#version 330 core
+layout (location = 0) in vec3 aPos;
 
-**6. 헬로 윈도우 (Hello Window)**
-
-*   필수 헤더 파일 포함
-*   GLFW 초기화 및 OpenGL 버전 설정
-*   윈도우 객체 생성 및 컨텍스트 설정
-*   GLAD 초기화
-*   뷰포트 (Viewport) 설정 및 콜백 함수
-*   렌더링 루프 (Render Loop)
-    *   GLFW 윈도우 닫기 처리
-    *   입력 이벤트 처리
-    *   더블 버퍼링 (Double Buffering)
-*   리소스 정리
-*   결과 확인: 검은색 윈도우
-*   입력 처리: ESC 키로 윈도우 닫기
-*   렌더링: 화면 색상 지우기 (glClearColor, glClear)
-
----
-
-
-
-# OpenGL이 뭔지 간단하게 알아보자!
-
-OpenGL은 그래픽과 이미지를 조작하는 데 사용할 수 있는 다양한 함수들을 제공하는 API(Application Programming Interface)라고 생각하면 돼.  API 자체는 아니고, Khronos 그룹이 개발하고 관리하는 사양(specification)이라고 보는 게 맞아.  마치 레시피처럼, 각 함수가 어떤 결과를 내야 하고 어떻게 동작해야 하는지 정확히 규정하는 거지.
-
-그런데, 이 레시피(사양)만으로는 구체적인 실제 구현 방법은 나와있지 않아.  따라서 각 회사(주로 그래픽 카드 제조업체)는 자신들의 방식대로 이 사양을 구현할 수 있어.  하지만, 사용자에게 보이는 결과는 사양에 맞춰야 하기 때문에,  다른 구현 방식을 사용하더라도 사용자에게는 똑같이 보여.  예를 들어, 똑같은 `삼각형 그리기` 함수를 사용해도,  A사 그래픽 카드와 B사 그래픽 카드에서 구현된 OpenGL 라이브러리가 다르더라도 삼각형이 같은 모양으로 그려져야 하는 거야.
-
-그래픽 카드 제조업체는 OpenGL 라이브러리를 만드는데,  만약 버그가 있으면, 그래픽 카드 드라이버 업데이트를 통해 해결할 수 있어. 드라이버에는 카드가 지원하는 최신 버전의 OpenGL이 포함되어 있기 때문이야.  그래서 그래픽 드라이버를 주기적으로 업데이트하는 게 중요한 거지.  마치 자동차에 필요한 부품을 교체하듯이 말이야.  드라이버 업데이트는 시스템의 안정성과 성능 향상에 중요한 역할을 해.
-
-Khronos 그룹 웹사이트에는 모든 OpenGL 버전의 사양 문서가 공개되어 있어. 특히, 우리가 배울 OpenGL 3.3 버전의 사양은 자세한 내용을 파악하는 데 도움이 되는 좋은 참고 자료가 될 거야.  사양서는 결과와 동작 방식을 설명하는데, 구현 세부 사항은 없다고 생각하면 돼.
-
-## 중요한 개념 : 코어 프로파일 vs. 이전 방식 (즉각 모드)
-
-옛날 OpenGL은 '즉각 모드'(fixed function pipeline)로 사용했는데, 그래픽을 그리기가 쉬웠어. OpenGL 라이브러리 내부에 대부분의 기능이 숨겨져 있었고, 개발자는 OpenGL이 계산하는 방식에 대해 많은 통제권을 갖지 못했어.  마치 컴퓨터가 모든 계산을 해주는 흑우처럼 말이야.  시간이 지나면서 개발자들은 더 많은 유연성을 원했고, OpenGL 사양도 더 유연해졌어. 개발자들은 그래픽 처리 과정에 더 많은 제어권을 얻게 되었지.
-
-하지만, 즉각 모드는 사용하기 쉽지만 매우 비효율적이었어. 그래서 OpenGL 3.2 버전부터 즉각 모드 기능을 단계적으로 없애고,  '코어 프로파일' 모드를 사용하도록 장려하기 시작했어. 코어 프로파일은 과거의 기능들을 제거해서 최신 방식을 강요하는 OpenGL 사양의 한 부분이라고 생각하면 돼.
-
-코어 프로파일에서는 낡은 함수를 사용하면 오류가 발생해서 그림을 그리지 못하게 되지.  즉, 더욱 현대적이고 효율적인 방법을 사용해야만 한다는 의미야. 하지만, 이러한 현대적 접근 방식은 배우기가 더 어려울 수도 있어.  즉각 모드는 OpenGL의 내부 동작을 추상화했기 때문에 배우기 쉬웠지만, 실제 동작 원리를 이해하기는 어려웠어.  반면에, 코어 프로파일은 OpenGL과 그래픽 프로그래밍에 대한 깊은 이해를 필요로 하지만, 더욱 유연하고 효율적이며 그래픽 프로그래밍에 대한 더 나은 이해를 제공해.
-
-이 책은 코어 프로파일 OpenGL 3.3 버전을 중심으로 설명한다는 점을 명심해.  배우기 어렵지만, 노력하면 충분히 가치 있는 학습이 될 거야.
-
-## 더 높은 버전의 OpenGL
-
-요즘은 OpenGL 4.6 같은 더 높은 버전이 나와있어.  왜 OpenGL 3.3을 배우는 걸까?  OpenGL 3.3부터 나온 새로운 버전들은 OpenGL의 기본 원리를 바꾸지 않고 새로운 기능을 추가했기 때문이야.  새로운 기능은 같은 일을 더 효율적이거나 더 나은 방식으로 처리하는 방법일 뿐이야.  따라서, 기본 개념과 기술은 최신 OpenGL 버전에서도 동일해.  나중에 더 높은 버전의 기능을 사용하려면, 그때 배우면 돼.
-
-## 확장(Extension)
-
-OpenGL은 확장(extension)을 지원하는 훌륭한 기능을 가지고 있어.  그래픽 회사가 새로운 기술이나 최적화 기법을 개발하면, 드라이버에 구현된 확장으로 제공될 수 있어.  만약 응용 프로그램이 실행되는 하드웨어가 해당 확장을 지원한다면, 개발자는 확장으로 제공되는 기능을 이용해서 더욱 고급스럽거나 효율적인 그래픽을 만들 수 있지.  즉, OpenGL이 앞으로 버전 업데이트를 기다릴 필요없이, 현재 지원하는 기능을 활용할 수 있는 거지.  확장은 필요에 따라 활용하는 것이지, 무조건 써야 하는 필수적인 요소는 아니야.
-
-## 상태 머신
-
-OpenGL은 하나의 큰 상태 머신(state machine)이라고 볼 수 있어.  OpenGL이 현재 어떻게 동작해야 하는지 정의하는 변수들의 모음이지.  이 상태를 OpenGL 컨텍스트(context)라고 부르고, OpenGL을 사용할 때, 옵션을 설정하거나 버퍼를 조작하고, 현재 컨텍스트를 사용하여 렌더링하는 작업을 수행해.
-
-예를 들어, 선으로 그리기를 원하면, OpenGL의 상태 변수를 변경하여 컨텍스트를 바꿀 수 있어.  이렇게 바뀐 컨텍스트에 따라 다음 명령어는 선으로 그리게 될 거야.  OpenGL은 여러 상태 변경 함수와 상태 사용 함수를 제공하고, 이러한 함수들을 통해 다양한 그래픽 작업을 수행할 수 있어.
-
-## 객체
-
-OpenGL 라이브러리는 C로 작성되었지만, 다른 언어로도 사용 가능해.  C언어의 특성상, 다른 고급 언어로 직접적으로 구현하기 어려운 부분이 있어.  따라서, 객체라는 추상화 개념을 도입했어.  OpenGL의 객체는 OpenGL 상태의 일부를 나타내는 옵션들의 모음이야. 예를 들어, 그래픽 창의 설정을 나타내는 객체를 만들 수 있고, 크기, 지원 색상 수 등을 설정할 수 있지.  객체는 C 구조체와 비슷하게 생각하면 돼.
-
-객체를 사용할 때는, 먼저 객체를 생성하고, 그 참조 ID를 저장해.  그리고 컨텍스트의 특정 위치에 객체를 바인딩(binding) 해.  그 후 객체의 옵션을 설정하고, 다시 기본값으로 바인딩을 해제하는 작업을 반복해.  이렇게 하면, 여러 객체를 만들어서 각 객체의 설정을 따로 관리할 수 있고, 특정 객체를 활용하여 그림을 그릴 수 있어.
-
-## 시작하기
-
-이제 OpenGL이 무엇인지, 어떻게 동작하는지, 그리고 객체 사용법에 대해 조금 배웠어.  이 책에서는 각 단계를 자세하게 설명하고, 충분한 예제를 통해 OpenGL을 잘 이해할 수 있도록 도와줄 거야.
-
-
-
-
-## 윈도우 만들기
-
-멋진 그래픽을 만들기 전에 가장 먼저 해야 할 일은 OpenGL 컨텍스트를 만들고 그림을 그릴 애플리케이션 윈도우를 만드는 것입니다. 하지만 이러한 작업들은 운영체제마다 다르며, OpenGL은 의도적으로 이러한 작업들로부터 자신을 추상화하려고 합니다. 즉, 윈도우를 만들고, 컨텍스트를 정의하고, 사용자 입력을 직접 처리해야 합니다.
-
-다행히도 이러한 기능을 제공하는 라이브러리가 많이 있으며, 일부는 OpenGL에 특화되어 있습니다. 이러한 라이브러리는 운영체제에 따라 달라지는 작업을 모두 처리해주고, 렌더링할 수 있는 윈도우와 OpenGL 컨텍스트를 제공합니다. 인기 있는 라이브러리로는 GLUT, SDL, SFML 및 GLFW가 있습니다. LearnOpenGL에서는 GLFW를 사용할 것입니다. 다른 라이브러리를 사용해도 괜찮습니다. 대부분의 설정이 GLFW와 유사합니다.
-
-### GLFW
-
-GLFW는 C로 작성된 라이브러리이며, OpenGL을 위해 특별히 만들어졌습니다. GLFW는 화면에 멋진 그래픽을 렌더링하는 데 필요한 최소한의 기능들을 제공합니다. OpenGL 컨텍스트를 만들고, 윈도우 매개변수를 정의하고, 사용자 입력을 처리할 수 있습니다.
-
-이번 장과 다음 장에서는 GLFW를 설치하고 실행하여 OpenGL 컨텍스트를 제대로 만들고, 간단한 윈도우를 표시하여 시험해 보는 데 집중할 것입니다. 이 장에서는 GLFW 라이브러리를 가져오고, 빌드하고, 연결하는 단계를 자세히 설명합니다. 이 글을 쓰는 시점에는 Microsoft Visual Studio 2019 IDE를 사용합니다 (최신 버전의 Visual Studio에서도 프로세스는 동일합니다). Visual Studio (또는 이전 버전)를 사용하지 않더라도 걱정하지 마세요. 대부분의 다른 IDE에서도 프로세스는 비슷할 것입니다.
-
-### GLFW 빌드
-
-GLFW는 웹페이지의 [다운로드 페이지](https://www.glfw.org/download.html)에서 얻을 수 있습니다. GLFW는 Visual Studio 2012부터 2019까지 사전 컴파일된 바이너리와 헤더 파일을 이미 가지고 있지만, 완전성을 위해 소스 코드에서 GLFW를 직접 컴파일할 것입니다. 이는 모든 라이브러리가 사전 컴파일된 바이너리를 제공하는 것은 아니기 때문에 오픈 소스 라이브러리를 직접 컴파일하는 과정을 경험해보기 위함입니다. 따라서 Source 패키지를 다운로드하십시오.
-
-모든 라이브러리를 64비트 바이너리로 빌드할 것이므로, 사전 컴파일된 바이너리를 사용하는 경우 64비트 바이너리를 다운로드하십시오.
-소스 패키지를 다운로드했으면 압축을 풀고 내용을 엽니다. 다음 몇 가지 항목에만 관심이 있습니다.
-
-*   컴파일로 생성된 라이브러리.
-*   include 폴더.
-
-소스 코드에서 라이브러리를 컴파일하면 결과 라이브러리가 CPU/OS에 완벽하게 맞춰집니다. 사전 컴파일된 바이너리는 항상 제공하지 않는 장점입니다 (사전 컴파일된 바이너리가 시스템에서 사용할 수 없는 경우도 있습니다). 그러나 소스 코드를 오픈 소스로 제공하면 모든 사람이 애플리케이션 개발에 동일한 IDE 또는 빌드 시스템을 사용하는 것은 아니기 때문에 제공된 프로젝트/솔루션 파일이 다른 사람의 설정과 호환되지 않을 수 있습니다. 따라서 사람들은 제공된 .c/.cpp 및 .h/.hpp 파일로 자신의 프로젝트/솔루션을 설정해야 하며, 이는 번거롭습니다. 바로 이러한 이유 때문에 CMake라는 도구가 있습니다.
-
-### CMake
-
-CMake는 미리 정의된 CMake 스크립트를 사용하여 소스 코드 파일 모음에서 사용자가 선택한 프로젝트/솔루션 파일 (예: Visual Studio, Code::Blocks, Eclipse)을 생성할 수 있는 도구입니다. 이를 통해 GLFW의 소스 패키지에서 Visual Studio 2019 프로젝트 파일을 생성하여 라이브러리를 컴파일할 수 있습니다. 먼저 [다운로드 페이지](https://cmake.org/download/)에서 CMake를 다운로드하여 설치해야 합니다.
-
-CMake가 설치되면 명령줄 또는 GUI를 통해 CMake를 실행하도록 선택할 수 있습니다. 복잡하게 만들고 싶지 않으므로 GUI를 사용하겠습니다. CMake는 소스 코드 폴더와 바이너리용 대상 폴더가 필요합니다. 소스 코드 폴더로는 다운로드한 GLFW 소스 패키지의 루트 폴더를 선택하고, 빌드 폴더로는 새 디렉토리인 build를 만들고 해당 디렉토리를 선택합니다.
-
-소스 및 대상 폴더가 설정되면 Configure 버튼을 클릭하여 CMake가 필요한 설정과 소스 코드를 읽을 수 있도록 합니다. 그런 다음 프로젝트에 대한 생성기를 선택해야 하며, Visual Studio 2019를 사용하고 있으므로 Visual Studio 16 옵션을 선택합니다 (Visual Studio 2019는 Visual Studio 16이라고도 함). 그러면 CMake가 결과 라이브러리를 구성하기 위한 가능한 빌드 옵션을 표시합니다. 기본값으로 두고 Configure를 다시 클릭하여 설정을 저장합니다. 설정이 완료되면 Generate를 클릭하면 결과 프로젝트 파일이 빌드 폴더에 생성됩니다.
-
-### 컴파일
-
-빌드 폴더에서 GLFW.sln이라는 파일을 찾을 수 있으며 Visual Studio 2019로 엽니다. CMake가 적절한 구성 설정이 이미 포함된 프로젝트 파일을 생성했으므로 솔루션만 빌드하면 됩니다. CMake는 솔루션을 자동으로 구성하여 64비트 라이브러리로 컴파일해야 합니다. 이제 빌드 솔루션을 누릅니다. 그러면 빌드/src/Debug에서 glfw3.lib라는 컴파일된 라이브러리 파일을 얻을 수 있습니다.
-
-라이브러리를 생성했으면 IDE가 OpenGL 프로그램의 라이브러리와 include 파일을 찾을 위치를 알아야 합니다. 이를 수행하는 데는 두 가지 일반적인 접근 방식이 있습니다.
-
-1.  IDE/컴파일러의 /lib 및 /include 폴더를 찾고 GLFW의 include 폴더 내용을 IDE의 /include 폴더에 추가하고 마찬가지로 glfw3.lib를 IDE의 /lib 폴더에 추가합니다. 이것은 작동하지만 권장되는 방법은 아닙니다. 라이브러리 및 include 파일을 추적하기 어렵고 IDE/컴파일러를 새로 설치하면 이 프로세스를 다시 수행해야 합니다.
-2.  또 다른 접근 방식 (권장)은 타사 라이브러리의 모든 헤더 파일/라이브러리가 포함된 원하는 위치에 새 디렉토리 세트를 만들어 IDE/컴파일러에서 참조할 수 있도록 하는 것입니다. 예를 들어 OpenGL 프로젝트에 대한 모든 라이브러리 및 헤더 파일을 각각 저장하는 Libs 및 Include 폴더가 포함된 단일 폴더를 만들 수 있습니다. 이제 모든 타사 라이브러리가 단일 위치 내에 정리됩니다 (여러 컴퓨터에서 공유할 수 있음). 그러나 새 프로젝트를 만들 때마다 IDE에게 해당 디렉토리를 찾을 위치를 알려야 합니다.
-
-필요한 파일을 원하는 위치에 저장했으면 첫 번째 OpenGL GLFW 프로젝트를 만들 수 있습니다.
-
-### 첫 번째 프로젝트
-
-먼저 Visual Studio를 열고 새 프로젝트를 만듭니다. 여러 옵션이 제공되는 경우 C++를 선택하고 빈 프로젝트를 선택합니다 (프로젝트 이름을 적절하게 지정하는 것을 잊지 마세요). 모든 작업을 64비트로 수행하고 프로젝트가 기본적으로 32비트로 설정되므로 디버그 옆에 있는 드롭다운을 상단에서 x86에서 x64로 변경해야 합니다.
-
-완료되면 이제 첫 번째 OpenGL 애플리케이션을 만들 수 있는 작업 공간이 있습니다!
-
-### 연결
-
-프로젝트에서 GLFW를 사용하려면 라이브러리를 프로젝트와 연결해야 합니다. 링커 설정에서 glfw3.lib를 사용하고 싶다고 지정하여 수행할 수 있지만 프로젝트는 타사 라이브러리를 다른 디렉토리에 저장하므로 glfw3.lib를 찾을 위치를 아직 알지 못합니다. 따라서 먼저 이 디렉토리를 프로젝트에 추가해야 합니다.
-
-IDE에게 라이브러리 및 include 파일을 찾아야 할 때 이 디렉토리를 고려하도록 지시할 수 있습니다. 솔루션 탐색기에서 프로젝트 이름을 마우스 오른쪽 버튼으로 클릭한 다음 아래 이미지와 같이 VC++ 디렉토리로 이동합니다.
-
-거기에서 자체 디렉토리를 추가하여 프로젝트가 검색할 위치를 알 수 있습니다. 텍스트에 수동으로 삽입하거나 적절한 위치 문자열을 클릭하고 \<편집..\> 옵션을 선택하여 수행할 수 있습니다. 라이브러리 디렉토리와 Include 디렉토리 모두에 대해 이 작업을 수행합니다.
-
-여기에서 원하는 만큼의 추가 디렉토리를 추가할 수 있으며 해당 시점부터 IDE는 라이브러리 및 헤더 파일을 검색할 때 해당 디렉토리를 검색합니다. GLFW의 Include 폴더가 포함되면 \<GLFW/..\>를 포함하여 GLFW의 모든 헤더 파일을 찾을 수 있습니다. 라이브러리 디렉토리에도 동일하게 적용됩니다.
-
-VS가 필요한 모든 파일을 찾을 수 있으므로 링커 탭과 입력을 통해 GLFW를 프로젝트에 연결할 수 있습니다.
-
-그런 다음 라이브러리에 연결하려면 라이브러리 이름을 링커에 지정해야 합니다. 라이브러리 이름이 glfw3.lib이므로 추가 종속성 필드에 추가합니다 (수동으로 또는 \<편집..\> 옵션을 사용하여). 해당 시점부터 컴파일할 때 GLFW가 연결됩니다. GLFW 외에도 OpenGL 라이브러리에 대한 링크 항목도 추가해야 하지만 운영체제에 따라 다를 수 있습니다.
-
-### Windows의 OpenGL 라이브러리
-
-Windows를 사용하는 경우 OpenGL 라이브러리 opengl32.lib는 Visual Studio를 설치할 때 기본적으로 설치되는 Microsoft SDK와 함께 제공됩니다. 이 장에서는 VS 컴파일러를 사용하고 Windows에 있으므로 opengl32.lib를 링커 설정에 추가합니다. OpenGL 라이브러리의 64비트 버전은 32비트 버전과 마찬가지로 opengl32.lib라고 합니다.
-
-### Linux의 OpenGL 라이브러리
-
-Linux 시스템에서는 링커 설정에 -lGL을 추가하여 libGL.so 라이브러리에 연결해야 합니다. 라이브러리를 찾을 수 없으면 Mesa, NVidia 또는 AMD 개발 패키지를 설치해야 할 수 있습니다.
-
-그런 다음 GLFW 및 OpenGL 라이브러리를 모두 링커 설정에 추가했으면 다음과 같이 GLFW에 대한 헤더 파일을 포함할 수 있습니다.
-
-```c++
-#include <GLFW/glfw3.h>
-```
-
-GCC로 컴파일하는 Linux 사용자의 경우 다음 명령줄 옵션이 프로젝트 컴파일에 도움이 될 수 있습니다. -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -ldl. 해당 라이브러리를 올바르게 연결하지 못하면 많은 정의되지 않은 참조 오류가 발생합니다.
-이것으로 GLFW의 설정 및 구성이 완료됩니다.
-
-### GLAD
-
-아직 완전히 끝나지 않았습니다. 아직 해야 할 일이 하나 더 있습니다. OpenGL은 실제로 표준/사양일 뿐이므로 특정 그래픽 카드가 지원하는 드라이버에 사양을 구현하는 것은 드라이버 제조업체에 달려 있기 때문입니다. OpenGL 드라이버에는 여러 가지 버전이 있으므로 대부분의 함수의 위치는 컴파일 시간에 알 수 없으며 런타임에 쿼리해야 합니다. 그런 다음 개발자는 필요한 함수의 위치를 검색하고 나중에 사용하기 위해 함수 포인터에 저장해야 합니다. 해당 위치를 검색하는 것은 OS에 따라 다릅니다. Windows에서는 다음과 같습니다.
-
-```c++
-// 함수의 프로토타입 정의
-typedef void (*GL_GENBUFFERS) (GLsizei, GLuint*);
-// 함수를 찾아 함수 포인터에 할당
-GL_GENBUFFERS glGenBuffers  = (GL_GENBUFFERS)wglGetProcAddress("glGenBuffers");
-// 이제 함수를 정상적으로 호출할 수 있음
-unsigned int buffer;
-glGenBuffers(1, &buffer);
-```
-
-보시다시피 코드는 복잡해 보이고 아직 선언되지 않은 모든 필요한 함수에 대해 이 작업을 수행하는 것은 번거로운 프로세스입니다. 고맙게도 이를 위한 라이브러리도 있으며 GLAD가 인기 있고 최신 라이브러리입니다.
-
-### GLAD 설정
-
-GLAD는 우리가 이야기한 모든 번거로운 작업을 관리하는 오픈 소스 라이브러리입니다. GLAD는 대부분의 일반적인 오픈 소스 라이브러리와 약간 다른 구성 설정을 가지고 있습니다. GLAD는 웹 서비스를 사용합니다. 여기서 GLAD에 정의하고 싶고 해당 버전에 따라 모든 관련 OpenGL 함수를 로드하고 싶은 OpenGL 버전을 알려줄 수 있습니다.
-
-[GLAD 웹 서비스](https://glad.dav1d.de/)로 이동하여 언어가 C++로 설정되어 있는지 확인하고 API 섹션에서 OpenGL 버전 3.3 이상을 선택합니다 (사용할 것입니다. 더 높은 버전도 괜찮습니다). 또한 프로필이 Core로 설정되어 있고 로더 생성 옵션이 선택되어 있는지 확인합니다. 확장을 무시하고 (지금은) 생성을 클릭하여 결과 라이브러리 파일을 생성합니다.
-
-GLAD1 버전을 사용하십시오. GLAD2 버전도 있지만 여기서는 컴파일되지 않습니다.
-GLAD는 이제 두 개의 include 폴더와 단일 glad.c 파일이 포함된 zip 파일을 제공해야 합니다. 두 include 폴더 (glad 및 KHR)를 include 디렉토리에 복사하거나 (또는 이러한 폴더를 가리키는 추가 항목을 추가) glad.c 파일을 프로젝트에 추가합니다.
-
-이전 단계를 수행한 후 파일 위에 다음 include 지시문을 추가할 수 있어야 합니다.
-
-```c++
-#include <glad/glad.h>
-```
-
-컴파일 버튼을 누르면 오류가 발생하지 않아야 하며 다음 장으로 이동할 준비가 되었습니다. 다음 장에서는 GLFW와 GLAD를 실제로 사용하여 OpenGL 컨텍스트를 구성하고 윈도우를 생성하는 방법을 설명합니다. 모든 include 및 라이브러리 디렉토리가 올바른지, 링커 설정의 라이브러리 이름이 해당 라이브러리와 일치하는지 확인하십시오.
-
-### 추가 자료
-
-*   [GLFW: Window Guide](http://www.glfw.org/docs/latest/window_guide.html): GLFW 윈도우를 설정하고 구성하는 방법에 대한 공식 GLFW 가이드입니다.
-*   [Building applications](http://cs.lmu.edu/~ray/notes/openglexamples/): 애플리케이션의 컴파일/연결 프로세스와 발생할 수 있는 가능한 오류 (및 해결 방법) 목록을 제공합니다.
-*   [GLFW with Code::Blocks](https://www.youtube.com/watch?v=mGjTq2S6H30): Code::Blocks IDE에서 GLFW를 빌드합니다.
-*   [Running CMake](https://www.wikihow.com/Run-CMake): Windows 및 Linux에서 CMake를 실행하는 방법에 대한 간략한 개요입니다.
-*   [Writing a build system under Linux](http://dereuromark.de/2012/12/10/writing-a-build-system-under-linux/): Linux에서 빌드 시스템을 작성하는 방법에 대한 Wouter Verholst의 autotools 튜토리얼입니다.
-*   [Polytonic/Glitter](https://github.com/Polytonic/Glitter): 관련 라이브러리가 모두 미리 구성된 간단한 상용구 프로젝트입니다. 직접 모든 라이브러리를 컴파일해야 하는 번거로움 없이 샘플 프로젝트를 원하는 경우에 유용합니다.
-
-
-
-
-
-
-
-
-
-## 헬로 윈도우
-
-GLFW가 제대로 작동하는지 확인해 봅시다. 먼저 .cpp 파일을 만들고 새로 만든 파일의 맨 위에 다음 include를 추가하십시오.
-
-```c++
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-```
-
-GLFW보다 먼저 GLAD를 포함해야 합니다. GLAD에 대한 include 파일에는 백그라운드에서 필요한 OpenGL 헤더 (예: GL/gl.h)가 포함되어 있으므로 OpenGL이 필요한 다른 헤더 파일 (예: GLFW)보다 먼저 GLAD를 포함해야 합니다.
-다음으로, GLFW 윈도우를 인스턴스화할 main 함수를 만듭니다.
-
-```c++
-int main()
+void main()
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  
-    return 0;
+    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
 }
 ```
 
-main 함수에서 먼저 glfwInit로 GLFW를 초기화한 다음 glfwWindowHint를 사용하여 GLFW를 구성할 수 있습니다. glfwWindowHint의 첫 번째 인수는 구성하려는 옵션을 나타내며, GLFW_ 접두사가 붙은 가능한 옵션의 큰 enum에서 옵션을 선택할 수 있습니다. 두 번째 인수는 옵션의 값을 설정하는 정수입니다. 가능한 모든 옵션과 해당 값 목록은 GLFW의 [윈도우 처리 문서](http://www.glfw.org/docs/latest/window_guide.html#window_hints)에서 찾을 수 있습니다. 지금 애플리케이션을 실행하려고 시도할 때 정의되지 않은 참조 오류가 많이 발생하면 GLFW 라이브러리를 성공적으로 연결하지 못했음을 의미합니다.
+*   **`#version 330 core`**: GLSL 버전을 지정합니다. (OpenGL 3.3 버전에 해당)
+*   **`layout (location = 0) in vec3 aPos;`**: 입력 변수 `aPos`를 선언합니다. `vec3`는 3차원 벡터를 의미하며, `location = 0`은 이 변수가 0번 위치에 바인딩됨을 나타냅니다. 이 위치는 나중에 정점 데이터를 셰이더에 전달할 때 사용됩니다.
+*   **`gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);`**: 각 정점의 위치를 지정합니다. `gl_Position`은 OpenGL에서 제공하는 기본 변수로, 화면에 그려질 정점의 위치를 결정합니다. `vec4`는 4차원 벡터를 의미하며, `w` 값은 1.0으로 설정됩니다. 이는 "동차 좌표(homogeneous coordinates)" 개념으로, 후속 변환(투영 등)에 필요합니다.
 
-이 책의 초점은 OpenGL 버전 3.3이므로 사용하려는 OpenGL 버전이 3.3이라고 GLFW에 알려주고 싶습니다. 이렇게 하면 GLFW는 OpenGL 컨텍스트를 만들 때 적절한 준비를 할 수 있습니다. 이렇게 하면 사용자가 적절한 OpenGL 버전을 가지고 있지 않은 경우 GLFW가 실행되지 않습니다. 주 버전과 부 버전을 모두 3으로 설정합니다. 또한 코어 프로필을 명시적으로 사용하고 싶다고 GLFW에 알립니다. 코어 프로필을 사용하고 싶다고 GLFW에 알리면 더 이상 필요하지 않은 이전 버전과 호환되는 기능 없이 더 작은 OpenGL 기능 하위 집합에 액세스할 수 있습니다. Mac OS X에서는 작동하려면 초기화 코드에 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);를 추가해야 합니다.
+이 예제는 가장 기본적인 정점 셰이더로, 입력 데이터를 별도의 처리 없이 그대로 출력합니다. 실제 응용 프로그램에서는 입력 데이터가 NDC (Normalized Device Coordinates, 정규화된 장치 좌표) 영역에 포함되지 않는 경우가 많으므로, 변환 과정을 거쳐야 합니다.
 
-시스템/하드웨어에 OpenGL 버전 3.3 이상이 설치되어 있는지 확인하십시오. 그렇지 않으면 애플리케이션이 충돌하거나 정의되지 않은 동작을 표시합니다. 컴퓨터에서 OpenGL 버전을 찾으려면 Linux 컴퓨터에서 glxinfo를 호출하거나 Windows용 [OpenGL Extension Viewer](http://realtech-vr.com/home/glview)와 같은 유틸리티를 사용하십시오. 지원되는 버전이 낮으면 비디오 카드가 OpenGL 3.3+를 지원하는지 확인하거나 (그렇지 않으면 정말 오래된 것입니다) 드라이버를 업데이트하십시오.
-다음으로 윈도우 객체를 만들어야 합니다. 이 윈도우 객체는 모든 윈도우 데이터를 보유하고 있으며 대부분의 다른 GLFW 함수에 필요합니다.
+#### 3.2. 프래그먼트 셰이더 (Fragment Shader) 코드 예시
 
-```c++
-GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
-if (window == NULL)
+```glsl
+#version 330 core
+out vec4 FragColor;
+
+void main()
 {
-    std::cout << "Failed to create GLFW window" << std::endl;
-    glfwTerminate();
-    return -1;
-}
-glfwMakeContextCurrent(window);
-```
-
-glfwCreateWindow 함수는 첫 번째 두 인수로 윈도우 너비와 높이가 필요합니다. 세 번째 인수를 사용하면 윈도우 이름을 만들 수 있습니다. 지금은 "LearnOpenGL"이라고 부르지만 원하는 대로 이름을 지정할 수 있습니다. 마지막 두 매개변수는 무시할 수 있습니다. 이 함수는 나중에 다른 GLFW 작업에 필요한 GLFWwindow 객체를 반환합니다. 그 후 GLFW에게 윈도우 컨텍스트를 현재 스레드의 기본 컨텍스트로 만들도록 지시합니다.
-
-### GLAD
-
-이전 장에서 GLAD가 OpenGL에 대한 함수 포인터를 관리한다고 언급했으므로 OpenGL 함수를 호출하기 전에 GLAD를 초기화하려고 합니다.
-
-```c++
-if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-{
-    std::cout << "Failed to initialize GLAD" << std::endl;
-    return -1;
+    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
 }
 ```
 
-GLAD에게 OpenGL 함수 포인터의 주소를 로드하는 함수를 전달합니다. 이 함수는 OS에 따라 다릅니다. GLFW는 컴파일 중인 OS를 기반으로 올바른 함수를 정의하는 glfwGetProcAddress를 제공합니다.
+*   **`out vec4 FragColor;`**: 출력 변수 `FragColor`를 선언합니다. 이 변수는 픽셀의 최종 색상을 저장하는 데 사용됩니다.
+*   **`FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);`**: 픽셀의 색상을 오렌지색으로 설정합니다. `vec4`는 RGBA (Red, Green, Blue, Alpha) 값을 나타내며, 각 색상 컴포넌트는 0.0에서 1.0 사이의 값을 가집니다. Alpha 값은 불투명도를 나타냅니다.
 
-### 뷰포트
+#### 3.3. 셰이더 컴파일
 
-렌더링을 시작하기 전에 마지막으로 해야 할 일이 하나 있습니다. OpenGL에게 렌더링 윈도우의 크기를 알려주어야 합니다. 그러면 OpenGL은 윈도우를 기준으로 데이터를 표시하고 좌표를 처리하는 방법을 알 수 있습니다. glViewport 함수를 통해 이러한 크기를 설정할 수 있습니다.
+셰이더를 사용하기 위해서는 먼저 코드를 작성하고, OpenGL이 실행할 수 있도록 컴파일해야 합니다.
+
+1.  **소스 코드 저장:** 셰이더 소스 코드를 문자열 형태로 저장합니다.
+
+    ```c++
+    const char *vertexShaderSource = "#version 330 core\n"
+        "layout (location = 0) in vec3 aPos;\n"
+        "void main()\n"
+        "{\n"
+        "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+        "}\0";
+
+    const char *fragmentShaderSource = "#version 330 core\n"
+        "out vec4 FragColor;\n"
+        "void main()\n"
+        "{\n"
+        "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+        "}\n\0";
+    ```
+
+2.  **셰이더 객체 생성:** `glCreateShader` 함수를 사용하여 셰이더 객체를 생성합니다.
+
+    ```c++
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    ```
+
+3.  **소스 코드 첨부 및 컴파일:** `glShaderSource` 함수로 소스 코드를 셰이더 객체에 첨부하고, `glCompileShader` 함수로 셰이더를 컴파일합니다.
+
+    ```c++
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+    ```
+
+4.  **컴파일 성공 여부 확인:** `glGetShaderiv` 함수를 사용하여 컴파일 성공 여부를 확인하고, 오류가 발생했을 경우 `glGetShaderInfoLog` 함수를 사용하여 오류 메시지를 출력합니다.
+
+    ```c++
+    int success;
+    char infoLog[512];
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if(!success)
+    {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    if(!success)
+    {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+    ```
+
+### 4. 셰이더 프로그램 링크
+
+컴파일된 셰이더들을 **셰이더 프로그램**에 연결해야 OpenGL에서 렌더링에 사용할 수 있습니다.
+
+1.  **셰이더 프로그램 객체 생성:** `glCreateProgram` 함수를 사용하여 셰이더 프로그램 객체를 생성합니다.
+
+    ```c++
+    unsigned int shaderProgram = glCreateProgram();
+    ```
+
+2.  **셰이더 첨부 및 링크:** `glAttachShader` 함수로 셰이더들을 프로그램에 첨부하고, `glLinkProgram` 함수로 셰이더들을 연결합니다.
+
+    ```c++
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    ```
+
+3.  **링크 성공 여부 확인:** `glGetProgramiv` 함수를 사용하여 링크 성공 여부를 확인하고, 오류가 발생했을 경우 `glGetProgramInfoLog` 함수를 사용하여 오류 메시지를 출력합니다.
+
+    ```c++
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+    ```
+
+4.  **셰이더 프로그램 활성화:** `glUseProgram` 함수를 사용하여 셰이더 프로그램을 활성화합니다.
+
+    ```c++
+    glUseProgram(shaderProgram);
+    ```
+
+5.  **셰이더 객체 삭제:** 더 이상 필요하지 않은 개별 셰이더 객체를 `glDeleteShader` 함수를 사용하여 삭제합니다.
+
+    ```c++
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    ```
+
+### 5. 버텍스 데이터와 셰이더 연결
+
+이제 GPU에 정점 데이터를 보내고, 셰이더에서 데이터를 어떻게 처리할지 지정해야 합니다. OpenGL에게 데이터를 어떻게 해석하고, 정점 셰이더의 속성들과 어떻게 연결할지 알려주어야 합니다.
+
+#### 5.1. 버텍스 속성 연결
+
+정점 셰이더는 입력 데이터를 **버텍스 속성(Vertex Attribute)** 형식으로 받습니다. 따라서 입력 데이터가 셰이더의 어느 버텍스 속성으로 연결될지 수동으로 지정해야 합니다.
+
+예를 들어, 다음과 같은 정점 데이터를 사용한다고 가정해 봅시다.
 
 ```c++
-glViewport(0, 0, 800, 600);
+float vertices[] = {
+    0.5f,  0.5f, 0.0f,  // 오른쪽 위
+    0.5f, -0.5f, 0.0f,  // 오른쪽 아래
+   -0.5f, -0.5f, 0.0f   // 왼쪽 아래
+};
 ```
 
-glViewport의 처음 두 매개변수는 윈도우의 왼쪽 하단 모서리의 위치를 설정합니다. 세 번째와 네 번째 매개변수는 픽셀 단위로 렌더링 윈도우의 너비와 높이를 설정합니다. GLFW의 윈도우 크기와 동일하게 설정합니다.
+이 데이터는 다음과 같이 구성됩니다.
 
-GLFW의 크기보다 작은 값으로 뷰포트 크기를 실제로 설정할 수 있습니다. 그러면 모든 OpenGL 렌더링이 더 작은 윈도우에 표시되고 예를 들어 OpenGL 뷰포트 외부에 다른 요소를 표시할 수 있습니다.
+*   위치 데이터는 32비트(4바이트) 부동 소수점 값으로 저장됩니다.
+*   각 위치는 3개의 값(X, Y, Z)으로 구성됩니다.
+*   각 3개의 값 사이에 다른 값이나 공간이 없습니다. (데이터는 배열 안에서 빽빽하게 정렬되어 있습니다.)
+*   데이터 배열의 첫 번째 값은 버퍼의 시작 부분에 있습니다.
 
-백그라운드에서 OpenGL은 glViewport를 통해 지정된 데이터를 사용하여 처리한 2D 좌표를 화면의 좌표로 변환합니다. 예를 들어 위치 (-0.5,0.5)의 처리된 점은 (최종 변환으로) 화면 좌표에서 (200,450)으로 매핑됩니다. OpenGL에서 처리된 좌표는 -1과 1 사이이므로 범위 (-1에서 1)를 (0, 800)과 (0, 600)으로 효과적으로 매핑합니다.
-그러나 사용자가 윈도우 크기를 조정하는 순간 뷰포트도 조정해야 합니다. 윈도우 크기가 조정될 때마다 호출되는 콜백 함수를 윈도우에 등록할 수 있습니다. 이 크기 조정 콜백 함수에는 다음과 같은 프로토타입이 있습니다.
+이 정보를 바탕으로 OpenGL에게 버텍스 데이터를 어떻게 해석할지 지정해야 합니다. 이를 위해 `glVertexAttribPointer` 함수를 사용합니다.
 
 ```c++
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);
 ```
 
-프레임 버퍼 크기 함수는 GLFWwindow를 첫 번째 인수로 사용하고 새 윈도우 크기를 나타내는 두 개의 정수를 사용합니다. 윈도우 크기가 변경될 때마다 GLFW는 이 함수를 호출하고 처리할 수 있도록 적절한 인수를 채웁니다.
+각 인자의 의미는 다음과 같습니다.
+
+1.  **`0`**: 설정하려는 버텍스 속성의 번호입니다. 셰이더에서 `layout (location = 0)`으로 지정된 위치와 일치해야 합니다.
+2.  **`3`**: 버텍스 속성의 크기입니다. 여기서는 `vec3` 타입이므로 3개의 값으로 구성됩니다.
+3.  **`GL_FLOAT`**: 데이터의 타입입니다. 부동 소수점 값이므로 `vec*` 타입을 의미합니다.
+4.  **`GL_FALSE`**: 데이터를 정규화할지 여부를 지정합니다. 부동 소수점 데이터를 사용하므로 `GL_FALSE`로 설정합니다.
+5.  **`3 * sizeof(float)`**: stride 값으로, 각 버텍스 속성 간의 간격을 나타냅니다. 각 속성이 3개의 부동 소수점 값으로 구성되므로 `3 * sizeof(float)`으로 지정합니다. 배열이 빽빽하게 정렬되어 있기 때문에 stride를 0으로 설정해도 OpenGL이 자동으로 계산할 수 있습니다.
+6.  **`(void*)0`**: offset으로, 데이터를 배열에서 어디서부터 읽어야 하는지 알려줍니다. 위치 데이터를 배열의 처음부터 사용하므로 0으로 설정합니다.
+
+`glVertexAttribPointer` 함수를 사용하여 버텍스 데이터를 어떻게 해석해야 할지 알려줬으므로, `glEnableVertexAttribArray` 함수를 사용하여 해당 속성을 활성화합니다. 기본적으로 버텍스 속성은 비활성화되어 있기 때문에 명시적으로 활성화해야 합니다.
+
+#### 5.2. 전체적인 흐름
+
+이제 OpenGL은 어떻게 데이터를 읽고 처리할지 알고 있으며, 다음과 같은 과정으로 객체를 그릴 수 있습니다.
 
 ```c++
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height);
+// 0. 버퍼에 버텍스 배열 복사
+glBindBuffer(GL_ARRAY_BUFFER, VBO);
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+// 1. 버텍스 속성 포인터 설정
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);
+
+// 2. 셰이더 프로그램 사용
+glUseProgram(shaderProgram);
+
+// 3. 객체 그리기
+someOpenGLFunctionThatDrawsOurTriangle();
+```
+
+이 과정을 매번 객체를 그릴 때마다 반복해야 합니다. 이 작업은 꽤 번거롭게 보일 수 있습니다. 만약 5개 이상의 버텍스 속성이나 100개 이상의 객체를 그려야 한다면, 버퍼 객체를 바인딩하고 각 객체의 버텍스 속성을 설정하는 작업은 점점 더 복잡해질 것입니다. 이럴 때마다 객체 상태를 하나의 오브젝트로 묶어서 바인딩하여 상태를 복원할 수 있다면 훨씬 더 간편할 것입니다. 그래서 VBO와 VAO가 쓰이게 됩니다.
+
+### 6. VAO (Vertex Array Object)
+
+**Vertex Array Object (VAO)**는 OpenGL에서 버텍스 데이터를 관리하고, 여러 버텍스 속성 설정을 효율적으로 처리할 수 있게 도와주는 객체입니다. VAO를 사용하면 복잡한 버텍스 데이터를 다룰 때 코드가 간단해지고, 다양한 객체의 버텍스 속성 설정을 재사용할 수 있습니다.
+
+#### 6.1. VAO의 역할
+
+VAO는 주로 다음과 같은 정보를 저장합니다.
+
+1.  `glEnableVertexAttribArray` 및 `glDisableVertexAttribArray` 호출: 버텍스 속성 배열을 활성화하거나 비활성화합니다.
+2.  `glVertexAttribPointer` 호출: 버텍스 속성을 어떻게 해석할지 설정하는 함수입니다.
+3.  버텍스 버퍼 객체(VBO)와 관련된 버텍스 속성: `glVertexAttribPointer`를 통해 VBO를 바인딩하고, 버텍스 속성 데이터를 설정합니다.
+
+#### 6.2. VAO의 장점
+
+*   VAO를 사용하면 버텍스 속성 설정을 한 번만 구성하고, 그 후에는 해당 VAO만 바인딩하여 언제든지 설정을 재사용할 수 있습니다.
+*   여러 가지 버텍스 데이터와 속성 구성이 있는 경우, 각 객체에 대해 VAO를 설정하고, 그 후에 VAO만 바인딩하면 해당 객체를 그릴 수 있습니다. 즉, 속성 구성이 간편해지고 코드가 효율적입니다.
+
+#### 6.3. VAO 사용 절차
+
+1.  **VAO 생성:**
+
+    ```c++
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    ```
+
+2.  **VAO 바인딩 및 설정:**
+
+    VAO를 바인딩한 후, VBO와 버텍스 속성 포인터를 설정합니다.
+
+    ```c++
+    // VAO 바인딩
+    glBindVertexArray(VAO);
+
+    // VBO 바인딩 및 버텍스 데이터 복사
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // 버텍스 속성 포인터 설정
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    ```
+
+3.  **그리기 코드 (렌더링 루프):**
+
+    객체를 그릴 때는 VAO를 바인딩하고 그리기 명령을 호출합니다.
+
+    ```c++
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    ```
+
+#### 6.4. VAO 사용의 효과
+
+*   각 객체의 버텍스 속성 설정을 VAO에 저장하여, 나중에 해당 객체를 그릴 때 VAO만 바인딩하면 됩니다.
+*   여러 객체를 그릴 때, 각 객체에 해당하는 VAO를 바인딩하여 그리기 작업을 반복할 수 있습니다.
+
+#### 6.5. glDrawArrays 함수
+
+*   현재 활성화된 셰이더와 현재 바인딩된 VAO를 기반으로 그래픽 프리미티브(예: 삼각형)를 그립니다.
+
+```c++
+glDrawArrays(GL_TRIANGLES, 0, 3);
+```
+
+*   **`GL_TRIANGLES`**: 그릴 프리미티브 유형을 지정합니다. 삼각형을 그리려면 `GL_TRIANGLES`를 사용합니다.
+*   **`0`**: 그릴 버텍스 배열의 시작 인덱스를 지정합니다. 여기서는 0번 인덱스부터 시작합니다.
+*   **`3`**: 그릴 버텍스의 수입니다. 이 예제에서는 3개의 버텍스를 사용하여 삼각형을 그립니다.
+
+#### 6.6. VAO 요약
+
+*   VAO는 버텍스 속성 설정을 저장하고, **버텍스 버퍼 객체(VBO)**와 결합하여 효율적인 렌더링을 지원합니다.
+*   VAO를 사용하면 버텍스 속성 설정을 한 번만 정의하고, 그 후에는 VAO만 바인딩하여 재사용할 수 있어 코드가 간결해지고 관리가 용이합니다.
+
+### 7. VBO (Vertex Buffer Object) 심층 이해
+
+VBO는 정점 데이터를 GPU 메모리에 저장하는 역할을 합니다. VAO와 함께 사용되어 효율적인 렌더링을 가능하게 합니다.
+
+#### 7.1. 정점 데이터 준비
+
+GPU에 보낼 데이터는 그릴 도형의 꼭짓점 정보입니다. 예를 들어, 삼각형을 그리려면 세 개의 좌표를 준비합니다.
+
+```c++
+float vertices[] = {
+    0.5f,  0.5f, 0.0f,  // 오른쪽 위
+    0.5f, -0.5f, 0.0f,  // 오른쪽 아래
+   -0.5f, -0.5f, 0.0f   // 왼쪽 아래
+};
+```
+
+*   `vertices` 배열은 정점 데이터를 담고 있습니다.
+*   각 정점은 3개의 값(X, Y, Z)으로 이루어져 있습니다.
+
+#### 7.2. GPU 메모리 공간 생성
+
+정점 데이터를 GPU에 저장하려면 OpenGL에서 **Vertex Buffer Object(VBO)**라는 것을 사용합니다.
+
+1.  **VBO 생성:**
+
+    ```c++
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    ```
+
+    `glGenBuffers(1, &VBO)`는 VBO를 1개 생성하고, 생성된 VBO의 ID를 `VBO` 변수에 저장합니다.
+
+2.  **VBO 바인딩:**
+
+    생성한 VBO를 활성화하려면 `glBindBuffer`를 사용합니다.
+
+    ```c++
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    ```
+
+    `GL_ARRAY_BUFFER`는 버퍼의 종류를 나타냅니다. 이후 VBO에 데이터를 저장하거나 설정할 때, 이 바인딩된 VBO를 사용하게 됩니다.
+
+#### 7.3. 데이터를 GPU로 전송
+
+이제 준비한 `vertices` 데이터를 GPU 메모리에 복사해야 합니다. 이 작업은 `glBufferData`를 사용합니다.
+
+```c++
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+```
+
+*   **매개변수 설명:**
+    *   `GL_ARRAY_BUFFER`: 데이터를 보낼 대상이 VBO임을 나타냅니다.
+    *   `sizeof(vertices)`: 복사할 데이터의 크기를 바이트 단위로 나타냅니다. 여기서는 `vertices` 배열 전체 크기입니다.
+    *   `vertices`: 복사할 실제 데이터입니다.
+    *   `GL_STATIC_DRAW`: 데이터가 거의 변하지 않을 것임을 GPU에 알려줍니다.
+
+#### 7.4. 데이터 관리 방법 설정
+
+`glBufferData`의 마지막 매개변수(GL_STATIC_DRAW)는 GPU가 데이터를 어떻게 관리할지 결정합니다.
+
+*   `GL_STATIC_DRAW`: 데이터가 한 번 정의되고 거의 변경되지 않을 때 사용합니다.
+*   `GL_DYNAMIC_DRAW`: 데이터가 자주 변경될 때 사용합니다.
+*   `GL_STREAM_DRAW`: 데이터가 매번 그릴 때마다 변경될 경우 사용합니다.
+
+삼각형 같은 정적 도형은 데이터가 변하지 않으므로 `GL_STATIC_DRAW`가 적합합니다.
+
+#### 7.5. 결과
+
+이제 GPU 메모리에 `vertices` 데이터가 저장되었습니다. GPU 메모리에 저장된 데이터는 `VBO`라는 객체를 통해 관리됩니다. 셰이더가 데이터를 사용하여 화면에 도형을 그릴 수 있는 준비가 완료된 상태입니다.
+
+#### 7.6. 최종 코드 예제
+
+위 내용을 하나로 정리한 코드는 다음과 같습니다.
+
+```c++
+float vertices[] = {
+    0.5f,  0.5f, 0.0f,
+    0.5f, -0.5f, 0.0f,
+   -0.5f, -0.5f, 0.0f
+};
+
+unsigned int VBO;
+glGenBuffers(1, &VBO);                     // 1. VBO 생성
+glBindBuffer(GL_ARRAY_BUFFER, VBO);        // 2. VBO 바인딩
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // 3. 데이터 복사
+```
+
+#### 7.7. 핵심 요약
+
+1.  정점 데이터(`vertices`)를 준비합니다.
+2.  OpenGL에서 VBO를 생성하고(`glGenBuffers`), 활성화합니다(`glBindBuffer`).
+3.  `glBufferData`로 데이터를 GPU 메모리에 복사합니다.
+4.  이후 셰이더를 작성해 데이터를 화면에 그립니다.
+
+### 8. VAO를 사용한 다중 객체 관리의 이점
+
+**Vertex Array Object (VAO)**는 여러 개의 버텍스 속성이나 객체가 있을 때 발생하는 복잡함을 해결하는 데 매우 유용합니다. 여러 객체를 그리거나, 각 객체마다 다양한 버텍스 속성을 설정해야 하는 상황에서 VAO는 상태를 캡슐화하여 상태 관리를 간소화합니다.
+
+#### 8.1. 문제 상황
+
+*   여러 개의 버텍스 속성(예: 위치, 색상, 텍스처 좌표 등)을 가진 객체가 많다면, 각 객체를 그릴 때마다 버퍼 객체를 바인딩하고 버텍스 속성 포인터를 설정하는 작업을 반복해야 합니다. 이 과정은 점점 번거로워지고 비효율적일 수 있습니다.
+*   예를 들어, 100개 이상의 객체가 있고, 각 객체에 5개 이상의 버텍스 속성이 있다면, 매번 각 객체에 대해 버퍼 객체와 속성 설정을 반복하는 것은 코드가 복잡해지고 비효율적입니다.
+
+#### 8.2. 해결책: VAO
+
+VAO는 버텍스 속성 설정과 관련된 모든 상태를 저장하여, 한 번 설정된 후에는 상태를 재사용할 수 있도록 합니다. 즉, VAO를 사용하면 매번 객체를 그릴 때마다 각 객체의 속성을 일일이 설정할 필요 없이, 객체 상태를 하나의 오브젝트로 묶어서 간편하게 관리하고 사용할 수 있습니다.
+
+#### 8.3. VAO로 해결하는 방법
+
+1.  **상태 저장:** VAO는 `glEnableVertexAttribArray`, `glVertexAttribPointer` 호출 등 버텍스 속성을 설정하는 모든 작업을 내부에 저장합니다. 한 번 VAO를 생성하고 설정하면, 해당 VAO에 관련된 모든 속성 설정이 저장되어 이후에는 VAO만 바인딩하면 됩니다.
+2.  **한 번의 설정으로 재사용 가능:** 객체를 그릴 때마다 VAO를 재사용할 수 있습니다. 즉, VAO를 한 번 설정하고, 각 객체를 그릴 때마다 해당 VAO만 바인딩하면, 그 객체의 모든 버텍스 속성 설정이 자동으로 적용됩니다. 이는 매번 버퍼 객체와 속성 포인터를 일일이 설정하는 번거로움을 해결합니다.
+3.  **간편한 상태 복원:** VAO는 각 객체에 대해 설정된 버텍스 속성, VBO, 활성화된 버텍스 배열 등의 상태를 저장하고 있기 때문에, VAO를 바인딩하는 것만으로 해당 객체의 상태를 복원할 수 있습니다.
+
+#### 8.4. 예시
+
+1.  여러 개의 객체를 그려야 할 경우, 각 객체에 대해 별도의 VAO를 설정합니다.
+
+    ```c++
+    unsigned int VAO1, VAO2;
+    glGenVertexArrays(1, &VAO1);
+    glGenVertexArrays(1, &VAO2);
+    ```
+
+2.  각 VAO에 대해 버텍스 속성 및 VBO 설정을 한 번만 진행합니다.
+
+    ```c++
+    // VAO1 설정
+    glBindVertexArray(VAO1);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // VAO2 설정
+    glBindVertexArray(VAO2);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    ```
+
+3.  이후 객체를 그릴 때는 해당 VAO만 바인딩하면 모든 속성이 자동으로 설정됩니다.
+
+    ```c++
+    // 객체 1 그리기
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO1);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    // 객체 2 그리기
+    glUseProgram(shaderProgram);
+    glBindVertexArray(VAO2);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    ```
+
+#### 8.5. VAO 사용의 장점
+
+*   **복잡성 감소:** 각 객체마다 버퍼 객체와 속성 포인터를 설정할 필요가 없어서 코드가 간결해집니다.
+*   **효율성 증가:** VAO를 재사용함으로써 설정된 속성들이 자동으로 적용되므로, 렌더링 루프가 더 빠르고 효율적으로 동작합니다.
+*   **상태 관리 간소화:** VAO를 바인딩하는 것만으로 객체의 상태를 쉽게 복원할 수 있습니다.
+
+#### 8.6. 결론
+
+VAO는 여러 객체와 복잡한 버텍스 속성 구성을 관리하는 데 매우 유용하며, 반복적인 설정 작업을 없애고 코드의 효율성을 높입니다. 이 방식으로 객체마다 상태를 복원하고, 필요한 설정을 한 번만 지정함으로써 더 간단하고 빠르게 OpenGL 객체를 그릴 수 있습니다.
+
+### 9. VAO, VBO, 정점 속성 설정의 관계 정리
+
+**Vertex Array Object (VAO)**와 **Vertex Buffer Object (VBO)**는 OpenGL에서 버텍스 데이터를 처리하는 핵심 개념입니다.
+
+1.  **VBO (Vertex Buffer Object):**
+    *   **목적:** GPU 메모리 상에 실제 버텍스 데이터를 저장하는 객체입니다. 버텍스 데이터에는 객체의 정점 정보(위치, 색상, 텍스처 좌표 등)가 포함됩니다.
+    *   **작동:** `glBufferData()`와 같은 함수로 데이터를 GPU 메모리로 복사하여 저장합니다.
+    *   **연관성:** VBO는 실제 버텍스 데이터를 저장하며, OpenGL은 VBO를 바인딩한 후 데이터를 사용할 수 있습니다.
+
+2.  **VAO (Vertex Array Object):**
+    *   **목적:** VAO는 VBO와 그 VBO를 사용하는 정점 속성(attribute) 설정들을 하나의 상태 객체로 묶어 저장하는 객체입니다. VAO는 버텍스 속성(예: 위치, 색상 등)과 그 속성에 해당하는 VBO의 관계를 저장합니다.
+    *   **작동:** VAO를 바인딩하고, 그 후에 `glVertexAttribPointer`로 버텍스 속성(위치, 색상, 텍스처 좌표 등)을 정의하고, `glEnableVertexAttribArray()`로 이를 활성화합니다.
+    *   **연관성:** VAO는 VBO와 정점 속성 설정을 연결하여 하나의 객체로 관리할 수 있게 합니다. VAO는 이 설정들을 저장하고 있기 때문에, VAO만 바인딩하여 여러 속성을 한 번에 설정할 수 있습니다.
+
+3.  **정점 속성 설정:**
+    *   **목적:** 정점 속성은 VBO에 저장된 데이터를 어떻게 해석할 것인지를 정의합니다. 예를 들어, 3D 모델의 각 정점은 위치, 색상, 텍스처 좌표 등을 포함할 수 있습니다.
+    *   **작동:** `glVertexAttribPointer`로 정점 속성의 데이터를 어떻게 해석할지 정의하고, `glEnableVertexAttribArray()`로 해당 속성을 활성화하여 셰이더에서 사용할 수 있게 합니다.
+    *   **연관성:** 이 설정은 VBO에 저장된 데이터와 VAO에 연결됩니다. 즉, VBO에 저장된 데이터는 `glVertexAttribPointer`를 통해 정점 속성으로 해석되고, 이 속성은 VAO에 저장됩니다.
+
+#### 9.1. VAO, VBO, 정점 속성 설정의 관계 정리
+
+1.  **VBO (버텍스 버퍼 객체)**는 GPU 메모리에 실제 데이터를 저장합니다. 예를 들어, 정점의 좌표나 색상 같은 데이터를 저장합니다.
+2.  **VAO (버텍스 배열 객체)**는 이 VBO와 정점 속성 설정을 연결합니다. `glVertexAttribPointer`와 `glEnableVertexAttribArray`로 설정한 정점 속성들이 VAO에 저장됩니다.
+3.  정점 속성 설정은 VBO에 저장된 데이터를 어떻게 해석할지 정의하는 과정입니다. `glVertexAttribPointer`로 속성(위치, 색상 등)을 정의하고, 이 속성을 VAO에 저장하여 나중에 객체를 그릴 때 효율적으로 사용할 수 있습니다.
+
+#### 9.2. 코드 예시
+
+```c++
+// 1. VBO와 VAO ID생성
+unsigned int VBO, VAO;
+glGenVertexArrays(1, &VAO);
+glGenBuffers(1, &VBO);
+
+// 2. VAO 바인딩
+glBindVertexArray(VAO);
+
+// 3. VBO 바인딩 및 데이터 복사
+glBindBuffer(GL_ARRAY_BUFFER, VBO);
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+// 4. 정점 속성 설정 (위치)
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);  // 위치 속성 활성화
+
+// 5. VBO와 VAO 언바인딩
+glBindBuffer(GL_ARRAY_BUFFER, 0);
+glBindVertexArray(0);
+```
+
+#### 9.3. 코드 설명
+
+1.  VBO는 `vertices` 배열의 데이터를 GPU 메모리로 복사합니다.
+2.  VAO는 VBO와 속성 설정(`glVertexAttribPointer`, `glEnableVertexAttribArray`)을 연결하여 하나의 객체로 묶습니다.
+3.  나중에 VAO를 바인딩하면, 설정된 모든 속성과 VBO가 자동으로 준비되므로 객체를 그릴 때 매우 효율적입니다.
+
+#### 9.4. 요약
+
+*   VBO는 실제 데이터를 저장하는 객체입니다.
+*   VAO는 VBO와 정점 속성 설정을 연결하여 하나의 객체로 묶어 관리하는 객체입니다.
+*   정점 속성 설정은 VBO의 데이터를 어떻게 해석할지를 지정하며, VAO에 저장됩니다.
+
+### 10. VAO가 VBO와 속성을 묶는 과정 (단계별 설명)
+
+**Vertex Array Object (VAO)**가 **Vertex Buffer Object (VBO)**와 정점 속성 설정을 연결하여 하나의 객체로 묶는 과정을 단계적으로 설명하겠습니다.
+
+#### 10.1. VAO의 역할
+
+VAO는 정점 속성 설정(예: 위치, 색상, 텍스처 좌표 등)을 VBO와 연결하여 이를 저장하는 OpenGL 객체입니다.
+VAO를 사용하면 복잡한 정점 데이터를 다룰 때 설정을 한 번만 정의하고 재사용할 수 있습니다.
+
+*   VAO는 VBO와 **정점 속성 포인터 설정(glVertexAttribPointer)**을 기록합니다.
+*   이후에는 VAO를 바인딩하기만 하면 관련 설정이 자동으로 적용됩니다.
+
+#### 10.2. VAO, VBO, 정점 속성의 관계
+
+1.  **VBO:**
+    *   정점 데이터를 GPU 메모리에 저장하는 데 사용됩니다.
+    *   예: 정점의 위치 데이터가 담긴 배열.
+
+2.  **정점 속성 설정:**
+    *   셰이더에서 사용할 데이터의 구조와 위치를 OpenGL에 알려줍니다.
+    *   예: `glVertexAttribPointer`를 통해 "이 데이터는 위치 정보이며, vec3 타입이다"라고 정의.
+
+3.  **VAO:**
+    *   VBO와 정점 속성 설정을 연결하고 관리합니다.
+    *   VAO를 바인딩하면 해당 설정을 재사용할 수 있습니다.
+
+#### 10.3. VAO가 VBO와 속성을 묶는 방법
+
+VAO는 다음 두 가지 작업을 저장합니다.
+
+1.  **VBO와의 연결 정보:**
+    *   어떤 VBO에 데이터가 저장되어 있는지.
+2.  **정점 속성 설정 정보:**
+    *   `glVertexAttribPointer`로 정의된 속성 설정.
+
+#### 10.4. VAO와 VBO를 연결하는 과정
+
+1.  **VAO 생성 및 바인딩:**
+
+    VAO를 생성하고 바인딩합니다. 이 상태에서 설정된 모든 작업이 VAO에 기록됩니다.
+
+    ```c++
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+    ```
+
+2.  **VBO 생성 및 데이터 복사:**
+
+    VBO를 생성하고 데이터를 GPU 메모리에 복사합니다.
+
+    ```c++
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO); // VBO 바인딩
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); // 데이터 복사
+    ```
+
+    이 단계에서 VBO는 VAO와 자동으로 연결됩니다. VAO는 "GL_ARRAY_BUFFER 타입으로 바인딩된 VBO"를 기록합니다.
+
+3.  **정점 속성 설정:**
+
+    정점 데이터를 셰이더와 연결하는 설정을 VAO에 기록합니다.
+
+    ```c++
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    ```
+
+    *   `glVertexAttribPointer`: VBO의 데이터를 셰이더의 속성과 연결.
+    *   `glEnableVertexAttribArray`: 속성 번호(예: 0번)를 활성화.
+
+4.  **VAO 바인딩 해제:**
+
+    VAO를 바인딩 해제하여 기록 작업을 종료합니다.
+
+    ```c++
+    glBindVertexArray(0);
+    ```
+
+#### 10.5. VAO 사용
+
+이제 VAO를 사용하여 동일한 정점 속성 설정을 재사용할 수 있습니다.
+
+```c++
+// VAO 바인딩
+glBindVertexArray(VAO);
+
+// 객체 그리기
+glDrawArrays(GL_TRIANGLES, 0, 3);
+
+// VAO 바인딩 해제 (선택 사항)
+glBindVertexArray(0);
+```
+
+#### 10.6. 전체 코드 예제
+
+```c++
+float vertices[] = {
+    0.5f,  0.5f, 0.0f,  // 오른쪽 위
+    0.5f, -0.5f, 0.0f,  // 오른쪽 아래
+   -0.5f, -0.5f, 0.0f   // 왼쪽 아래
+};
+
+// VAO와 VBO 생성
+unsigned int VAO, VBO;
+glGenVertexArrays(1, &VAO);
+glGenBuffers(1, &VBO);
+
+// VAO 바인딩
+glBindVertexArray(VAO);
+
+// VBO 생성 및 데이터 복사
+glBindBuffer(GL_ARRAY_BUFFER, VBO);
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+// 정점 속성 설정
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);
+
+// VAO 바인딩 해제
+glBindVertexArray(0);
+
+// ----- 렌더링 루프 -----
+while (!windowShouldClose) {
+    // VAO 바인딩 및 객체 그리기
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindVertexArray(0);
 }
 ```
 
-glfwSetFramebufferSizeCallback을 등록하여 모든 윈도우 크기 조정에서 이 함수를 호출하고 싶다는 것을 GLFW에 알려야 합니다.
+#### 10.7. VAO의 장점
+
+*   VBO와 정점 속성 설정을 묶어서 저장.
+*   객체를 그릴 때마다 동일한 설정을 반복하지 않아도 됨.
+*   복잡한 정점 데이터를 처리할 때 코드가 간단해지고 오류를 줄임.
+
+#### 10.8. 비유로 이해하기
+
+*   VBO: 데이터가 저장된 책.
+*   정점 속성 설정: 책에서 특정 페이지를 읽는 방법.
+*   VAO: 책과 읽는 방법을 함께 기록한 메모지.
+
+VAO를 사용하면 "책을 이렇게 읽어!"라는 규칙을 한 번만 작성하고, 그 메모지만 사용하면 됩니다.
+
+### 11. 우리가 기다려온 삼각형 (glDrawArrays)
+
+우리가 원하는 객체를 그리기 위해 OpenGL은 `glDrawArrays` 함수를 제공합니다. 이 함수는 현재 활성화된 셰이더, 이전에 정의된 정점 속성 설정, 그리고 VAO를 통해 간접적으로 바인딩된 VBO의 정점 데이터를 사용하여 기본 도형을 그립니다.
 
 ```c++
-glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+glUseProgram(shaderProgram);
+glBindVertexArray(VAO);
+glDrawArrays(GL_TRIANGLES, 0, 3);
 ```
 
-윈도우가 처음 표시되면 결과 윈도우 크기로 framebuffer_size_callback도 호출됩니다. 망막 디스플레이의 경우 너비와 높이가 원래 입력 값보다 훨씬 높아집니다.
+*   `glDrawArrays` 함수의 첫 번째 인자는 우리가 그리고자 하는 OpenGL 기본 도형의 타입입니다. 처음에 우리는 삼각형을 그리고 싶다고 말했으므로, `GL_TRIANGLES`를 전달합니다.
+*   두 번째 인자는 그릴 정점 배열에서 시작할 인덱스를 지정합니다. 우리는 이 값을 0으로 설정합니다.
+*   마지막 인자는 몇 개의 정점을 그릴 것인지 지정하는데, 이 경우 3개입니다(우리의 데이터는 정확히 3개의 정점으로 구성된 하나의 삼각형을 렌더링합니다).
 
-자체 함수를 등록하기 위해 설정할 수 있는 콜백 함수가 많이 있습니다. 예를 들어 조이스틱 입력 변경을 처리하고, 오류 메시지를 처리하는 콜백 함수를 만들 수 있습니다. 윈도우를 만든 후 렌더링 루프가 시작되기 전에 콜백 함수를 등록합니다.
+이제 코드를 컴파일하고, 오류가 발생하면 그 원인을 찾아가며 수정하십시오. 애플리케이션이 정상적으로 컴파일되면, 결과를 볼 수 있을 것입니다.
 
-### 엔진 준비
+### 12. EBO (Element Buffer Object)
 
-애플리케이션이 단일 이미지를 그리고 즉시 종료하여 윈도우를 닫는 것을 원하지 않습니다. 프로그램이 명시적으로 중지하라는 지시를 받을 때까지 애플리케이션이 이미지를 계속 그리고 사용자 입력을 처리하기를 원합니다. 이러한 이유로 GLFW에게 중지하라는 지시를 받을 때까지 계속 실행되는 while 루프 (이제 렌더링 루프라고 함)를 만들어야 합니다. 다음 코드는 매우 간단한 렌더링 루프를 보여줍니다.
+정점 데이터를 렌더링할 때, 마지막으로 다뤄야 할 개념은 **Element Buffer Object (EBO)**입니다. EBO가 어떻게 작동하는지 설명하기 위해 예를 들어 보겠습니다. 만약 우리가 삼각형 대신 사각형을 그리려고 한다면, 사각형을 두 개의 삼각형으로 나누어 그릴 수 있습니다(OpenGL은 기본적으로 삼각형을 사용하여 렌더링합니다). 이를 통해 다음과 같은 정점 집합을 생성할 수 있습니다.
 
 ```c++
-while(!glfwWindowShouldClose(window))
-{
-    glfwSwapBuffers(window);
-    glfwPollEvents();    
-}
+float vertices[] = {
+    // 첫 번째 삼각형
+     0.5f,  0.5f, 0.0f,  // 오른쪽 위
+     0.5f, -0.5f, 0.0f,  // 오른쪽 아래
+    -0.5f,  0.5f, 0.0f,  // 왼쪽 위
+    // 두 번째 삼각형
+     0.5f, -0.5f, 0.0f,  // 오른쪽 아래
+    -0.5f, -0.5f, 0.0f,  // 왼쪽 아래
+    -0.5f,  0.5f, 0.0f   // 왼쪽 위
+};
 ```
 
-glfwWindowShouldClose 함수는 각 루프 반복의 시작 부분에서 GLFW가 닫히도록 지시되었는지 확인합니다. 그렇다면 이 함수는 true를 반환하고 렌더링 루프가 중지된 후 애플리케이션을 닫을 수 있습니다.
-glfwPollEvents 함수는 이벤트 (예: 키보드 입력 또는 마우스 움직임 이벤트)가 트리거되었는지 확인하고, 윈도우 상태를 업데이트하고, 해당 함수 (콜백 메서드를 통해 등록할 수 있음)를 호출합니다. glfwSwapBuffers는 이 렌더링 반복 중에 렌더링하는 데 사용되는 색상 버퍼 (GLFW 윈도우의 각 픽셀에 대한 색상 값이 포함된 큰 2D 버퍼)를 바꾸고 화면에 출력으로 표시합니다.
+보시다시피, 일부 정점이 겹치고 있습니다. 예를 들어, "오른쪽 아래"와 "왼쪽 위"는 두 번씩 사용됩니다! 이는 50%의 오버헤드를 발생시키며, 더 복잡한 모델에서 삼각형이 수천 개 이상일 경우 이 문제가 심각해집니다. 더 나은 해결책은 고유한 정점만 저장하고, 그 정점들을 그릴 순서를 지정하는 것입니다. 이렇게 하면 사각형을 그리기 위해 6개의 정점이 아닌 4개의 정점만 저장하면 됩니다. OpenGL이 이런 기능을 제공해주면 좋겠죠?
 
-### 더블 버퍼
+#### 12.1. EBO의 역할
 
-애플리케이션이 단일 버퍼에 그리면 결과 이미지에 깜박임 문제가 표시될 수 있습니다. 이는 결과 출력 이미지가 즉시 그려지지 않고 픽셀 단위로 일반적으로 왼쪽에서 오른쪽으로 그리고 위에서 아래로 그려지기 때문입니다. 이 이미지는 렌더링되는 동안 사용자에게 즉시 표시되지 않으므로 결과에 아티팩트가 포함될 수 있습니다. 이러한 문제를 해결하기 위해 윈도우 애플리케이션은 렌더링에 더블 버퍼를 적용합니다. 프런트 버퍼에는 화면에 표시되는 최종 출력 이미지가 포함되어 있고 모든 렌더링 명령은 백 버퍼에 그려집니다. 모든 렌더링 명령이 완료되는 즉시 백 버퍼를 프런트 버퍼로 바꾸어 이미지를 렌더링하지 않고도 표시할 수 있으므로 위에서 언급한 모든 아티팩트를 제거합니다.
-
-### 마지막으로 할 일
-
-렌더링 루프에서 나가자마자 할당된 모든 GLFW 리소스를 적절하게 정리/삭제하고 싶습니다. main 함수의 끝에서 호출하는 glfwTerminate 함수를 통해 이 작업을 수행할 수 있습니다.
+**Element Buffer Object (EBO)**는 바로 이러한 문제를 해결합니다. EBO는 정점 버퍼 객체(VBO)와 유사하게 작동하는 버퍼로, OpenGL이 어떤 정점을 그릴지 결정하는 데 사용하는 인덱스를 저장합니다. 이를 "인덱스 드로잉"이라고 하며, 우리가 원하는 솔루션입니다. 이제 사각형을 그리기 위해 고유한 정점과 그 정점을 그릴 순서를 지정하는 인덱스를 설정해 보겠습니다.
 
 ```c++
-glfwTerminate();
-return 0;
+float vertices[] = {
+     0.5f,  0.5f, 0.0f,  // 오른쪽 위
+     0.5f, -0.5f, 0.0f,  // 오른쪽 아래
+    -0.5f, -0.5f, 0.0f,  // 왼쪽 아래
+    -0.5f,  0.5f, 0.0f   // 왼쪽 위
+};
+unsigned int indices[] = {  // 인덱스는 0부터 시작!
+    0, 1, 3,   // 첫 번째 삼각형
+    1, 2, 3    // 두 번째 삼각형
+};
 ```
+만일 이렇게 하지 않는다면 2개의 삼각형을 만들어야 하므로 vertices2 까지 만들어야 했을 것입니다.
 
-이렇게 하면 모든 리소스를 정리하고 애플리케이션을 제대로 종료합니다. 이제 애플리케이션을 컴파일해 보십시오. 모든 것이 잘 되면 다음과 같은 출력이 표시됩니다.
 
-매우 지루하고 지루한 검은색 이미지라면 제대로 한 것입니다! 올바른 이미지를 얻지 못했거나 모든 것이 어떻게 맞춰지는지 혼란스럽다면 [여기](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/1.2.hello_window/hello_window.cpp)에서 전체 소스 코드를 확인하십시오 (다른 색상으로 깜박이기 시작했다면 계속 읽으십시오).
-
-애플리케이션 컴파일에 문제가 있는 경우 먼저 모든 링커 옵션이 올바르게 설정되었는지, IDE에 올바른 디렉토리를 제대로 포함했는지 확인하십시오 (이전 장에서 설명한 대로). 또한 코드가 올바른지 확인하십시오. 전체 소스 코드와 비교하여 확인할 수 있습니다.
-
-### 입력
-
-또한 GLFW에서 일부 형태의 입력 제어를 하고 싶고 GLFW의 여러 입력 함수를 통해 이를 달성할 수 있습니다. GLFW의 glfwGetKey 함수를 사용할 것입니다. 이 함수는 윈도우를 입력으로 키와 함께 사용합니다. 이 함수는 이 키가 현재 눌려지고 있는지 여부를 반환합니다. 모든 입력 코드를 체계적으로 유지하기 위해 processInput 함수를 만듭니다.
+이제 인덱스를 사용하면, 6개 대신 4개의 정점만 필요합니다. 그럼 EBO를 생성해 보겠습니다.
 
 ```c++
-void processInput(GLFWwindow *window)
-{
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-}
+unsigned int EBO;
+glGenBuffers(1, &EBO);
 ```
 
-여기서 사용자가 escape 키를 눌렀는지 확인합니다 (누르지 않은 경우 glfwGetKey는 GLFW_RELEASE를 반환합니다). 사용자가 escape 키를 누른 경우 glfwSetwindowShouldClose를 사용하여 WindowShouldClose 속성을 true로 설정하여 GLFW를 닫습니다. 그런 다음 메인 while 루프의 다음 조건 확인이 실패하고 애플리케이션이 닫힙니다.
-
-그런 다음 렌더링 루프의 모든 반복에서 processInput을 호출합니다.
+VBO와 마찬가지로 EBO를 바인딩하고, 인덱스를 버퍼에 복사합니다. 이번에는 `GL_ELEMENT_ARRAY_BUFFER`를 버퍼 타입으로 지정하는데, 이는 EBO에 해당합니다.
 
 ```c++
-while (!glfwWindowShouldClose(window))
-{
-    processInput(window);
-
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-}
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 ```
 
-이렇게 하면 특정 키 누름을 쉽게 확인하고 각 프레임에 따라 적절하게 대응할 수 있습니다. 렌더링 루프의 반복을 더 일반적으로 프레임이라고 합니다.
-
-### 렌더링
-
-렌더링 루프의 모든 반복 또는 프레임에서 모든 렌더링 명령을 실행하고 싶기 때문에 모든 렌더링 명령을 렌더링 루프에 넣고 싶습니다. 다음과 같이 보일 것입니다.
+이제 `glDrawArrays` 대신 `glDrawElements`를 사용하여 인덱스 버퍼에서 삼각형을 렌더링합니다.
 
 ```c++
-// 렌더링 루프
-while(!glfwWindowShouldClose(window))
-{
-    // 입력
-    processInput(window);
-
-    // 여기에 렌더링 명령
-    ...
-
-    // 이벤트 확인 및 호출하고 버퍼를 바꿈
-    glfwPollEvents();
-    glfwSwapBuffers(window);
-}
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 ```
 
-실제로 작동하는지 테스트하기 위해 원하는 색상으로 화면을 지우고 싶습니다. 프레임 시작 시 화면을 지우고 싶습니다. 그렇지 않으면 이전 프레임의 결과가 계속 표시됩니다 (찾고 있는 효과일 수 있지만 일반적으로는 그렇지 않습니다). glClear를 사용하여 화면의 색상 버퍼를 지울 수 있습니다. 여기서 지우려는 버퍼를 지정하기 위해 버퍼 비트를 전달합니다. 설정할 수 있는 가능한 비트는 GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT 및 GL_STENCIL_BUFFER_BIT입니다. 지금은 색상 값만 신경 쓰므로 색상 버퍼만 지웁니다.
+이 함수에서 첫 번째 인자는 그릴 모드를 지정하고, 두 번째 인자는 그릴 요소의 개수입니다. 우리는 6개의 인덱스를 사용하므로, 6개의 정점을 그리기를 원합니다. 세 번째 인자는 인덱스의 타입을 지정하며, 네 번째 인자는 EBO에서의 오프셋을 지정합니다. 여기서는 0으로 설정합니다.
+
+#### 12.2. EBO와 VAO의 관계
+
+`glDrawElements` 함수는 현재 바인딩된 `GL_ELEMENT_ARRAY_BUFFER`에서 인덱스를 가져와서 그리기 때문에, 매번 객체를 렌더링할 때마다 해당 EBO를 바인딩해야 합니다. 그러나 VAO가 EBO 바인딩을 추적하므로, VAO를 바인딩하면 자동으로 EBO가 바인딩됩니다.
+
+#### 12.3. 최종 초기화 및 드로잉 코드
+
+이제 최종 초기화 및 드로잉 코드는 다음과 같습니다.
 
 ```c++
-glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-glClear(GL_COLOR_BUFFER_BIT);
+// ..:: 초기화 코드 :: ..
+// 1. VAO 바인딩
+glBindVertexArray(VAO);
+// 2. VBO에 정점 배열 복사
+glBindBuffer(GL_ARRAY_BUFFER, VBO);
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+// 3. EBO에 인덱스 배열 복사
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+// 4. 정점 속성 포인터 설정
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);
+
+// ..:: 드로잉 코드 (렌더 루프) :: ..
+glUseProgram(shaderProgram);
+glBindVertexArray(VAO);
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+glBindVertexArray(0);
 ```
 
-또한 glClearColor를 사용하여 화면을 지울 색상을 지정합니다. glClear를 호출하고 색상 버퍼를 지울 때마다 전체 색상 버퍼가 glClearColor로 구성된 색상으로 채워집니다. 이렇게 하면 어두운 녹색-파란색 색상이 됩니다.
+프로그램을 실행하면 왼쪽에는 우리가 만든 삼각형이 보이고, 오른쪽에는 와이어프레임 모드로 그려진 사각형이 나타날 것입니다. 와이어프레임 모드에서는 사각형이 두 개의 삼각형으로 이루어져 있음을 확인할 수 있습니다.  
 
-OpenGL 장에서 기억할 수 있듯이 glClearColor 함수는 상태 설정 함수이고 glClear는 현재 상태를 사용하여 지우는 색상을 검색한다는 점에서 상태 사용 함수입니다.
+(EBO를 사용해도 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0) 호출에서 여전히 6개의 정점을 사용하여 삼각형을 그립니다. 하지만, 이 정점들은 실제로 중복되지 않은 4개의 정점(vertices 배열)에서 참조됩니다. 이로써 데이터 중복을 방지하면서도 정확히 6개의 점을 사용해 삼각형을 그리는 것입니다.)
 
-애플리케이션의 전체 소스 코드는 [여기](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/1.2.hello_window_clear/hello_window_clear.cpp)에서 찾을 수 있습니다.
+와이어프레임 모드에서 그리려면 `glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)`을 사용합니다. 이 설정은 이후 그려지는 삼각형들을 와이어프레임 모드로 렌더링합니다. 기본값으로 되돌리려면 `glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)`을 사용합니다.
 
-지금은 렌더링 루프를 많은 렌더링 호출로 채울 준비가 되었지만 다음 장에 대한 것입니다. 여기서 충분히 오랫동안 수다를 떨었다고 생각합니다.
+#### 12.4. EBO 요약
+
+**Element Buffer Object (EBO)**는 인덱스를 사용해 정점을 효율적으로 그리기 위해 사용됩니다. EBO를 생성하는 코드는 VBO 및 VAO와 유사하지만, 추가적으로 인덱스 데이터를 GPU 메모리에 전달합니다.
+
+#### 12.5. EBO를 포함한 전체 코드 예시
+
+```c++
+// 1. VBO, VAO, EBO 생성
+unsigned int VBO, VAO, EBO;
+glGenVertexArrays(1, &VAO);
+glGenBuffers(1, &VBO);
+glGenBuffers(1, &EBO);
+
+// 2. VAO 바인딩
+glBindVertexArray(VAO);
+
+// 3. VBO 바인딩 및 데이터 복사
+glBindBuffer(GL_ARRAY_BUFFER, VBO);
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+// 4. EBO 바인딩 및 데이터 복사
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+// 5. 정점 속성 설정 (위치)
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+glEnableVertexAttribArray(0);  // 위치 속성 활성화
+
+// 6. VAO 언바인딩
+glBindVertexArray(0);
+
+// 7. VBO 언바인딩 (선택 사항)
+// glBindBuffer(GL_ARRAY_BUFFER, 0);
+// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // EBO는 VAO와 함께 바인딩되므로 언바인딩 불필요
+
+// --- 드로잉 ---
+// 셰이더 프로그램 사용
+glUseProgram(shaderProgram);
+
+// VAO 바인딩
+glBindVertexArray(VAO);
+
+// 인덱스를 사용해 그리기
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+// VAO 언바인딩
+glBindVertexArray(0);
+```
+
+#### 12.6. EBO 사용 효과
+
+*   EBO를 통해 동일한 정점을 중복해서 저장하지 않아 메모리 사용량을 줄이고 성능을 향상시킬 수 있습니다.
+
+축하합니다! 삼각형이나 사각형을 그리는 데 성공했다면, 현대 OpenGL의 첫 번째 장벽을 넘어선 것입니다. 이제 이후의 장들이 훨씬 더 쉽게 이해될 것입니다.
+
+### 13. 핵심 정리: 삼각형 그리기를 위한 3가지 요소
+
+그래픽스 파이프라인에서 삼각형을 그리기 위한 과정은 다음과 같은 3가지 핵심 요소로 요약할 수 있습니다.
+
+1.  **GPU에 데이터를 저장할 메모리 (VBO, EBO):**
+    *   VBO (Vertex Buffer Object): GPU에 정점 데이터를 저장하는 데 사용됩니다. 정점 데이터는 3D 모델의 위치 정보나 색상 정보 등을 포함할 수 있습니다.
+    *   EBO (Element Buffer Object): 인덱스 데이터를 저장하는 데 사용됩니다. 여러 정점이 반복될 경우 인덱스를 통해 재사용하는 방식입니다.
+    *   이 데이터를 GPU 메모리에 할당하여 저장합니다. 이 작업은 `glGenBuffers`와 `glBindBuffer`로 처리됩니다.
+
+2.  **셰이더 프로그램 (버텍스 셰이더, 프래그먼트 셰이더):**
+    *   버텍스 셰이더는 각 정점의 변환을 처리합니다. 예를 들어, 모델을 화면에 그리기 위한 좌표 변환(모델, 뷰, 프로젝션 변환)을 수행합니다.
+    *   프래그먼트 셰이더는 픽셀 색상 계산을 담당합니다. 각 픽셀에 대한 색상, 텍스처 등을 계산합니다.
+    *   이 셰이더 프로그램은 컴파일 후 링크하여 사용해야 하며, `glUseProgram` 함수로 활성화해야 합니다.
+
+3.  **데이터와 셰이더 프로그램을 연결하는 과정:**
+    *   버텍스 속성 연결: `glVertexAttribPointer`와 `glEnableVertexAttribArray`를 사용하여 VBO에 저장된 데이터를 셰이더의 입력으로 연결합니다.
+    *   예를 들어, 위치 데이터는 버텍스 셰이더의 첫 번째 입력(`layout(location = 0)`)에 연결됩니다.
+    *   셰이더 프로그램 사용: 데이터를 처리할 셰이더 프로그램을 활성화한 후, 데이터를 셰이더와 연결하여 GPU에서 렌더링이 가능하게 합니다.
+
+#### 13.1. 전체 과정
+
+1.  **버퍼 생성 및 데이터 전송:**
+    *   VBO와 EBO를 생성하고, 데이터를 GPU 메모리에 전송합니다.
+2.  **셰이더 프로그램 준비 및 활성화:**
+    *   버텍스 셰이더와 프래그먼트 셰이더를 준비하고, 이를 하나의 프로그램으로 링크하여 활성화합니다.
+3.  **버텍스 속성 연결 및 데이터 렌더링:**
+    *   셰이더 프로그램에 데이터를 연결하고, 렌더링을 위해 `glDrawArrays` 또는 `glDrawElements` 함수를 호출하여 그립니다.
+
+#### 13.2. 정리
+
+그래픽 파이프라인에서 삼각형을 그리기 위해서는 GPU 메모리에 데이터를 저장하고, 셰이더 프로그램을 활성화하며, 버텍스 속성을 셰이더와 연결하는 과정이 필요합니다. 이 세 가지 조건을 통해 OpenGL이 데이터를 처리하고 화면에 객체를 그릴 수 있게 됩니다.
