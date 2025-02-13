@@ -232,7 +232,7 @@ void main()
 ```
 
   
-![alt text](images/vertex_attribute_pointer_interleaved.png)
+![alt text](/images/vertex_attribute_pointer_interleaved.png) 
 새로운 속성을 반영하기 위해 버텍스 속성 포인터를 재구성해야 한다.   
 위치와 색상을 포함한 데이터는 교차(interleaved) 형태로 VBO에 저장된다.      
 
@@ -258,4 +258,4 @@ glEnableVertexAttribArray(1);
 	•	예: 삼각형의 한쪽 꼭짓점은 빨강, 다른 쪽은 파랑이라면, 중간에 위치한 픽셀은 보라색(빨강 + 파랑 혼합)으로 나타난다.
 	•	삼각형 내부 색상은 자동으로 부드럽게 변화한다. 정가운데는 결국 흰색.  
 
-![alt text](images/Fragment_Interpolation.png)
+![alt text](/images/Fragment_Interpolation.png)
