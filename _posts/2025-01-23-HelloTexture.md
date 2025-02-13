@@ -1,3 +1,5 @@
+정말 죄송합니다. 제가 Markdown 링크 생성에 실수가 있었습니다. 다시 수정하여 완벽하게 작동하는 Markdown 목차를 생성해 드리겠습니다. 이전 답변은 잊어주시고, 아래 내용을 복사하여 사용해주세요.
+
 ## 텍스처 (Texture)
 
 -   [텍스처 소개](#텍스처-소개)
@@ -12,10 +14,10 @@
     -   [GL_LINEAR](#gl_linear)
 -   [밉맵 (Mipmap)](#밉맵-mipmap)
     -   [밉맵 필터링 옵션](#밉맵-필터링-옵션)
-        -   [GL_NEAREST_MIPMAP_NEAREST](#gl_nearest_mipmap_nearest)
-        -   [GL_LINEAR_MIPMAP_NEAREST](#gl_linear_mipmap_nearest)
-        -   [GL_NEAREST_MIPMAP_LINEAR](#gl_nearest_mipmap_linear)
-        -   [GL_LINEAR_MIPMAP_LINEAR](#gl_linear_mipmap_linear)
+        -   [GL_NEAREST_MIPMAP_NEAREST](#gl_nearest_mipmap_nearest-1)
+        -   [GL_LINEAR_MIPMAP_NEAREST](#gl_linear_mipmap_nearest-1)
+        -   [GL_NEAREST_MIPMAP_LINEAR](#gl_nearest_mipmap_linear-1)
+        -   [GL_LINEAR_MIPMAP_LINEAR](#gl_linear_mipmap_linear-1)
 -   [stb_image.h 라이브러리 및 #define 키워드](#stb_imageh-라이브러리-및-define-키워드)
     -   [#define STB_IMAGE_IMPLEMENTATION](#define-stb_image_implementation)
     -   [중복 정의 오류](#중복-정의-오류)
@@ -135,13 +137,13 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 #### 밉맵 필터링 옵션 {#밉맵-필터링-옵션}
 
-*   **GL_NEAREST_MIPMAP_NEAREST** {#gl_nearest_mipmap_nearest}: 밉맵 중에서 픽셀 크기에 가장 가까운 하나를 고르고, 그 레벨에서 **가장 가까운 텍셀 (근접 보간)** 을 가져옵니다.
+*   **GL_NEAREST_MIPMAP_NEAREST** {#gl_nearest_mipmap_nearest-1}: 밉맵 중에서 픽셀 크기에 가장 가까운 하나를 고르고, 그 레벨에서 **가장 가까운 텍셀 (근접 보간)** 을 가져옵니다.
 
-*   **GL_LINEAR_MIPMAP_NEAREST** {#gl_linear_mipmap_nearest}: 밉맵 중에서 픽셀 크기에 가장 가까운 하나를 고르고, 그 레벨에서 여러 텍셀을 선형 보간하여 값을 가져옵니다.
+*   **GL_LINEAR_MIPMAP_NEAREST** {#gl_linear_mipmap_nearest-1}: 밉맵 중에서 픽셀 크기에 가장 가까운 하나를 고르고, 그 레벨에서 여러 텍셀을 선형 보간하여 값을 가져옵니다.
 
-*   **GL_NEAREST_MIPMAP_LINEAR** {#gl_nearest_mipmap_linear}: 픽셀 크기에 가장 가까운 두 개의 밉맵을 고르고, 둘을 섞은 다음에 근접 보간으로 텍셀 값을 가져옵니다.
+*   **GL_NEAREST_MIPMAP_LINEAR** {#gl_nearest_mipmap_linear-1}: 픽셀 크기에 가장 가까운 두 개의 밉맵을 고르고, 둘을 섞은 다음에 근접 보간으로 텍셀 값을 가져옵니다.
 
-*   **GL_LINEAR_MIPMAP_LINEAR** {#gl_linear_mipmap_linear}: 픽셀 크기에 가장 가까운 두 개의 밉맵을 고르고, 둘을 섞은 다음, 각각의 밉맵에서 선형 보간하여 값을 가져옵니다.
+*   **GL_LINEAR_MIPMAP_LINEAR** {#gl_linear_mipmap_linear-1}: 픽셀 크기에 가장 가까운 두 개의 밉맵을 고르고, 둘을 섞은 다음, 각각의 밉맵에서 선형 보간하여 값을 가져옵니다.
 
 ---
 
@@ -406,3 +408,8 @@ stbi_set_flip_vertically_on_load(true); // y축 뒤집기 명령임.
 ---
 
 **사용 방법:** 위 텍스트 전체를 복사해서 Markdown 편집기 (Typora, Obsidian 등)에 붙여넣거나, GitHub README.md 파일 등에 붙여넣으면 자동으로 목차가 생성되고, 목차를 클릭하면 해당 위치로 이동합니다.
+
+**참고:**
+
+*   이미지 경로는 실제 이미지 파일이 있는 위치에 맞게 수정해야 합니다.
+*   Markdown 편집기에 따라 일부 문법이 다르게 적용될 수 있습니다.
