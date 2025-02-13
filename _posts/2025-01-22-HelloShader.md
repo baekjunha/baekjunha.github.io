@@ -246,12 +246,16 @@ glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * s
 glEnableVertexAttribArray(1);
 ```
 
--  **설명**
-	1.	stride(보폭) :  한 꼭짓점 데이터의 크기 = 6 * sizeof(float) (위치 3개 + 색상 3개).         
-	2.	offset (시작점)
-    * 위치 속성: 0 (데이터의 첫 번째 값이 위치 시작점).
-	* 색상 속성: 3 * sizeof(float) (위치 데이터 다음부터 색상 시작).
----
+**설명**  
+
+```
+1.stride(보폭) :  한 꼭짓점 데이터의 크기 = 6 * sizeof(float) (위치 3개 + 색상 3개)    
+2.offset (시작점)  
+3.위치 속성: 0 (데이터의 첫 번째 값이 위치 시작점)
+4.색상 속성: 3 * sizeof(float) (위치 데이터 다음부터 색상 시작)  
+```
+
+ 
 # 색상 변화의 원리: Fragment Interpolation
 
 삼각형을 렌더링할 때, 실제 화면에 그려지는 **픽셀(fragment)** 의 수는 **정점(vertex)** 의 수보다 훨씬 많습니다. 쉐이더는 픽셀의 위치에 따라 각 정점의 색상을 ***선형 보간(linear interpolation)*** 한다.
