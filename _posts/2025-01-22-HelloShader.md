@@ -1,15 +1,9 @@
+---
+categories : graphics
+toc : true
+---
 ## 셰이더 개념과 코드 이해하기  
 
-- [쉐이더란?](#쉐이더란)
-- [쉐이더(GLSL) 코드의 기본 구조](#쉐이더glsl-코드의-기본-구조)
-    - [예문](#예문)
-    - [스위즐링(Swizzling)](#스위즐링swizzling)
-  - [버텍스 쉐이더 (Vertex Shader)](#버텍스-쉐이더-vertex-shader)
-  - [프래그먼트 쉐이더 (Fragment Shader)](#프래그먼트-쉐이더-fragment-shader)
-  - [더 많은 속성 다루기](#더-많은-속성-다루기)
-  - [버텍스 쉐이더 수정](#버텍스-쉐이더-수정)
-  - [프래그먼트 쉐이더 수정](#프래그먼트-쉐이더-수정)
-- [색상 변화의 원리: Fragment Interpolation](#색상-변화의-원리-fragment-interpolation)
 
 # 쉐이더란?
 

@@ -1,18 +1,8 @@
+---
+categories : graphics
+toc : true
+---
 ### 좌표 변환 과정 해석
-
-- [로컬 좌표](#local-coordinates)
-- [월드 좌표](#world-coordinates)
-- [뷰 좌표](#view-coordinates)
-- [클립 좌표](#clip-coordinates)
-  - [직교 투영](#orthographic-projection)
-  - [원근 투영](#perspective-projection)
-- [화면 좌표](#screen-coordinates)
-- [Putting in Together](#putting-together)
-- [Going 3D](#going-3d)
-    - [모델 행렬](#model-matrix)
-    - [뷰 행렬 및 투영 행렬](#view-projection-matrix)
-- [3D 큐브 렌더링하기](#3d-cube)
-
 
 
 # Coordinate Systems

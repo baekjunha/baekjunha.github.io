@@ -1,42 +1,8 @@
-## 텍스처 (Texture)
-
--   [텍스처 소개](#텍스처-소개)
-    -   [텍스처 좌표 (Texture Coordinates)](#텍스처-좌표-texture-coordinates)
--   [텍스처 래핑 모드 (Texture Wrapping Mode)](#텍스처-래핑-모드-texture-wrapping-mode)
-    -   [GL_REPEAT](#gl_repeat)
-    -   [GL_MIRRORED_REPEAT](#gl_mirrored_repeat)
-    -   [GL_CLAMP_TO_EDGE](#gl_clamp_to_edge)
-    -   [GL_CLAMP_TO_BORDER](#gl_clamp_to_border)
--   [텍스처 필터링 (Texture Filtering)](#텍스처-필터링-texture-filtering)
-    -   [GL_NEAREST](#gl_nearest)
-    -   [GL_LINEAR](#gl_linear)
--   [밉맵 (Mipmap)](#밉맵-mipmap)
-    -   [밉맵 필터링 옵션](#밉맵-필터링-옵션)
-        -   [GL_NEAREST_MIPMAP_NEAREST](#gl_nearest_mipmap_nearest-1)
-        -   [GL_LINEAR_MIPMAP_NEAREST](#gl_linear_mipmap_nearest-1)
-        -   [GL_NEAREST_MIPMAP_LINEAR](#gl_nearest_mipmap_linear-1)
-        -   [GL_LINEAR_MIPMAP_LINEAR](#gl_linear_mipmap_linear-1)
--   [stb_image.h 라이브러리 및 #define 키워드](#stb_imageh-라이브러리-및-define-키워드)
-    -   [#define STB_IMAGE_IMPLEMENTATION](#define-stb_image_implementation)
-    -   [중복 정의 오류](#중복-정의-오류)
--   [텍스처 사용 시작](#텍스처-사용-시작)
-    -   [이미지 로드](#이미지-로드)
-    -   [텍스처 객체 생성 및 바인딩](#텍스처-객체-생성-및-바인딩)
-    -   [텍스처 이미지 생성 (glTexImage2D)](#텍스처-이미지-생성-glteximage2d)
-    -   [밉맵 생성 (glGenerateMipmap)](#밉맵-생성-glgeneratemipmap)
-    -   [메모리 해제 (stbi_image_free)](#메모리-해제-stbi_image_free)
--   [텍스처 적용하기](#텍스처-적용하기)
-    -   [버텍스 데이터 수정 (텍스처 좌표 추가)](#버텍스-데이터-수정-텍스처-좌표-추가)
-    -   [버텍스 셰이더 수정](#버텍스-셰이더-수정)
-    -   [프래그먼트 셰이더 수정](#프래그먼트-셰이더-수정)
--   [텍스처 유닛 (Texture Unit)](#텍스처-유닛-texture-unit)
-    -   [텍스처 유닛 활성화 (glActiveTexture)](#텍스처-유닛-활성화-glactivetexture)
-    -   [여러 개의 텍스처 사용](#여러-개의-텍스처-사용)
-    -   [샘플러 설정 (glUniform1i 및 glUniformli)](#샘플러-설정-gluniform1i-및-gluniformli)
--   [이미지 뒤집힘 문제 해결 (stbi_set_flip_vertically_on_load)](#이미지-뒤집힘-문제-해결-stbi_set_flip_vertically_on_load)
--   [최종 결과](#최종-결과)
-
 ---
+categories : graphics
+toc : true
+---
+## 텍스처 (Texture)
 
 텍스처는 일반적으로 2D 이미지이며, 오브젝트에 씌우면 오브젝트의 겉모습과 무늬가 쉽게 변한다.
 
