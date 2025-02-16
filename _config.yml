@@ -115,7 +115,7 @@ analytics:
 author:
   name             : "Baek junha"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Computer Graphics", "Tech & Art" etc..
+  bio              : "Computer Graphics, Tech & Art" etc..
   location         : "Incheon, South Korea"
   email            : 
   links:
@@ -123,9 +123,9 @@ author:
       icon: "fas fa-fw fa-envelope-square"
       url: "baekjunha00@gmail.com"
 
-    - label: "Website"
+    - label: "Univ"
       icon: "fas fa-fw fa-link"
-      url: "https://baekjunha.github.io"
+      url: "https://cse.inu.ac.kr/isis/index.do?epTicket=LOG"
 
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
