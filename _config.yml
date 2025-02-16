@@ -115,7 +115,7 @@ analytics:
 author:
   name             : "Baek junha"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Tech & Art"
+  bio              : "Computer Graphics", "Tech & Art" etc..
   location         : "Incheon, South Korea"
   email            : 
   links:
