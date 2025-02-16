@@ -18,3 +18,8 @@ layout: archive
 </div>
 
 {% include paginator.html %}
+
+
+{% if post.image %}
+  <img src="{{ post.image | relative_url }}" alt="{{ post.title }}">
+{% endif %}
