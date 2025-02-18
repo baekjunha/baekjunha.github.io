@@ -117,7 +117,7 @@ author:
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "Computer Graphics, Tech & Art etc.."
   location         : "Incheon, South Korea"
-  email            : 
+  email            : "baekjunha00@gmail.com"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
