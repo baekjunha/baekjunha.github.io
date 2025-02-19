@@ -5,7 +5,8 @@ toc : true
 author_profile: false
 sidebar:
     nav: "docs"
-images: /assets/images/IMG_0225-2.png
+header:
+  teaser: "https://example.com/path/to/image.jpg"
 ---
 
 ## 그래픽스 파이프라인에서 삼각형 그리기 과정  
