@@ -1,8 +1,13 @@
 ---
 categories : graphics
+tag: graphic
 toc : true
-image: /Users/baekjunha/Desktop/baekjunha.github.io/images/coordinate_system2.png
+author_profile: false
+sidebar:
+    nav: "docs"
+images: 
 ---
+
 ### 좌표 변환 과정 해석
 
 

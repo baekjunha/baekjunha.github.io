@@ -1,7 +1,13 @@
 ---
 categories : graphics
+tag: graphic
 toc : true
+author_profile: false
+sidebar:
+    nav: "docs"
+images: 
 ---
+
 ## 최종적으로 삼각형 렌더링 이해하기
 
 

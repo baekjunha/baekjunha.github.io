@@ -1,7 +1,13 @@
 ---
 categories : graphics
+tag: graphic
 toc : true
+author_profile: false
+sidebar:
+    nav: "docs"
+images: 
 ---
+
 ## OpenGL 시작하기: 윈도우 생성과 설정 가이드
 
 **1. OpenGL 소개**
