@@ -6,7 +6,7 @@ author_profile: false
 sidebar:
     nav: "docs"
 header:
-  teaser: "https://example.com/path/to/image.jpg"
+  teaser: "/assets/images/dodo.png"
 ---
 
 ## 그래픽스 파이프라인에서 삼각형 그리기 과정  
