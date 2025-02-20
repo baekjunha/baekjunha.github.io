@@ -6,7 +6,7 @@ author_profile: false
 sidebar:
     nav: "docs"
 header:
-  teaser: "/assets/images/dodo.png"
+  teaser: /Users/baekjunha/Desktop/baekjunha.github.io/images/image.png
 ---
 
 ## 그래픽스 파이프라인에서 삼각형 그리기 과정  
