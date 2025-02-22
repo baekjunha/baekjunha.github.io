@@ -308,3 +308,10 @@ defaults:
       share: true
       related: true
       show_date: true
+
+
+
+
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
