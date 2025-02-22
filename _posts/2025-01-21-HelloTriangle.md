@@ -7,8 +7,6 @@ sidebar:
     nav: "docs"ㅌ₩
 header:
   teaser: /Users/baekjunha/Desktop/baekjunha.github.io/images/image.png
-
-thumbnail: /Users/baekjunha/Desktop/baekjunha.github.io/images/image.png
 ---
 
 ## 그래픽스 파이프라인에서 삼각형 그리기 과정  
