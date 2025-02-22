@@ -7,6 +7,8 @@ sidebar:
     nav: "docs"ㅌ₩
 header:
   teaser: docs/assets/images/bio-photo.jpg
+
+thumbnail: /assets/images/image.png
 ---
 
 ## 그래픽스 파이프라인에서 삼각형 그리기 과정  
