@@ -12,11 +12,11 @@ images:
 
 텍스처는 일반적으로 2D 이미지이며, 오브젝트에 씌우면 오브젝트의 겉모습과 무늬가 쉽게 변한다.
 
-![alt text](/images/texture1.png)
+![alt text](/images/image-1.png)
 
 위 그림은 삼각형에 텍스처를 입힌 모습이다. 이러한 결과를 얻기 위해서는 삼각형의 각 정점이 텍스처의 어느 부분에 해당하는지를 알아야 한다. 이를 **텍스처 좌표 (texture coordinate)** 와 매핑하는 것이라고 한다. 텍스처 좌표는 (u, v)로 나타내며, 보통 0.0 ~ 1.0 사이의 정규화된 값을 사용한다. (*아래 사진*)
 
-![alt text](/images/texture2.png)
+![alt text](/images/image-2.png)
 
 위 삼각형을 예로 들면 다음과 같다.
 
