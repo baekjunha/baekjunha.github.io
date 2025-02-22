@@ -4,7 +4,7 @@ tag: graphic
 toc : true
 author_profile: false
 sidebar:
-    nav: "docs"ㅌ₩
+    nav: "docs"
 header:
   teaser: /images/image.png
 ---
