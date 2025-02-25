@@ -1,5 +1,15 @@
-# 버텍스 데이터의 흐름 정리(with texture)  
-(계속 까먹기 때문에 따로 게시글을 작성.)  
+---
+categories : graphics
+tag: graphic
+toc : true
+author_profile: false
+sidebar:
+    nav: "docs"
+images: 
+---
+
+# 버텍스 데이터의 흐름 정리(with texture)
+
 **1. 버텍스 데이터 정의**
 
 ```c++
