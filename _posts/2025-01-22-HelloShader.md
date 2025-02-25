@@ -265,4 +265,4 @@ glEnableVertexAttribArray(1);
 	•	예: 삼각형의 한쪽 꼭짓점은 빨강, 다른 쪽은 파랑이라면, 중간에 위치한 픽셀은 보라색(빨강 + 파랑 혼합)으로 나타난다.
 	•	삼각형 내부 색상은 자동으로 부드럽게 변화한다. 정가운데는 결국 흰색.  
 
-![alt text](/images/Fragment_Interpolation.png)
+![alt text](/images/image.png)
