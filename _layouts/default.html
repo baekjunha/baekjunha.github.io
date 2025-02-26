@@ -7,6 +7,8 @@
   <head>
     {% include head.html %}
     {% include head/custom.html %}
+    <!-- Font Awesome CDN 추가 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   </head>
 
   <body class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}" dir="{% if site.rtl %}rtl{% else %}ltr{% endif %}">
@@ -14,7 +16,12 @@
     {% include_cached masthead.html %}
 
     <!-- Google Translate 버튼 -->
-    <div id="google_translate_element" style="text-align: right; padding: 10px;"></div>
+    <div id="google_translate_element" style="text-align: right; padding: 10px;">
+      <!-- Font Awesome globe 아이콘 사용 -->
+      <button style="background-color: #4CAF50; color: white; border: none; border-radius: 5px; padding: 10px 15px; font-size: 16px; cursor: pointer;">
+        <i class="fas fa-globe-americas"></i> 번역
+      </button>
+    </div>
 
     <div class="initial-content">
       {{ content }}
@@ -38,6 +45,10 @@
 
     <!-- Google Translate 스크립트 -->
     <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function() {
+        googleTranslateElementInit();
+      });
+
       function googleTranslateElementInit() {
         new google.translate.TranslateElement(
           {pageLanguage: 'ko', includedLanguages: 'en,ja,zh-CN,es,fr,de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE},
@@ -46,6 +57,6 @@
       }
     </script>
 
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  </body>
 </html>
