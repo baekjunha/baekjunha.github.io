@@ -5,7 +5,7 @@ toc : true
 toc_sticky: true
 author_profile: false
 use_math: true 
-images: 
+thumbnail : images/coordinate_system1.png
 ---
 
 ### 좌표 변환 과정 해석

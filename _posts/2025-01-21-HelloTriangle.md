@@ -5,7 +5,7 @@ toc : true
 toc_sticky: true
 author_profile: false
 use_math: true 
-images: 
+thumbnail: images/image.png  # 썸네일 이미지 경로
 ---
 
 ## 그래픽스 파이프라인에서 삼각형 그리기 과정  

@@ -5,7 +5,7 @@ toc : true
 toc_sticky: true
 author_profile: false
 use_math: true 
-images: 
+thumbnail: images/texture9.png
 ---
 
 ## 텍스처 (Texture)
@@ -376,10 +376,3 @@ stbi_set_flip_vertically_on_load(true); // y축 뒤집기 명령임.
 ![alt text](/images/texture9.png)
 
 ---
-
-**사용 방법:** 위 텍스트 전체를 복사해서 Markdown 편집기 (Typora, Obsidian 등)에 붙여넣거나, GitHub README.md 파일 등에 붙여넣으면 자동으로 목차가 생성되고, 목차를 클릭하면 해당 위치로 이동한다.
-
-**참고:**
-
-*   이미지 경로는 실제 이미지 파일이 있는 위치에 맞게 수정해야 한다.
-*   Markdown 편집기에 따라 일부 문법이 다르게 적용될 수 있다.
