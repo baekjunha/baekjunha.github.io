@@ -1,62 +1,45 @@
----
----
-
 <!doctype html>
-{% include copyright.html %}
 <html lang="{{ site.locale | replace: "_", "-" | default: "en" }}" class="no-js">
   <head>
     {% include head.html %}
     {% include head/custom.html %}
-    <!-- Font Awesome CDN 추가 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+      /* 로딩 애니메이션 스타일 */
+      .loader {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        color: #007BFF;
+        display: block;
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+      }
+    </style>
   </head>
 
-  <body class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}" dir="{% if site.rtl %}rtl{% else %}ltr{% endif %}">
-    {% include_cached skip-links.html %}
-    {% include_cached masthead.html %}
-
-    <!-- Google Translate 버튼 -->
-    <div id="google_translate_element" style="text-align: right; padding: 10px;">
-      <!-- Font Awesome globe 아이콘 사용 -->
-      <button style="background-color: #4CAF50; color: white; border: none; border-radius: 5px; padding: 10px 15px; font-size: 16px; cursor: pointer;">
-        <i class="fas fa-globe-americas"></i> 번역
-      </button>
+  <body>
+    <!-- 로딩 애니메이션 -->
+    <div id="loader" class="loader">
+      <span>로딩 중...</span>
     </div>
 
-    <div class="initial-content">
+    <!-- 실제 콘텐츠 -->
+    <div class="content">
       {{ content }}
-      {% include after-content.html %}
-    </div>
-
-    {% if site.search == true %}
-      <div class="search-content">
-        {% include_cached search/search_form.html %}
-      </div>
-    {% endif %}
-
-    <div id="footer" class="page__footer">
-      <footer>
-        {% include footer/custom.html %}
-        {% include_cached footer.html %}
-      </footer>
     </div>
 
     {% include scripts.html %}
-
-    <!-- Google Translate 스크립트 -->
-    <script type="text/javascript">
-      document.addEventListener("DOMContentLoaded", function() {
-        googleTranslateElementInit();
+    
+    <!-- 페이지 로딩 후 애니메이션 숨기기 -->
+    <script>
+      window.addEventListener('load', function() {
+        document.getElementById('loader').style.display = 'none'; // 페이지가 로드되면 로딩 애니메이션 숨기기
       });
-
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-          {pageLanguage: 'ko', includedLanguages: 'en,ja,zh-CN,es,fr,de', layout: google.translate.TranslateElement.InlineLayout.SIMPLE},
-          'google_translate_element'
-        );
-      }
     </script>
-
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   </body>
 </html>
