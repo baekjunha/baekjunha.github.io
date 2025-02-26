@@ -2,12 +2,11 @@
 categories : graphics
 tag: graphic
 toc : true
+toc_sticky: true
 author_profile: false
-sidebar:
-    nav: "docs"
+use_math: true 
 images: 
 ---
-
 ## 셰이더 개념과 코드 이해하기  
 
 

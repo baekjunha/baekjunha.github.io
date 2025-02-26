@@ -2,10 +2,10 @@
 categories : graphics
 tag: graphic
 toc : true
+toc_sticky: true
 author_profile: false
-sidebar:
-    nav: "docs"
-
+use_math: true 
+images: 
 ---
 
 ## 그래픽스 파이프라인에서 삼각형 그리기 과정  
