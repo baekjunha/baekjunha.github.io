@@ -1,45 +1,36 @@
+---
+---
+
 <!doctype html>
+{% include copyright.html %}
 <html lang="{{ site.locale | replace: "_", "-" | default: "en" }}" class="no-js">
   <head>
     {% include head.html %}
     {% include head/custom.html %}
-    <style>
-      /* 로딩 애니메이션 스타일 */
-      .loader {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 20px;
-        color: #007BFF;
-        display: block;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        z-index: 9999;
-      }
-    </style>
   </head>
 
-  <body>
-    <!-- 로딩 애니메이션 -->
-    <div id="loader" class="loader">
-      <span>로딩 중...</span>
+  <body class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}" dir="{% if site.rtl %}rtl{% else %}ltr{% endif %}">
+    {% include_cached skip-links.html %}
+    {% include_cached masthead.html %}
+
+    <div class="initial-content">
+      {{ content }}
+      {% include after-content.html %}
     </div>
 
-    <!-- 실제 콘텐츠 -->
-    <div class="content">
-      {{ content }}
+    {% if site.search == true %}
+      <div class="search-content">
+        {% include_cached search/search_form.html %}
+      </div>
+    {% endif %}
+
+    <div id="footer" class="page__footer">
+      <footer>
+        {% include footer/custom.html %}
+        {% include_cached footer.html %}
+      </footer>
     </div>
 
     {% include scripts.html %}
-    
-    <!-- 페이지 로딩 후 애니메이션 숨기기 -->
-    <script>
-      window.addEventListener('load', function() {
-        document.getElementById('loader').style.display = 'none'; // 페이지가 로드되면 로딩 애니메이션 숨기기
-      });
-    </script>
   </body>
 </html>
