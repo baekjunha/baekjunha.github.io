@@ -9,6 +9,7 @@ thumbnail: images/texture9.png
 ---
 
 ## 텍스처 (Texture)  
+
 자료출처:https://learnopengl.com/
 
 텍스처는 일반적으로 2D 이미지이며, 오브젝트에 씌우면 오브젝트의 겉모습과 무늬가 쉽게 변한다.

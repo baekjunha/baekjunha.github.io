@@ -8,8 +8,8 @@ use_math: true
 thumbnail : images/coordinate_system1.png
 ---
 
-### 좌표 변환 과정 해석
-  
+### 좌표 변환 과정 해석  
+
 자료출처:https://learnopengl.com/
 
 # Coordinate Systems
