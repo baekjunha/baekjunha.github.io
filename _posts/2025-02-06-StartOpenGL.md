@@ -10,6 +10,8 @@ images:
 
 ## OpenGL 시작하기: 윈도우 생성과 설정 가이드
 
+자료출처:https://learnopengl.com/
+
 **1. OpenGL 소개**
 
 *   OpenGL이란 무엇인가?

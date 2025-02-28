@@ -8,7 +8,8 @@ use_math: true
 images: 
 ---
 ## 셰이더 개념과 코드 이해하기  
-
+  
+자료출처:https://learnopengl.com/
 
 # 쉐이더란?
 

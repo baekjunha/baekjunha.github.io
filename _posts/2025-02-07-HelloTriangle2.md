@@ -10,6 +10,7 @@ thumbnail : images/image.png
 
 ## 최종적으로 삼각형 렌더링 이해하기
 
+자료출처:https://learnopengl.com/
 
 ## Hello Triangle (OpenGL 튜토리얼)
 

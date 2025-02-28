@@ -10,6 +10,11 @@ thumbnail: images/image.png  # 썸네일 이미지 경로
 
 ## 그래픽스 파이프라인에서 삼각형 그리기 과정  
 
+```
+자료출처
+[learnoprngl](https://learnopengl.com/)
+```
+
 
 그래픽스 파이프라인에서 삼각형을 그리기 위한 과정은 다음과 같은 3가지 핵심 요소로 요약할 수 있다:
 
