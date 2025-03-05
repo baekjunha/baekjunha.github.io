@@ -30,7 +30,7 @@ thumbnail: images/texture9.png
 
 이렇게 나온 텍스처 좌표를 버텍스 셰이더 (vertex shader)에 전달하면, 버텍스 셰이더는 이를 프래그먼트 셰이더 (fragment shader)로 전달한다. 프래그먼트 셰이더는 선택받지 못한 (3점을 제외한 나머지) 픽셀의 위치가 텍스처에서 어디에 해당하는지 보간하여 처리한다.
 
-### 텍스처 래핑 모드 (Texture Wrapping Mode) {#텍스처-래핑-모드-texture-wrapping-mode}
+### 텍스처 래핑 모드 (Texture Wrapping Mode)  
 
 텍스처 좌표의 범위는 (0,0) ~ (1,1)이라고 하였다. 만약 ***이 범위를 벗어나면*** 처리할 수 있는 방식은 크게 4가지이며, 이를 **텍스처 래핑 모드 (Texture Wrapping Mode)** 라고 한다.
 
@@ -60,7 +60,7 @@ glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor); // 경계
 
 ---
 
-### 텍스처 필터링 (Texture Filtering) {#텍스처-필터링-texture-filtering}
+### 텍스처 필터링 (Texture Filtering) 
 
 만일 삼각형이 텍스처보다 훨씬 크다면, 텍스처를 입혔을 때 해상도가 깨진 상태가 될 것이다. 이를 극복하기 위해서 **텍스처 필터링 (Texture Filtering)** 기술로 이를 보완할 수 있다. 텍스처 필터링이란 텍스처 샘플링 중에 픽셀 크기와 텍스처 좌표가 일치하지 않을 때 부드러운 결과를 생성하기 위해 사용하는 기법을 의미한다.
 
@@ -68,13 +68,13 @@ glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor); // 경계
 
 필터링 방식은 매우 다양하지만, 여기서는 대표적으로 `GL_NEAREST`와 `GL_LINEAR`를 소개한다.
 
-#### GL_NEAREST {#gl_nearest}
+#### GL_NEAREST
 
 ![alt text](/images/texture3.png)
 
 `GL_NEAREST`는 OpenGL에서 기본으로 적용하는 필터링 방식이다. 텍스처 좌표가 있으면 이 위치에서 가장 가까운 텍셀을 선택해서 적용한다. 위 그림을 보면 텍스처 좌표는 왼쪽 위 텍셀의 중심과 가장 가깝기 때문에 이 텍셀로 샘플링하여 색을 결정한다.
 
-#### GL_LINEAR {#gl_linear}
+#### GL_LINEAR 
 
 ![alt text](/images/texture4.png)
 
@@ -93,11 +93,11 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 ---
 
-### 밉맵 (Mipmap) {#밉맵-mipmap}
+### 밉맵 (Mipmap) 
 
 오브젝트에 텍스처를 입혔을 때, 가까이 있건 멀리 있건 계속 고해상도 상태로 유지된다면, 멀리 있을 때는 텍스처를 구체적으로 표현할 이유가 없기도 하고 메모리 낭비이므로 고해상도 텍스처가 될 필요가 없게 된다.
 
-그래서 미리 기존의 텍스처 이미지를 **밉맵 (Mipmap)** 하는 방식을 사용한다. 밉맵은 ***텍스처 이미지를 여러 크기로 줄여서 저장해 놓은 것***으로, 대개 2배 기준으로 작게 만들고 이를 따로 저장해 둔다.
+그래서 미리 기존의 텍스처 이미지를 **밉맵 (Mipmap)** 하는 방식을 사용한다. 밉맵은 ***텍스처 이미지를 여러 크기로 줄여서 저장해 놓은 것*** 으로, 대개 2배 기준으로 작게 만들고 이를 따로 저장해 둔다.
 
 ![alt text](/images/texture6.png)
 
@@ -107,7 +107,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 그런데 이전에 설명했듯 텍스처의 크기가 늘어나거나 줄어들 때, **텍스처 필터링 (Texture Filtering)** 을 할 수 있다고 하였다. 텍스처가 적용되는 거리가 특정 값을 넘어가는 경우 텍스처가 사이즈가 변하게 될 텐데, 이때도 마찬가지로 필터링 기술을 적용할 수 있다. 이 역시 대표적으로 `NEAREST`, `LINEAR`가 있고, 옵션은 크게 4가지로 나뉜다.
 
-#### 밉맵 필터링 옵션 {#밉맵-필터링-옵션}
+#### 밉맵 필터링 옵션 
 
 *   **GL_NEAREST_MIPMAP_NEAREST** {#gl_nearest_mipmap_nearest-1}: 밉맵 중에서 픽셀 크기에 가장 가까운 하나를 고르고, 그 레벨에서 **가장 가까운 텍셀 (근접 보간)** 을 가져온다.
 
@@ -126,7 +126,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 위 코드는 아까와 같은 함수 (`glTexParameteri`)인데, 필터링 방식이 위 4가지로 수정된 것 뿐이다.
 
-### stb_image.h 라이브러리 및 #define 키워드 {#stb_imageh-라이브러리-및-define-키워드}
+### stb_image.h 라이브러리 및 #define 키워드 
 
 `stb_image.h`는 웬만한 이미지를 로드할 수 있는 라이브러리이다. 사용 시 다음과 같은 코드를 입력한다.
 
@@ -153,7 +153,7 @@ unsigned char *stbi_load(const char *filename, int *x, int *y, int *comp, int re
 
 여러 번 `define` 키워드로 활성화시킬 경우, 동일 함수가 여러 번 구현되어 오류가 나기 때문이다.
 
-#### #define STB_IMAGE_IMPLEMENTATION {#define-stb_image_implementation}
+#### #define STB_IMAGE_IMPLEMENTATION 
 
 #### 중복 정의 오류 {#중복-정의-오류}
 
@@ -170,7 +170,7 @@ unsigned char *data = stbi_load("container.jpg", &width, &height, &nrChannels, 0
 
 #### 이미지 로드 {#이미지-로드}
 
-#### 텍스처 객체 생성 및 바인딩 {#텍스처-객체-생성-및-바인딩}
+#### 텍스처 객체 생성 및 바인딩
 
 ```cpp
 unsigned int texture;
@@ -188,7 +188,7 @@ glGenerateMipmap(GL_TEXTURE_2D);
 
 `glTexImage2D`는 텍스처 이미지를 생성하는 함수이다.
 
-#### 텍스처 이미지 생성 (glTexImage2D) {#텍스처-이미지-생성-glteximage2d}
+#### 텍스처 이미지 생성 (glTexImage2D) 
 
 ```cpp
 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -210,21 +210,21 @@ glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYT
 
 이렇게 `glTexImage2D`를 정상 호출했다면 텍스처 오브젝트 (texture)는 텍스처 이미지 (data)를 갖게 된다. 그리고 다음 라인에 `glGenerateMipmap`을 사용하면 필요한 모든 밉맵이 생성된다.
 
-#### 밉맵 생성 (glGenerateMipmap) {#밉맵-생성-glgeneratemipmap}
+#### 밉맵 생성 (glGenerateMipmap) 
 
 밉맵 생성을 완료하면 이미지 메모리는 지워주도록 한다.
 
-#### 메모리 해제 (stbi_image_free) {#메모리-해제-stbi_image_free}
+#### 메모리 해제 (stbi_image_free) 
 
 ```cpp
 stbi_image_free(data); // 이미지 메모리 지움.
 ```
 
-### 텍스처 적용하기 {#텍스처-적용하기}
+### 텍스처 적용하기 
 
 이전에 사각형을 그릴 때 썼던 `glDrawElements` 코드를 발전시킬 것이다. vertex data에서 texture coordinate (텍스처 좌표)를 추가하면,
 
-#### 버텍스 데이터 수정 (텍스처 좌표 추가) {#버텍스-데이터-수정-텍스처-좌표-추가}
+#### 버텍스 데이터 수정 (텍스처 좌표 추가) 
 
 ```cpp
 float vertices[] = {
@@ -244,7 +244,7 @@ float vertices[] = {
 
 이제 버텍스 셰이더 코드를 수정하고 프래그먼트 셰이더에게 넘겨준다.
 
-#### 버텍스 셰이더 수정 {#버텍스-셰이더-수정}
+#### 버텍스 셰이더 수정
 
 ```cpp
 #version 330 core
@@ -265,7 +265,7 @@ void main()
 
 이렇게 버텍스 셰이더에서 넘겨주면 프래그먼트 셰이더에서 `aTexCoord` 변수를 받는 것이다.
 
-#### 프래그먼트 셰이더 수정 {#프래그먼트-셰이더-수정}
+#### 프래그먼트 셰이더 수정 
 
 ```cpp
 #version 330 core
@@ -286,11 +286,11 @@ void main()
 
 GLSL에서 `texture`라는 함수를 사용하여 좌표에 해당하는 텍스처에서 color를 샘플링한다. 결국 텍스처 좌표 (`TexCoord`)를 사용해 텍스처 (`ourTexture`)에서 색상을 가져와 픽셀에 적용한다. 여기서 말하는 픽셀은 우리가 보는 화면의 픽셀이다.
 
-### 텍스처 유닛 (Texture Unit) {#텍스처-유닛-texture-unit}
+### 텍스처 유닛 (Texture Unit) 
 
 텍스처 유닛은 텍스처가 저장되는 곳으로 셰이더에서 여러 개의 텍스처를 동시에 사용할 수 있도록 도와준다. 사용하려면 해당 텍스처 유닛을 바인딩 단계 이전에 활성화 시켜야 한다.
 
-#### 텍스처 유닛 활성화 (glActiveTexture) {#텍스처-유닛-활성화-glactivetexture}
+#### 텍스처 유닛 활성화 (glActiveTexture) 
 
 ```cpp
 unsigned int texture;
@@ -304,7 +304,7 @@ glBindTexture(GL_TEXTURE_2D, texture); // 텍스처 바인딩
 
 `glActiveTexture`로 텍스처 유닛을 활성화하면 이후의 `glBindTexture` 호출은 해당 텍스처 유닛에 텍스처를 바인딩한다. 기본적으로 `GL_TEXTURE0` 텍스처 유닛이 활성화되어 있기 때문에 이전 섹션에서는 `glActiveTexture`를 호출하지 않아도 문제가 없었다.
 
-#### 여러 개의 텍스처 사용 {#여러-개의-텍스처-사용}
+#### 여러 개의 텍스처 사용 
 
 여러 텍스처를 사용하려면 프래그먼트 셰이더에 샘플러를 추가로 정의해야 한다. 예시는 다음과 같다.
 
@@ -348,7 +348,7 @@ glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 그리고 셰이더의 샘플러가 어떤 텍스처 유닛과 연결되어있는지 알려줘야 한다. 그럴 땐 `glUniformli` 함수를 사용하여 샘플러 설정을 한다. 이건 렌더 루프 밖에서 한 번 해주면 된다.
 
-#### 샘플러 설정 (glUniform1i 및 glUniformli) {#샘플러-설정-gluniform1i-및-gluniformli}
+#### 샘플러 설정 (glUniform1i 및 glUniformli) 
 
 ```cpp
 ourShader.use(); // 유니폼을 설정하기 전에 셰이더를 활성화하는 것을 잊지 마세요!
@@ -365,7 +365,7 @@ while(...)
 
 ![alt text](/images/texture8.png)
 
-### 이미지 뒤집힘 문제 해결 (stbi_set_flip_vertically_on_load) {#이미지-뒤집힘-문제-해결-stbi_set_flip_vertically_on_load}
+### 이미지 뒤집힘 문제 해결 (stbi_set_flip_vertically_on_load) 
 
 사진이 뒤집어져 있는데, 이는 OpenGL이 y축에서 0.0 좌표를 이미지의 하단에 위치시키기를 기대하는 반면에 보통 이미지에서는 0.0이 상단에 위치하기 때문에 그렇다. 그래서 `stb_image.h`는 이미지를 로드할 때 y축을 뒤집을 수 있는 기능을 제공한다. 아래와 같은 코드를 추가한다.
 
@@ -373,7 +373,7 @@ while(...)
 stbi_set_flip_vertically_on_load(true); // y축 뒤집기 명령임.
 ```
 
-### 최종 결과 {#최종-결과}
+### 최종 결과
 
 ![alt text](/images/texture9.png)
 

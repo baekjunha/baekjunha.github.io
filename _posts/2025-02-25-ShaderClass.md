@@ -18,7 +18,7 @@ images:
 
 ## 코드 설명
 
-### 1. 헤더 가드 (#ifndef SHADER_H ~ #endif)
+### 1. 헤더 가드 
 
 ```c++
 #ifndef SHADER_H
@@ -30,7 +30,7 @@ images:
 *   `SHADER_H`가 정의되지 않았을 때만 이 파일의 내용을 포함하도록 하는 헤더 가드다.
 *   동일한 파일이 여러 번 포함되는 것을 방지한다.
 
-### 2. 필요한 라이브러리 포함 (#include)
+### 2. 필요한 라이브러리 포함 
 
 ```c++
 #include <glad/glad.h>
