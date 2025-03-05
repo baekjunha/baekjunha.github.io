@@ -123,7 +123,7 @@ checkCompileErrors(vertex, "VERTEX");
 *   `glCompileShader()`: 셰이더를 컴파일한다.
 *   `checkCompileErrors()`: 컴파일 오류를 확인한다.
 
-### 3️.프래그먼트 셰이더 컴파일
+### 3.프래그먼트 셰이더 컴파일
 
 ```c++
 unsigned int fragment;
