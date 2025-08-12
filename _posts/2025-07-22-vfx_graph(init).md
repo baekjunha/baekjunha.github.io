@@ -134,6 +134,7 @@ Spawn Event → Initialize Context → Update Context → Output Context
 ```
 
 **3. 성능 비교**
+
 | 설정 | 크기 | 성능 | 정확도 |
 |------|------|------|--------|
 | **Manual** | 사용자 정의 | 중간 | 높음 |
@@ -295,6 +296,7 @@ Initialize Context
 ```
 
 #### 4. **비교 테이블**
+
 | 단계 | 입력 | 처리 | 출력 |
 |------|------|------|------|
 | **Spawn** | Event | 생성 | Particle |
