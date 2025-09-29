@@ -5,6 +5,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
+thumbnail: images/image-2.png
 ---
 
 ## OpenGL 시작하기: 윈도우 생성과 설정 가이드

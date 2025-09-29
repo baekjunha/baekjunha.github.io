@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
-thumbnail: images/texture9.png
+thumbnail: images/texture2.png
 ---
 
 ## 텍스처 (Texture)  

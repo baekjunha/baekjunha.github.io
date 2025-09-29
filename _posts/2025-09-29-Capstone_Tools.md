@@ -8,6 +8,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
+thumbnail: images/GLM1.jpg
 ---
 
 ### 캡톤 디자인 완전 정복: '살아있는' AI 캐릭터 구현 가이드(feat.최우식)

@@ -5,6 +5,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
+thumbnail: images/texture1.png
 ---
 ## 셰이더 개념과 코드 이해하기  
 
