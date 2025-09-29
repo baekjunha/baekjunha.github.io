@@ -1,6 +1,6 @@
 ---
 categories: graphics
-tag: graphic
+tags: [graphics, opengl, triangle, tutorial]
 toc: true
 toc_sticky: true
 author_profile: false
@@ -10,7 +10,7 @@ thumbnail: images/image.png
 
 ## 최종적으로 삼각형 렌더링 이해하기
 
-자료출처:https://learnopengl.com/
+**자료 출처**: [LearnOpenGL](https://learnopengl.com/)
 
 ## Hello Triangle (OpenGL 튜토리얼)
 

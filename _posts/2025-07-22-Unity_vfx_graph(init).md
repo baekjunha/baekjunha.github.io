@@ -1,6 +1,6 @@
 ---
 categories: graphics
-tag: graphic
+tags: [graphics, unity, vfx, particle, shader]
 toc: true
 toc_sticky: true
 author_profile: false

@@ -1,16 +1,15 @@
 ---
 categories: graphics
-tag: graphic
+tags: [graphics, opengl, tutorial, setup]
 toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
-images: 
 ---
 
 ## OpenGL 시작하기: 윈도우 생성과 설정 가이드
 
-자료출처:https://learnopengl.com/
+**자료 출처**: [LearnOpenGL](https://learnopengl.com/)
 
 **1. OpenGL 소개**
 

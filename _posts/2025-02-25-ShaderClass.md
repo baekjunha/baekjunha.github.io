@@ -1,16 +1,15 @@
 ---
 categories: graphics
-tag: graphic
+tags: [graphics, opengl, shader, class, cpp]
 toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
-images: 
 ---
 
 # Shader 클래스: OpenGL 셰이더 관리  
 
-자료출처:https://learnopengl.com/
+**자료 출처**: [LearnOpenGL](https://learnopengl.com/)
 
 이전에는 소스 코드에 셰이더 코드를 직접 문자열로 작성하고, 컴파일, 링크 과정을 모두 직접 처리해야 했다.(glCreateShader, glShaderSource, glCompileShader, glCreateProgram, glAttachShader, glLinkProgram 같은 OpenGL API를 매번 호출해야 해서 번거로웠다.) 하지만 셰이더 클래스를 사용하면 코드 양을 줄이고 번거로운 작업을 간소화할 수 있다.
 

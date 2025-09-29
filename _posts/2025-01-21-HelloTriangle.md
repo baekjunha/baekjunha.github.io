@@ -1,17 +1,17 @@
 ---
 categories: graphics
-tag: graphic
+tags: [graphics, opengl, tutorial]
 toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
-thumbnail: images/image.png  # 썸네일 이미지 경로
+thumbnail: images/image.png
 ---
 
 ## 그래픽스 파이프라인에서 삼각형 그리기 과정  
 
 
-자료출처:https://learnopengl.com/
+**자료 출처**: [LearnOpenGL](https://learnopengl.com/)
 
 
 그래픽스 파이프라인에서 삼각형을 그리기 위한 과정은 다음과 같은 3가지 핵심 요소로 요약할 수 있다:

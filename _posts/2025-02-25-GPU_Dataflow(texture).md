@@ -1,11 +1,10 @@
 ---
 categories: graphics
-tag: graphic
+tags: [graphics, opengl, shader, texture, gpu]
 toc: true
 toc_sticky: true
 author_profile: false
-use_math: true 
-images: 
+use_math: true
 ---
 
 # 버텍스 데이터의 흐름 정리(with texture)
