@@ -220,77 +220,49 @@ thumbnail:
 | **수면** | 수면은 수동적 휴식이 아니다. 뇌가 기억을 통합하고, 독소를 제거하며, 창의적인 연결을 형성하는 능동적인 상태다. | 7-9시간의 양질의 수면을 최우선으로 한다. 잠들기 직전 핵심 자료를 간단히 복습하여 기억 통합을 강화한다. |
 
 ## 참고 자료
-Learning How To Learn for Youth | Coursera, 10월 6, 2025에 액세스, https://www.coursera.org/learn/learning-how-to-learn-youth
-Online Course: Learning How to Learn: Powerful mental tools to help you master tough subjects from Deep Teaching Solutions | Class Central, 10월 6, 2025에 액세스, https://www.classcentral.com/course/learning-how-to-learn-2161
-Learning How to Learn: Powerful mental tools to help you master tough subjects - Coursera, 10월 6, 2025에 액세스, https://www.coursera.org/learn/learning-how-to-learn
-Best Learning Courses & Certificates [2025] | Coursera Learn Online, 10월 6, 2025에 액세스, https://www.coursera.org/courses?query=learning
-steemit.com, 10월 6, 2025에 액세스, https://steemit.com/life/@theworldinwords/learning-how-to-learn-part-1-focused-and-diffuse-modes#:~:text=Researchers%20have%20found%20that%20we,resting%20state%20of%20the%20neurons.
-Focused and Diffuse Thinking - ModelThinkers, 10월 6, 2025에 액세스, https://modelthinkers.com/mental-model/focused-and-diffuse-thinking
-Learning how to learn: Focused vs. Diffused mode of learning | Medium - Souvik Haldar, 10월 6, 2025에 액세스, https://souvikhaldar.medium.com/the-power-of-taking-breaks-during-study-8a08ca729467
-효율적인 공부법 - Medium, 10월 6, 2025에 액세스, https://medium.com/@k3hppk/%EA%B3%B5%EB%B6%80%EB%B2%95-1fd273560d19
-LEARNING HOW TO LEARN - [PART 1] - Focused and Diffuse Modes - Steemit, 10월 6, 2025에 액세스, https://steemit.com/life/@theworldinwords/learning-how-to-learn-part-1-focused-and-diffuse-modes
-Learning How to Learn - Introduction to the Focused and Diffuse Modes - YouTube, 10월 6, 2025에 액세스, https://www.youtube.com/watch?v=lJtUg-3DfUk
-Focused and Diffuse: Two Modes of Thinking - Farnam Street, 10월 6, 2025에 액세스, https://fs.blog/focused-diffuse-thinking/
-Focused vs Diffuse Mode: Why Students Need Both - Staying Ahead of the Game, 10월 6, 2025에 액세스, https://saotg.com/focused-vs-diffuse-mode-why-students-need-both/
-Learn Better with Diffuse Thinking | Coursera, 10월 6, 2025에 액세스, https://www.coursera.org/articles/diffuse-thinking
-(외부칼럼) 집중모드와 분산모드의 조화 오세열 교수 - 목장드림뉴스, 10월 6, 2025에 액세스, https://penews.co.kr/news/articleView.html?idxno=25845
-How I finally learned how to learn [Method] : r/selfimprovement - Reddit, 10월 6, 2025에 액세스, https://www.reddit.com/r/selfimprovement/comments/1afgtir/how_i_finally_learned_how_to_learn_method/
-What I learned from Coursera's "Learning How to Learn" and how I use it to be a better developer : r/learnprogramming - Reddit, 10월 6, 2025에 액세스, https://www.reddit.com/r/learnprogramming/comments/50hgic/what_i_learned_from_courseras_learning_how_to/
-What I learned from Coursera's “Learning How to Learn” | by Abhishek Pillai | Learn. Love. Code. | Medium, 10월 6, 2025에 액세스, https://medium.com/learn-love-code/learnings-from-learning-how-to-learn-19d149920dc4
-An In-depth Review of the Learning How to Learn Course on Coursera - Medium, 10월 6, 2025에 액세스, https://medium.com/data-science/the-ultimate-skill-learning-how-to-learn-9e2fabdc7f1e
-bootcamp.com, 10월 6, 2025에 액세스, https://bootcamp.com/blog/pomodoro-technique-the-secret-to-beating-procrastination#:~:text=The%20actual%20technique%20involves%20breaking,studying%20for%20another%2025%20minutes.
-Use Procrastination to Your Advantage with the Pomodoro Technique - Thrive Center, 10월 6, 2025에 액세스, https://thrive.arizona.edu/news/use-procrastination-your-advantage-pomodoro-technique
-Time Management Strategies | Bowdoin College, 10월 6, 2025에 액세스, https://www.bowdoin.edu/baldwin-center/for-students/learning-strategies/time-management.html
-Pomodoro Technique - The Secret to Beating Procrastination | DAT Bootcamp, 10월 6, 2025에 액세스, https://bootcamp.com/blog/pomodoro-technique-the-secret-to-beating-procrastination
-The Pomodoro Technique — Why it works & how to do it - Todoist, 10월 6, 2025에 액세스, https://www.todoist.com/productivity-methods/pomodoro-technique
-asana.com, 10월 6, 2025에 액세스, https://asana.com/ko/resources/pomodoro-technique#:~:text=%ED%8F%AC%EB%AA%A8%EB%8F%84%EB%A1%9C%20%EA%B8%B0%EB%B2%95%EC%9D%80%20%EC%97%85%EB%AC%B4%EC%99%80%20%ED%9C%B4%EC%8B%9D%20%EC%8B%9C%EA%B0%84%EC%9D%84%20%EB%B0%98%EB%B3%B5,%EC%9D%84%20%EB%86%92%EC%9D%BC%20%EC%88%98%20%EC%9E%88%EA%B2%8C%20%EB%90%A9%EB%8B%88%EB%8B%A4.
-포모도로 기법: 뽀모도로 기법을 사용하여 집중력과 효율성을 높이는 방법 - FasterCapital, 10월 6, 2025에 액세스, https://fastercapital.com/ko/content/%ED%8F%AC%EB%AA%A8%EB%8F%84%EB%A1%9C-%EA%B8%B0%EB%B2%95--%EB%BD%80%EB%AA%A8%EB%8F%84%EB%A1%9C-%EA%B8%B0%EB%B2%95%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EC%A7%91%EC%A4%91%EB%A0%A5%EA%B3%BC-%ED%9A%A8%EC%9C%A8%EC%84%B1%EC%9D%84-%EB%86%92%EC%9D%B4%EB%8A%94-%EB%B0%A9%EB%B2%95.html
-The Diffused Mode: How to solve a difficult Problem (when getting stuck), 10월 6, 2025에 액세스, https://www.neurohackingly.com/the-diffused-mode-how-to-solve-a-difficult-problem/
-포모도로 기법: 팀 생산성을 높이는 방법 [2025] - Asana, 10월 6, 2025에 액세스, https://asana.com/ko/resources/pomodoro-technique
-www.coursera.org, 10월 6, 2025에 액세스, https://www.coursera.org/articles/chunking#:~:text=You%20can%20use%20techniques%20like,you%20can%20store%20through%20chunking.
-What Is Chunking, and How Can It Improve Memory? - Coursera, 10월 6, 2025에 액세스, https://www.coursera.org/articles/chunking
-How the Chunking Technique Can Help Improve Your Memory - Verywell Mind, 10월 6, 2025에 액세스, https://www.verywellmind.com/chunking-how-can-this-technique-improve-your-memory-2794969
-How to use chunking method for your training, 10월 6, 2025에 액세스, https://training.safetyculture.com/blog/chunking-strategy/
-Today I learned about a method of learning called “chunking”. I have seriously never been able to learn so much of my school work in one day and this is simple. : r/ADHD - Reddit, 10월 6, 2025에 액세스, https://www.reddit.com/r/ADHD/comments/9f9vir/today_i_learned_about_a_method_of_learning_called/
-오늘 "청킹"이라는 학습법에 대해 알게 됐어. 진짜 하루 만에 학교 공부를 이렇게 많이 할 수 있었던 적은 처음인데, 완전 간단하더라. : r/ADHD - Reddit, 10월 6, 2025에 액세스, https://www.reddit.com/r/ADHD/comments/9f9vir/today_i_learned_about_a_method_of_learning_called/?tl=ko
-[암기법 시리즈] 청킹(chunking)법 알아보기 - 직진톡, 10월 6, 2025에 액세스, https://zigzintalk.com/dailytalk/?bmode=view&idx=11110300
-www.bcu.ac.uk, 10월 6, 2025에 액세스, https://www.bcu.ac.uk/exams-and-revision/best-ways-to-revise/active-recall#:~:text=Active%20recall%20works%20by%20making,find%20the%20information%20again%20later.
-What is active recall? The best study method explained (and how to use it), 10월 6, 2025에 액세스, https://www.bcu.ac.uk/exams-and-revision/best-ways-to-revise/active-recall
-7 Practical Ways to Apply Active Recall When Studying | Goodnotes Blog, 10월 6, 2025에 액세스, https://www.goodnotes.com/blog/active-recall-studying
-Active Recall to the Memory Rescue - Thrive Center - The University of Arizona, 10월 6, 2025에 액세스, https://thrive.arizona.edu/news/active-recall-memory-rescue
-Spaced repetition and the 2357 method - Exams and Revision | Birmingham City University, 10월 6, 2025에 액세스, https://www.bcu.ac.uk/exams-and-revision/best-ways-to-revise/spaced-repetition
-The Forgetting Curve, 10월 6, 2025에 액세스, https://cep.barnard.edu/sites/default/files/inline-files/forgetting_curve.pdf
-Ebbinghaus's Forgetting Curve: How to Overcome It - Whatfix, 10월 6, 2025에 액세스, https://whatfix.com/blog/ebbinghaus-forgetting-curve/
-What is The Forgetting Curve? Definition, History & Key Strategies [2025], 10월 6, 2025에 액세스, https://www.growthengineering.co.uk/forgetting-curve/
-Forgetting curve - Wikipedia, 10월 6, 2025에 액세스, https://en.wikipedia.org/wiki/Forgetting_curve
-What is the Ebbinghaus forgetting curve? A Complete Guide - TalentCards, 10월 6, 2025에 액세스, https://www.talentcards.com/blog/ebbinghaus-forgetting-curve/
-What Is The Forgetting Curve (And How Do You Combat It)? - eLearning Industry, 10월 6, 2025에 액세스, https://elearningindustry.com/forgetting-curve-combat
-Spaced repetition - Wikipedia, 10월 6, 2025에 액세스, https://en.wikipedia.org/wiki/Spaced_repetition
-www.bcu.ac.uk, 10월 6, 2025에 액세스, https://www.bcu.ac.uk/exams-and-revision/best-ways-to-revise/spaced-repetition#:~:text=Spaced%20repetition%20is%20a%20scientifically,reduce%20the%20time%20spent%20studying.
-Adding Spaced Repetition to Your Study Toolkit - Thrive Center - The University of Arizona, 10월 6, 2025에 액세스, https://thrive.arizona.edu/news/adding-spaced-repetition-your-study-toolkit
-Spaced Repetition: Remembering What You Learn, 10월 6, 2025에 액세스, https://www.kpu.ca/sites/default/files/Learning%20Centres/Think_SpacedRepetition_LA.pdf
-Soo.. What is spaced repetition? And how do I practice it? : r/GetStudying - Reddit, 10월 6, 2025에 액세스, https://www.reddit.com/r/GetStudying/comments/rsy5mz/soo_what_is_spaced_repetition_and_how_do_i/
-Spaced repetition in learning theory - YouTube, 10월 6, 2025에 액세스, https://www.youtube.com/watch?v=cVf38y07cfk
-How to Use Spaced Repetition to Boost Learner Retention | Maestro, 10월 6, 2025에 액세스, https://maestrolearning.com/blogs/how-to-use-spaced-repetition/
-how could i implement spaced repetition if I learn something every single day? - Reddit, 10월 6, 2025에 액세스, https://www.reddit.com/r/GetStudying/comments/14yhnzt/how_could_i_implement_spaced_repetition_if_i/
-How to learn with active recall and spaced repetition - SC Training, 10월 6, 2025에 액세스, https://training.safetyculture.com/blog/how-to-use-active-recall-and-spaced-repetition/
-psychology.ucsd.edu, 10월 6, 2025에 액세스, https://psychology.ucsd.edu/undergraduate-program/undergraduate-resources/academic-writing-resources/effective-studying/other-learning-techniques.html#:~:text=Interleaved%20practice%20%E2%80%93%20when%20you%20are,B%20on%20the%20next%2C%20you
-A Beginner's Guide to Interleaving by Tanisha Paul - Center for Teaching and Learning, 10월 6, 2025에 액세스, https://ctl.wustl.edu/learningcenter/articles/a-beginners-guide-to-interleaving-by-tanisha-paul/
-L2L Strategy - Interleaving - Academic Affairs - The University of Arizona, 10월 6, 2025에 액세스, https://academicaffairs.arizona.edu/l2l-strategy-interleaving
-How to Use Interleaving for Deeper Learning - Coursera, 10월 6, 2025에 액세스, https://www.coursera.org/articles/interleaving
-The What, Why, and How Of 'Interleaving' (Opinion) - Education Week, 10월 6, 2025에 액세스, https://www.edweek.org/teaching-learning/opinion-the-what-why-how-of-interleaving/2021/05
-Interleaving: Boost Learning By Mixing Your Studying - Alexander Young, 10월 6, 2025에 액세스, https://blog.alexanderfyoung.com/interleaving/
-The Effectiveness of Analogy Learning as a Learning Practice Condition in Primary Physical Education - Institute for Education, 10월 6, 2025에 액세스, https://ife.edu.mt/wp-content/uploads/2023/11/MJE-vol.-04-no.-02-pp-47-66.pdf
-Analogy-Enhanced Pedagogy: Class Activities to Engage Students in Learning - University System of Georgia, 10월 6, 2025에 액세스, https://www.usg.edu/teaching-and-learning-excellence/assets/facultydevelopment/documents/ebook/JosephMayo.pdf
-Using Analogies to Help Others Learn, 10월 6, 2025에 액세스, https://learning.northeastern.edu/using-analogies-to-help-others-learn/
-Teaching by Analogy: From Theory to Practice - UCLA Reasoning Lab, 10월 6, 2025에 액세스, https://reasoninglab.psych.ucla.edu/wp-content/uploads/sites/273/2021/12/Gray_Holyoak.2021.pdf
-Learning To Learn: Embrace Analogies - BetterExplained, 10월 6, 2025에 액세스, https://betterexplained.com/articles/learning-to-learn-embrace-analogies/
-"일 자꾸 미루는 사람, 뇌가 다르다" | 연합뉴스, 10월 6, 2025에 액세스, https://www.yna.co.kr/view/AKR20180907039800009
-미루기의 원인은 게으름, 도파민이 아니에요. - YouTube, 10월 6, 2025에 액세스, https://www.youtube.com/watch?v=7-rYmnP9_SQ
-하버드 연구진이 밝힌 '미루기의 진짜 원인'과 극복법 - YouTube, 10월 6, 2025에 액세스, https://www.youtube.com/watch?v=fEoaEu8Ko08
-오늘 할 일을 내일로 미루는 심리, 왜? - 코메디닷컴, 10월 6, 2025에 액세스, https://kormedi.com/1539311/
-Sleep's Crucial Role in Preserving Memory - Yale School of Medicine, 10월 6, 2025에 액세스, https://medicine.yale.edu/news-article/sleeps-crucial-role-in-preserving-memory/
-Sleep On It | NIH News in Health, 10월 6, 2025에 액세스, https://newsinhealth.nih.gov/2013/04/sleep-it
-How Memory and Sleep Are Connected - Sleep Foundation, 10월 6, 2025에 액세스, https://www.sleepfoundation.org/how-sleep-works/memory-and-sleep
-Role of Sleep in Memory Consolidation - News-Medical.net, 10월 6, 2025에 액세스, https://www.news-medical.net/health/Role-of-Sleep-in-Memory-Consolidation.aspx
-Learning How to Learn - The Importance of Sleep in Learning - Procrastination, Memory, and Sleep - YouTube, 10월 6, 2025에 액세스, https://www.youtube.com/watch?v=b2wxhG2viWc
+#### "학습법 배우기" 강좌 및 리뷰
+*   [Learning How to Learn: Powerful mental tools to help you master tough subjects](https://www.coursera.org/learn/learning-how-to-learn) (Coursera)
+*   [Learning How To Learn for Youth](https://www.coursera.org/learn/learning-how-to-learn-youth) (Coursera)
+*   [An In-depth Review of the Learning How to Learn Course on Coursera](https://medium.com/data-science/the-ultimate-skill-learning-how-to-learn-9e2fabdc7f1e) (Medium)
+*   [What I learned from Coursera's “Learning How to Learn”](https://medium.com/learn-love-code/learnings-from-learning-how-to-learn-19d149920dc4) (Medium)
+
+#### 집중 모드와 분산 모드 (Focused and Diffuse Modes)
+*   [Focused and Diffuse: Two Modes of Thinking](https://fs.blog/focused-diffuse-thinking/) (Farnam Street)
+*   [Learn Better with Diffuse Thinking](https://www.coursera.org/articles/diffuse-thinking) (Coursera)
+*   [Focused vs Diffuse Mode: Why Students Need Both](https://saotg.com/focused-vs-diffuse-mode-why-students-need-both/) (Staying Ahead of the Game)
+
+#### 뽀모도로 기법 (Pomodoro Technique)
+*   [The Pomodoro Technique — Why it works & how to do it](https://www.todoist.com/productivity-methods/pomodoro-technique) (Todoist)
+*   [Pomodoro Technique - The Secret to Beating Procrastination](https://bootcamp.com/blog/pomodoro-technique-the-secret-to-beating-procrastination) (DAT Bootcamp)
+*   [포모도로 기법: 팀 생산성을 높이는 방법](https://asana.com/ko/resources/pomodoro-technique) (Asana)
+
+#### 덩어리화 (Chunking)
+*   [What Is Chunking, and How Can It Improve Memory?](https://www.coursera.org/articles/chunking) (Coursera)
+*   [How the Chunking Technique Can Help Improve Your Memory](https://www.verywellmind.com/chunking-how-can-this-technique-improve-your-memory-2794969) (Verywell Mind)
+*   [[암기법 시리즈] 청킹(chunking)법 알아보기](https://zigzintalk.com/dailytalk/?bmode=view&idx=11110300) (직진톡)
+
+#### 능동적 회상 (Active Recall)
+*   [What is active recall? The best study method explained](https://www.bcu.ac.uk/exams-and-revision/best-ways-to-revise/active-recall) (Birmingham City University)
+*   [7 Practical Ways to Apply Active Recall When Studying](https://www.goodnotes.com/blog/active-recall-studying) (Goodnotes Blog)
+
+#### 간격 반복과 망각 곡선 (Spaced Repetition & Forgetting Curve)
+*   [What is The Forgetting Curve (And How Do You Combat It)?](https://elearningindustry.com/forgetting-curve-combat) (eLearning Industry)
+*   [Spaced repetition and the 2357 method](https://www.bcu.ac.uk/exams-and-revision/best-ways-to-revise/spaced-repetition) (Birmingham City University)
+*   [Adding Spaced Repetition to Your Study Toolkit](https://thrive.arizona.edu/news/adding-spaced-repetition-your-study-toolkit) (The University of Arizona)
+
+#### 인터리빙 (Interleaving)
+*   [How to Use Interleaving for Deeper Learning](https://www.coursera.org/articles/interleaving) (Coursera)
+*   [A Beginner's Guide to Interleaving](https://ctl.wustl.edu/learningcenter/articles/a-beginners-guide-to-interleaving-by-tanisha-paul/) (Washington University in St. Louis)
+*   [The What, Why, and How Of 'Interleaving'](https://www.edweek.org/teaching-learning/opinion-the-what-why-how-of-interleaving/2021/05) (Education Week)
+
+#### 유추 (Analogy)
+*   [Learning To Learn: Embrace Analogies](https://betterexplained.com/articles/learning-to-learn-embrace-analogies/) (BetterExplained)
+*   [Using Analogies to Help Others Learn](https://learning.northeastern.edu/using-analogies-to-help-others-learn/) (Northeastern University)
+
+#### 미루는 습관 (Procrastination)
+*   [하버드 연구진이 밝힌 '미루기의 진짜 원인'과 극복법](https://www.youtube.com/watch?v=fEoaEu8Ko08) (YouTube)
+*   ["일 자꾸 미루는 사람, 뇌가 다르다"](https://www.yna.co.kr/view/AKR20180907039800009) (연합뉴스)
+
+#### 수면 (Sleep)
+*   [How Memory and Sleep Are Connected](https://www.sleepfoundation.org/how-sleep-works/memory-and-sleep) (Sleep Foundation)
+*   [Sleep's Crucial Role in Preserving Memory](https://medicine.yale.edu/news-article/sleeps-crucial-role-in-preserving-memory/) (Yale School of Medicine)
