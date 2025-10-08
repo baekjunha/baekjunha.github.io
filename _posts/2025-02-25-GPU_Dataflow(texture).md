@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true
-thumbnail: images/Fragment_Interpolation.png
+thumbnail: images/vertex_attribute_pointer_interleaved.png
 ---
 
 # 버텍스 데이터의 흐름 정리(with texture)

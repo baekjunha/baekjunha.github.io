@@ -6,8 +6,8 @@ toc_sticky: true
 author_profile: false
 use_math: true 
 images: 
-  - /images/unity-vfx-graph-interface.png
-thumbnail: images/unity-vfx-graph-interface.png
+  
+thumbnail: 
 ---
 
 # Unity VFX Graph - Initialize Context 정리

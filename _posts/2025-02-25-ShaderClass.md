@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
-thumbnail: images/texture1.png
+thumbnail: images/transformations.mp4
 ---
 
 # Shader 클래스: OpenGL 셰이더 관리  
