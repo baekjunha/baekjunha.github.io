@@ -5,7 +5,7 @@ categories: study
 tags: [guide]
 toc: true
 toc_sticky: true
-author_profile: true
+author_profile: false
 thumbnail: 
 ---
 
