@@ -1,10 +1,12 @@
 ---
-categories: [study]
-tags: [learning, cognition, study-techniques]
+published: true
+title: learning how to learn?
+categories: study
+tags: [guide]
 toc: true
 toc_sticky: true
-use_math: true
-thumbnail: images/image.png
+author_profile: true
+thumbnail: 
 ---
 
 # 인지 과학자의 "학습법 배우기" 가이드: 효과적인 공부를 위한 핵심 원리 마스터하기
