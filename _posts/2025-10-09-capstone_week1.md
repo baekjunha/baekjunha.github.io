@@ -14,44 +14,6 @@ thumbnail: https://mastermixmovies.wordpress.com/wp-content/uploads/2017/10/2001
 ## 1주차 AI 사회관계 시뮬레이션: 프로덕션급 비동기 통신 코어 구축 마스터 가이드
 ---
 
-## 1주차 AI 사회관계 시뮬레이션: 목차
-
-### [cite_start]서론: 단순한 시작을 넘어 - 살아 숨 쉬는 AI를 위한 기술적 초석 다지기 [cite: 3, 4, 10, 11]
-
-### [cite_start]섹션 1: 프로젝트 초기화 및 의존성 구성 (PC 플랫폼 최적화) [cite: 13, 14, 15]
-1.1. [cite_start]Unity 환경 기준선 설정 [cite: 18]
-1.2. [cite_start]대상 플랫폼 구성: PC, Mac & Linux Standalone [cite: 21, 22]
-1.3. [cite_start]핵심 아키텍처 결정: 렌더 파이프라인 선택 (URP vs. HDRP) [cite: 31]
-1.4. [cite_start]고품질 그래픽을 위한 초기 프로젝트 설정 [cite: 48, 49]
-1.5. [cite_start]비동기 처리의 핵심, UniTask 통합 [cite: 56]
-1.6. [cite_start]실습 가이드: PC 프로젝트 설정 및 UniTask 임포트 [cite: 62]
-
-### [cite_start]섹션 2: UniTask를 활용한 현대적 비동기 프로그래밍 마스터하기 [cite: 85]
-2.1. [cite_start]패러다임의 전환: IEnumerator에서 async UniTask로 [cite: 90]
-2.2. [cite_start]성능의 중요성: UniTask가 타협 불가능한 선택인 이유 [cite: 172]
-2.3. [cite_start]기본 LLM API 클라이언트 구현 [cite: 184]
-2.4. [cite_start]실습 가이드: LLMApiClient 테스트용 MonoBehaviour 작성 [cite: 245]
-
-### [cite_start]섹션 3: 프로덕션 수준의 내결함성을 갖춘 네트워크 계층 설계 [cite: 298]
-3.1. [cite_start]응답 없는 요청 정복: 타임아웃 구현 [cite: 309]
-3.2. [cite_start]지능형 재시도: 지수 백오프와 지터 [cite: 314]
-3.3. [cite_start]실습 가이드: 타임아웃 및 재시도 정책 적용 및 테스트 [cite: 386]
-
-### [cite_start]섹션 4: 안전한 API 키 관리를 위한 다층적 전략 [cite: 410]
-4.1. [cite_start]로컬 개발: 안전하고 간단한 환경 변수 활용 [cite: 414]
-4.1.1. [cite_start]실습 가이드: 환경 변수 설정 및 코드 연동 [cite: 430]
-4.2. [cite_start]프로덕션 보안: 프록시 아키텍처로의 전환 [cite: 479]
-4.3. [cite_start]대안 분석 (권장하지 않음): 클라이언트 측 암호화의 함정 [cite: 493]
-
-### [cite_start]섹션 5 (신규): 고품질 PC 경험을 위한 그래픽 및 성능 최적화 [cite: 498]
-5.1. [cite_start]Quality Settings 심층 분석 [cite: 501]
-5.2. [cite_start]HDRP를 활용한 몰입형 리얼리즘 구현 (HDRP 선택 시) [cite: 524]
-5.3. [cite_start]PC 환경에서의 프로파일링 및 프레임률 관리 [cite: 537]
-
-### [cite_start]결론: 지속 가능한 성장을 위한 견고한 토대 [cite: 543]
-### [cite_start]참고 자료 [cite: 556]
----
-
 
 ### 서론: 단순한 시작을 넘어 - 살아 숨 쉬는 AI를 위한 기술적 초석 다지기
 
