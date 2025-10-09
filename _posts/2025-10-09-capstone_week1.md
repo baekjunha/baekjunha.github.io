@@ -1,3 +1,16 @@
+---
+published: true
+title: "살아있는 AI 캐릭터 구현 가이드(1)"
+categories: capstone
+tags: [capstone, ai, unity, guide]
+date: 2025-09-29 17:11:43 +0900
+toc: true
+toc_sticky: true
+author_profile: false
+use_math: true 
+thumbnail: https://mastermixmovies.wordpress.com/wp-content/uploads/2017/10/2001.gif?w=1241&h=546
+---
+
 ## 1주차 AI 사회관계 시뮬레이션: 프로덕션급 비동기 통신 코어 구축 마스터 가이드
 ---
 
