@@ -452,98 +452,98 @@ LLM API 키는 프로젝트의 가장 민감한 자산 중 하나로, 유출 시
 1.  **운영체제에 환경 변수 설정**
 
       * **Windows 사용자**:
-        1.  [cite\_start]`sysdm.cpl` 실행 → `고급` 탭 → `환경 변수` 버튼 클릭[cite: 432, 433].
-        2.  [cite\_start]`사용자 변수` 섹션에서 `새로 만들기` 클릭[cite: 434].
-        3.  [cite\_start]변수 이름에 `MY_LLM_API_KEY`, 변수 값에 실제 API 키를 입력[cite: 435].
-        4.  [cite\_start]Unity Hub와 Unity Editor를 완전히 재시작[cite: 436].
+        1.  `sysdm.cpl` 실행 → `고급` 탭 → `환경 변수` 버튼 클릭.
+        2.  `사용자 변수` 섹션에서 `새로 만들기` 클릭.
+        3.  변수 이름에 `MY_LLM_API_KEY`, 변수 값에 실제 API 키를 입력.
+        4.  Unity Hub와 Unity Editor를 완전히 재시작.
       * **macOS 사용자**:
-        1.  [cite\_start]터미널 앱 실행[cite: 438].
-        2.  [cite\_start]`nano ~/.zshrc` 실행 (사용하는 셀에 따라 다를 수 있음)[cite: 439].
-        3.  [cite\_start]파일 맨 아래에 `export MY_LLM_API_KEY="your_api_key_here"` 라인 추가[cite: 441].
-        4.  [cite\_start]저장 후 `source ~/.zshrc` 명령어 실행[cite: 442, 443].
-        5.  [cite\_start]Unity Hub와 Unity Editor를 완전히 재시작[cite: 444].
+        1.  터미널 앱 실행.
+        2.  `nano ~/.zshrc` 실행 (사용하는 셀에 따라 다를 수 있음).
+        3.  파일 맨 아래에 `export MY_LLM_API_KEY="your_api_key_here"` 라인 추가.
+        4.  저장 후 `source ~/.zshrc` 명령어 실행.
+        5.  Unity Hub와 Unity Editor를 완전히 재시작.
 
 2.  **ApiClientTester에서 환경 변수 사용**
 
-      * [cite\_start]`ApiClientTester.cs` 스크립트에서 Inspector 필드 대신 환경 변수에서 API 키를 읽어오도록 변경한다[cite: 446].
+      * `ApiClientTester.cs` 스크립트에서 Inspector 필드 대신 환경 변수에서 API 키를 읽어오도록 변경한다.
 
 #### 4.2. 프로덕션 보안: 프록시 아키텍처로의 전환
 
-[cite\_start]공개적으로 배포되는 상용 제품의 경우, 클라이언트가 직접 LLM API를 호출하는 모델은 근본적으로 안전하지 않다[cite: 480]. [cite\_start]악의적인 사용자는 언제든지 클라이언트를 디컴파일하여 API 키를 추출할 수 있다[cite: 481, 482].
+공개적으로 배포되는 상용 제품의 경우, 클라이언트가 직접 LLM API를 호출하는 모델은 근본적으로 안전하지 않다. 악의적인 사용자는 언제든지 클라이언트를 디컴파일하여 API 키를 추출할 수 있다.
 
-[cite\_start]따라서 프로덕션 환경에서는 서버 측 **프록시(Proxy) 아키텍처**로 전환해야 한다[cite: 483].
+따라서 프로덕션 환경에서는 서버 측 **프록시(Proxy) 아키텍처**로 전환해야 한다.
 
   * **프록시 아키텍처의 작동 방식**:
-    1.  [cite\_start]**클라이언트 요청**: 게임 클라이언트는 API 키 없이 자체 백엔드 서버(프록시)에 요청을 보낸다[cite: 486, 487].
-    2.  [cite\_start]**서버 측 처리**: 프록시 서버가 안전한 저장소에서 API 키를 검색하여 LLM API를 직접 호출한다[cite: 489, 490].
-    3.  [cite\_start]**응답 반환**: 프록시 서버는 LLM API로부터 받은 응답을 다시 게임 클라이언트로 전달한다[cite: 491].
+    1.  **클라이언트 요청**: 게임 클라이언트는 API 키 없이 자체 백엔드 서버(프록시)에 요청을 보낸다.
+    2.  **서버 측 처리**: 프록시 서버가 안전한 저장소에서 API 키를 검색하여 LLM API를 직접 호출한다.
+    3.  **응답 반환**: 프록시 서버는 LLM API로부터 받은 응답을 다시 게임 클라이언트로 전달한다.
 
 #### 4.3. 대안 분석 (권장하지 않음): 클라이언트 측 암호화의 함정
 
-[cite\_start]API 키를 암호화하여 게임 빌드에 포함시키는 방법은 '보안을 통한 은닉(security through obscurity)'에 불과하다[cite: 494, 495]. [cite\_start]악의적인 사용자가 클라이언트를 디컴파일하면 암호화된 데이터와 복호화 로직을 모두 찾아내 원본 API 키를 추출할 수 있다[cite: 496].
+API 키를 암호화하여 게임 빌드에 포함시키는 방법은 '보안을 통한 은닉(security through obscurity)'에 불과하다. 악의적인 사용자가 클라이언트를 디컴파일하면 암호화된 데이터와 복호화 로직을 모두 찾아내 원본 API 키를 추출할 수 있다.
 
 -----
 
 ### 섹션 5 (신규): 고품질 PC 경험을 위한 그래픽 및 성능 최적화
 
-[cite\_start]이 섹션에서는 PC 플랫폼의 성능을 활용하여 AI 캐릭터와의 교감을 극대화하는 시각적 요소를 설정하고 최적화하는 방법을 다룬다[cite: 500].
+이 섹션에서는 PC 플랫폼의 성능을 활용하여 AI 캐릭터와의 교감을 극대화하는 시각적 요소를 설정하고 최적화하는 방법을 다룬다.
 
 #### 5.1. Quality Settings 심층 분석
 
-[cite\_start]PC 플레이어는 그래픽 품질 조절 옵션을 기대한다[cite: 502]. [cite\_start]`Edit > Project Settings > Quality`는 이러한 옵션을 제공하기 위한 핵심 설정들을 포함하고 있다[cite: 503].
+PC 플레이어는 그래픽 품질 조절 옵션을 기대한다. `Edit > Project Settings > Quality`는 이러한 옵션을 제공하기 위한 핵심 설정들을 포함하고 있다.
 
-  * [cite\_start]**Anti-Aliasing (안티에일리어싱)**: 폴리곤의 계단 현상을 부드럽게 처리하여 깔끔한 이미지를 만든다[cite: 505].
-  * [cite\_start]**Texture Quality (텍스처 품질)**: 텍스처의 최대 해상도를 제어한다[cite: 511]. [cite\_start]'Full Resolution'은 가장 선명한 텍스처를 제공하지만 더 많은 비디오 메모리(VRAM)를 사용한다[cite: 512].
-  * [cite\_start]**Anisotropic Textures (비등방성 텍스처)**: 비스듬한 각도에서 보이는 텍스처의 선명도를 크게 향상시킨다[cite: 513].
-  * [cite\_start]**Shadows (그림자)**: 장면에 깊이와 사실감을 더하는 가장 중요한 요소 중 하나다[cite: 515]. [cite\_start]`Shadow Resolution`, `Shadow Distance`, `Shadow Cascades` 등의 설정으로 품질을 조절할 수 있다[cite: 516, 519, 521].
-  * [cite\_start]**VSync (수직 동기화)**: 화면 찢어짐(screen tearing) 현상을 방지하기 위해 게임의 프레임률을 모니터의 주사율에 맞춘다[cite: 522].
+  * **Anti-Aliasing (안티에일리어싱)**: 폴리곤의 계단 현상을 부드럽게 처리하여 깔끔한 이미지를 만든다.
+  * **Texture Quality (텍스처 품질)**: 텍스처의 최대 해상도를 제어한다. 'Full Resolution'은 가장 선명한 텍스처를 제공하지만 더 많은 비디오 메모리(VRAM)를 사용한다.
+  * **Anisotropic Textures (비등방성 텍스처)**: 비스듬한 각도에서 보이는 텍스처의 선명도를 크게 향상시킨다.
+  * **Shadows (그림자)**: 장면에 깊이와 사실감을 더하는 가장 중요한 요소 중 하나다. `Shadow Resolution`, `Shadow Distance`, `Shadow Cascades` 등의 설정으로 품질을 조절할 수 있다.
+  * **VSync (수직 동기화)**: 화면 찢어짐(screen tearing) 현상을 방지하기 위해 게임의 프레임률을 모니터의 주사율에 맞춘다.
 
 #### 5.2. HDRP를 활용한 몰입형 리얼리즘 구현 (HDRP 선택 시)
 
-[cite\_start]HDRP를 선택했다면, 그 고유한 기능들을 활용하여 AI 시뮬레이션의 분위기와 감성적 깊이를 한 차원 높일 수 있다[cite: 525].
+HDRP를 선택했다면, 그 고유한 기능들을 활용하여 AI 시뮬레이션의 분위기와 감성적 깊이를 한 차원 높일 수 있다.
 
-  * [cite\_start]**볼류메트릭 안개/조명 (Volumetric Fog/Lighting)**: 창문으로 들어오는 부드러운 빛줄기나 공기 중의 미세한 먼지를 표현하여 공간을 더 아늑하고 생동감 있게 만들 수 있다[cite: 528, 529].
+  * **볼류메트릭 안개/조명 (Volumetric Fog/Lighting)**: 창문으로 들어오는 부드러운 빛줄기나 공기 중의 미세한 먼지를 표현하여 공간을 더 아늑하고 생동감 있게 만들 수 있다.
   * **고급 후처리 (Advanced Post-Processing)**:
-      * [cite\_start]**피사계 심도 (Depth of Field)**: AI 캐릭터에 초점을 맞추고 배경을 흐리게 처리하여 플레이어의 시선을 집중시킨다[cite: 533].
-      * [cite\_start]**블룸 (Bloom)**: 빛이 부드럽게 번지는 효과를 만들어 몽환적이거나 따뜻한 분위기를 연출한다[cite: 534].
-      * [cite\_start]**컬러 그레이딩 (Color Grading)**: 장면의 전체적인 색조를 조절하여 감정적인 톤을 설정한다[cite: 535].
+      * **피사계 심도 (Depth of Field)**: AI 캐릭터에 초점을 맞추고 배경을 흐리게 처리하여 플레이어의 시선을 집중시킨다.
+      * **블룸 (Bloom)**: 빛이 부드럽게 번지는 효과를 만들어 몽환적이거나 따뜻한 분위기를 연출한다.
+      * **컬러 그레이딩 (Color Grading)**: 장면의 전체적인 색조를 조절하여 감정적인 톤을 설정한다.
 
 #### 5.3. PC 환경에서의 프로파일링 및 프레임률 관리
 
-[cite\_start]PC 플레이어들은 60 FPS 이상의 안정적인 프레임률을 기대한다[cite: 538]. [cite\_start]Unity 프로파일러(`Window > Analysis > Profiler`)는 성능 병목 현상을 식별하고 해결하는 데 필수적인 도구다[cite: 539].
+PC 플레이어들은 60 FPS 이상의 안정적인 프레임률을 기대한다. Unity 프로파일러(`Window > Analysis > Profiler`)는 성능 병목 현상을 식별하고 해결하는 데 필수적인 도구다.
 
-[cite\_start]프로파일러를 사용하여 CPU 및 GPU 사용량을 주기적으로 모니터링하고, 목표 프레임률을 유지하기 위해 그래픽 설정의 균형점을 찾아야 한다[cite: 540, 541].
+프로파일러를 사용하여 CPU 및 GPU 사용량을 주기적으로 모니터링하고, 목표 프레임률을 유지하기 위해 그래픽 설정의 균형점을 찾아야 한다.
 
 -----
 
 ### 결론: 지속 가능한 성장을 위한 견고한 토대
 
-[cite\_start]1주차를 통해 PC 플랫폼에 최적화된 프로덕션 수준의 완전한 비동기 통신 계층을 설계하고 구축했다[cite: 544]. [cite\_start]이 견고한 토대는 다음과 같은 핵심적인 특성을 갖추고 있다[cite: 547]:
+1주차를 통해 PC 플랫폼에 최적화된 프로덕션 수준의 완전한 비동기 통신 계층을 설계하고 구축했다. 이 견고한 토대는 다음과 같은 핵심적인 특성을 갖추고 있다:
 
-  * [cite\_start]**고성능**: UniTask를 통해 GC로 인한 프레임 드랍을 회피하여 플레이어의 몰입 경험을 최우선으로 존중한다[cite: 548].
-  * [cite\_start]**회복탄력성**: 취소 토큰과 지수 백오프를 통해 불안정한 네트워크 환경의 오류를 우아하게 처리한다[cite: 549].
-  * [cite\_start]**보안성**: 개발 및 프로덕션 환경을 위한 명확하고 안전한 API 키 관리 전략과 아키텍처를 수립했다[cite: 552].
-  * [cite\_start]**시각적 탁월성**: PC 플랫폼의 성능을 활용하기 위한 고품질 그래픽 설정 가이드를 통해 시각적 경험의 토대를 마련했다[cite: 553].
+  * **고성능**: UniTask를 통해 GC로 인한 프레임 드랍을 회피하여 플레이어의 몰입 경험을 최우선으로 존중한다.
+  * **회복탄력성**: 취소 토큰과 지수 백오프를 통해 불안정한 네트워크 환경의 오류를 우아하게 처리한다.
+  * **보안성**: 개발 및 프로덕션 환경을 위한 명확하고 안전한 API 키 관리 전략과 아키텍처를 수립했다.
+  * **시각적 탁월성**: PC 플랫폼의 성능을 활용하기 위한 고품질 그래픽 설정 가이드를 통해 시각적 경험의 토대를 마련했다.
 
-[cite\_start]진정으로 '살아 숨 쉬는 AI'를 만들기 위한 가장 중요한 기술적 초석이 마련되었다[cite: 554].
+진정으로 '살아 숨 쉬는 AI'를 만들기 위한 가장 중요한 기술적 초석이 마련되었다.
 
 -----
 
 ### 참고 자료
 
-1.  [cite\_start]PC, Mac & Linux Standalone build settings - Unity - Manual, [https://docs.unity3d.com/2020.1/Documentation/Manual/BuildSettingsStandalone.html](https://docs.unity3d.com/2020.1/Documentation/Manual/BuildSettingsStandalone.html) [cite: 557]
-2.  [cite\_start]Manual: Build Settings - Unity, [https://docs.unity.cn/2019.1/Documentation/Manual/BuildSettings.html](https://docs.unity.cn/2019.1/Documentation/Manual/BuildSettings.html) [cite: 559]
-3.  [cite\_start]PC, Mac & Linux Standalone build settings - Unity Manual, [https://docs.unity.cn/ru/2020.1/Manual/BuildSettingsStandalone.html](https://docs.unity.cn/ru/2020.1/Manual/BuildSettingsStandalone.html) [cite: 561]
-4.  [cite\_start]What is the difference between these platforms: PC, Mac, Linux Standalone / Windows Build Support (IL2CPP) / Universal Windows Platform Build Support?: r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/qcz09a/what\_is\_the\_difference\_between\_these\_platforms\_pc/](https://www.reddit.com/r/Unity3D/comments/qcz09a/what_is_the_difference_between_these_platforms_pc/) [cite: 563]
-5.  [cite\_start][Answered] What are the differences between Unitys URP and HDRP?, [https://www.dragonflydb.io/faq/unity-urp-vs-hdrp](https://www.dragonflydb.io/faq/unity-urp-vs-hdrp) [cite: 565]
-6.  [cite\_start]Spent a few weeks rewriting everything from HDRP to URP: r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/1midj89/spent\_a\_few\_weeks\_rewriting\_everything\_from\_hdrp/](https://www.reddit.com/r/Unity3D/comments/1midj89/spent_a_few_weeks_rewriting_everything_from_hdrp/) [cite: 566]
-7.  URP or HDRP? [cite\_start]: r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/yvz6fa/urp\_or\_hdrp/](https://www.reddit.com/r/Unity3D/comments/yvz6fa/urp_or_hdrp/) [cite: 567]
-8.  [cite\_start]High Definition Render Pipeline (HDRP) - Unity, [https://unity.com/features/srp/high-definition-render-pipeline](https://unity.com/features/srp/high-definition-render-pipeline) [cite: 568]
-9.  [cite\_start]Introduction to HDRP - Unity Learn, [https://learn.unity.com/tutorial/introduction-to-hdrp-2019](https://learn.unity.com/tutorial/introduction-to-hdrp-2019) [cite: 568]
-10. [cite\_start]Why shouldn't I go with HDRP for every project?: r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/1cee5bl/why\_shouldnt\_i\_go\_with\_hdrp\_for\_every\_project/](https://www.reddit.com/r/Unity3D/comments/1cee5bl/why_shouldnt_i_go_with_hdrp_for_every_project/) [cite: 569]
-11. [cite\_start]Standalone build - Make the build in Unity - Flightmare documentation - Read the Docs, [https://flightmare.readthedocs.io/en/latest/building\_flightmare\_binary/standalone.html](https://flightmare.readthedocs.io/en/latest/building_flightmare_binary/standalone.html) [cite: 569]
-12. [cite\_start]Quality settings tab reference - Unity - Manual, [https://docs.unity3d.com/6000.2/Documentation/Manual/class-QualitySettings.html](https://docs.unity3d.com/6000.2/Documentation/Manual/class-QualitySettings.html) [cite: 570]
-13. [cite\_start]Low graphics after build settings: r/unity - Reddit, [https://www.reddit.com/r/unity/comments/174w6yw/low\_graphics\_after\_build\_settings/](https://www.reddit.com/r/unity/comments/174w6yw/low_graphics_after_build_settings/) [cite: 571]
-14. [cite\_start]Quality Settings - Unity - Manual, [https://docs.unity3d.com/2018.1/Documentation/Manual/class-QualitySettings.html](https://docs.unity3d.com/2018.1/Documentation/Manual/class-QualitySettings.html) [cite: 572]
-15. [cite\_start]Performance optimization for high-end graphics on PC and console - Unity, [https://unity.com/how-to/performance-optimization-high-end-graphics](https://unity.com/how-to/performance-optimization-high-end-graphics) [cite: 574]
-16. [cite\_start]Should I go for HDRP for a PC only game?: r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/1dkbsnn/should\_i\_go\_for\_hdrp\_for\_a\_pc\_only\_game/](https://www.reddit.com/r/Unity3D/comments/1dkbsnn/should_i_go_for_hdrp_for_a_pc_only_game/) [cite: 576]
+1.  PC, Mac & Linux Standalone build settings - Unity - Manual, [https://docs.unity3d.com/2020.1/Documentation/Manual/BuildSettingsStandalone.html](https://docs.unity3d.com/2020.1/Documentation/Manual/BuildSettingsStandalone.html) 
+2.  Manual: Build Settings - Unity, [https://docs.unity.cn/2019.1/Documentation/Manual/BuildSettings.html](https://docs.unity.cn/2019.1/Documentation/Manual/BuildSettings.html) 
+3.  PC, Mac & Linux Standalone build settings - Unity Manual, [https://docs.unity.cn/ru/2020.1/Manual/BuildSettingsStandalone.html](https://docs.unity.cn/ru/2020.1/Manual/BuildSettingsStandalone.html) 
+4.  What is the difference between these platforms: PC, Mac, Linux Standalone / Windows Build Support (IL2CPP) / Universal Windows Platform Build Support?: r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/qcz09a/what\_is\_the\_difference\_between\_these\_platforms\_pc/](https://www.reddit.com/r/Unity3D/comments/qcz09a/what_is_the_difference_between_these_platforms_pc/) 
+5.  [Answered] What are the differences between Unitys URP and HDRP?, [https://www.dragonflydb.io/faq/unity-urp-vs-hdrp](https://www.dragonflydb.io/faq/unity-urp-vs-hdrp) 
+6.  Spent a few weeks rewriting everything from HDRP to URP: r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/1midj89/spent\_a\_few\_weeks\_rewriting\_everything\_from\_hdrp/](https://www.reddit.com/r/Unity3D/comments/1midj89/spent_a_few_weeks_rewriting_everything_from_hdrp/) 
+7.  URP or HDRP? : r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/yvz6fa/urp\_or\_hdrp/](https://www.reddit.com/r/Unity3D/comments/yvz6fa/urp_or_hdrp/) 
+8.  High Definition Render Pipeline (HDRP) - Unity, [https://unity.com/features/srp/high-definition-render-pipeline](https://unity.com/features/srp/high-definition-render-pipeline) 
+9.  Introduction to HDRP - Unity Learn, [https://learn.unity.com/tutorial/introduction-to-hdrp-2019](https://learn.unity.com/tutorial/introduction-to-hdrp-2019) 
+10. Why shouldn't I go with HDRP for every project?: r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/1cee5bl/why\_shouldnt\_i\_go\_with\_hdrp\_for\_every\_project/](https://www.reddit.com/r/Unity3D/comments/1cee5bl/why_shouldnt_i_go_with_hdrp_for_every_project/) 
+11. Standalone build - Make the build in Unity - Flightmare documentation - Read the Docs, [https://flightmare.readthedocs.io/en/latest/building\_flightmare\_binary/standalone.html](https://flightmare.readthedocs.io/en/latest/building_flightmare_binary/standalone.html) 
+12. Quality settings tab reference - Unity - Manual, [https://docs.unity3d.com/6000.2/Documentation/Manual/class-QualitySettings.html](https://docs.unity3d.com/6000.2/Documentation/Manual/class-QualitySettings.html) 
+13. Low graphics after build settings: r/unity - Reddit, [https://www.reddit.com/r/unity/comments/174w6yw/low\_graphics\_after\_build\_settings/](https://www.reddit.com/r/unity/comments/174w6yw/low_graphics_after_build_settings/) 
+14. Quality Settings - Unity - Manual, [https://docs.unity3d.com/2018.1/Documentation/Manual/class-QualitySettings.html](https://docs.unity3d.com/2018.1/Documentation/Manual/class-QualitySettings.html) 
+15. Performance optimization for high-end graphics on PC and console - Unity, [https://unity.com/how-to/performance-optimization-high-end-graphics](https://unity.com/how-to/performance-optimization-high-end-graphics) 
+16. Should I go for HDRP for a PC only game?: r/Unity3D - Reddit, [https://www.reddit.com/r/Unity3D/comments/1dkbsnn/should\_i\_go\_for\_hdrp\_for\_a\_pc\_only\_game/](https://www.reddit.com/r/Unity3D/comments/1dkbsnn/should_i_go_for_hdrp_for_a_pc_only_game/) 
