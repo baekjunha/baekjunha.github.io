@@ -8,7 +8,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
-thumbnail: 
+thumbnail: https://mastermixmovies.wordpress.com/wp-content/uploads/2017/10/2001.gif?w=1241&h=546
 ---
 
 ### 캡톤 디자인 완전 정복: '살아있는' AI 캐릭터 구현 가이드(feat.최우식)
