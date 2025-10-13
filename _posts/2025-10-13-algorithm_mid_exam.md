@@ -1,7 +1,7 @@
 ---
 title: "알고리즘 핵심: 시간 복잡도 유도 과정 완벽 정복 (분할 정복, 그리디, DP)"
 categories: algorithm
-tags: [algorithm, complexity, time-complexity, divide-and-conquer, greedy, dynamic-programming]
+tags: [algorithm, time-complexity, divide-and-conquer, greedy, dynamic-programming]
 toc: true
 toc_sticky: true
 author_profile: false
