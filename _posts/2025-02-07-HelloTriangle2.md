@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
-thumbnail: images/image.png
+thumbnail: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
 ---
 
 ## 최종적으로 삼각형 렌더링 이해하기

@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
-thumbnail: images/texture1.png
+thumbnail: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
 ---
 ## 셰이더 개념과 코드 이해하기  
 

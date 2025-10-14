@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true
-thumbnail: images/vertex_attribute_pointer_interleaved.png
+thumbnail: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
 ---
 
 # 버텍스 데이터의 흐름 정리(with texture)

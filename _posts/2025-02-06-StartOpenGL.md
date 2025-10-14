@@ -5,7 +5,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true 
-thumbnail: images/image-2.png
+thumbnail: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
 ---
 
 ## OpenGL 시작하기: 윈도우 생성과 설정 가이드

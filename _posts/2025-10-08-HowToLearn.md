@@ -6,7 +6,7 @@ tags: [guide]
 toc: true
 toc_sticky: true
 author_profile: false
-thumbnail: 
+thumbnail: https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-course-photos.s3.amazonaws.com/eb/bde77b80db4b5784c5106f65b2e81e/Learning-How-to-Learn-Logo.png
 ---
 
 # 인지 과학자의 "학습법 배우기" 가이드: 효과적인 공부를 위한 핵심 원리 마스터하기
