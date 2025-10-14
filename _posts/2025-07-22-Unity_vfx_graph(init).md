@@ -4,10 +4,8 @@ tags: [graphics, unity, vfx, particle, shader]
 toc: true
 toc_sticky: true
 author_profile: false
-use_math: true 
-images: 
-  
-thumbnail: 
+use_math: true   
+thumbnail: https://unity.com/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2Ffuvbjjlp%2Fproduction%2F19d1656d78819d6634202b73c53c29a6e2933353-811x455.png&w=3840&q=100
 ---
 
 # Unity VFX Graph - Initialize Context 정리
