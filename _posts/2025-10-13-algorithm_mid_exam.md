@@ -6,6 +6,7 @@ toc: true
 toc_sticky: true
 author_profile: false
 use_math: true
+thumbnail : ![alt text](https://upload.wikimedia.org/wikipedia/commons/3/31/1983_CPA_5426.jpg)
 ---
 
 ## Chapter 3: 분할 정복 알고리즘 (Divide and Conquer Algorithm) 
