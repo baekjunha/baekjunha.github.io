@@ -1,5 +1,5 @@
 ---
-published: true
+published: False
 title: "살아있는 AI 캐릭터 구현 가이드(1)"
 categories: capstone
 tags: [capstone, ai, unity, guide]
