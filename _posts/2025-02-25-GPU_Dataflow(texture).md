@@ -1,142 +1,141 @@
 ---
-categories: graphics
+categories: [graphics]
 tags: [graphics, opengl, shader, texture, gpu]
-toc: true
-toc_sticky: true
-author_profile: false
-use_math: true
-thumbnail: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
+math: true
+image:
+  path: https://learnopengl.com/img/getting-started/pipeline.png
 ---
 
-# 버텍스 데이터의 흐름 정리(with texture)
+> **요약**: C++ 애플리케이션의 메모리에 올라와 있는 버텍스 데이터가 어떻게 GPU의 VRAM으로 전송되고, 셰이더 파이프라인(Vertex -> Rasterization -> Fragment)을 거쳐 최종 텍스처 픽셀 색상으로 스크린에 렌더링되는지 그 일련의 데이터 흐름(Dataflow)을 단계별로 요약한다.
+{: .prompt-info }
 
-## 1. 버텍스 데이터 정의
+## 목차
+* TOC
+{:toc}
 
-```c++
+---
+
+## 1. 버텍스 데이터 정의 (CPU 영역)
+
+모든 그래픽 렌더링의 시작점은 C++ 코드 내에서 선언된 정점 배열 데이터다. 이 원시 데이터는 메인보드의 시스템 RAM에 상주한다.
+
+```cpp
 float vertices[] = {
-    // 위치                // 색상              // 텍스처 좌표
+    // 위치(xyz)           // 색상(rgb)           // 텍스처 좌표(st)
      0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // 우상단
      0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // 우하단
     -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // 좌하단
     -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // 좌상단 
 };
 ```
+{: file="main.cpp" }
 
-## 버텍스 데이터 구조
+이 배열은 정점 1개당 총 8개의 실수(float) 속성값을 묶어 갖는 하이브리드 구조다.
+1.  **위치 (`vec3`)**: 3D 공간상의 x, y, z 좌표.
+2.  **색상 (`vec3`)**: 해당 정점의 고유 r, g, b 컬러 인자.
+3.  **텍스처 좌표 (`vec2`)**: 이미지를 매핑할 s, t 좌표 (0~1 정규화 범위).
 
-각 버텍스는 8개의 속성값을 갖는다.
+---
 
-1.  **위치 (aPos, vec3)** → x, y, z 좌표
-2.  **색상 (aColor, vec3)** → r, g, b 색상값
-3.  **텍스처 좌표 (aTexCoord, vec2)** → s, t 좌표 (0~1 범위)
+## 2. 버텍스 데이터 → GPU 전송 (VBO/VAO)
 
-## 2. 버텍스 데이터 → 버텍스 셰이더로 전달**
+단순히 CPU 메모리에 있는 값을 곧바로 눈으로 볼 수는 없다. 이 막대한 기하학적 데이터를 GPU 내부의 초고속 VRAM으로 덤프(전송)해야 한다.
 
-버텍스 데이터를 GPU에 전송하기 위해 **VAO (Vertex Array Object), VBO (Vertex Buffer Object)**를 사용한다.
+*   **VBO (Vertex Buffer Object):** 정점 배열 데이터를 통째로 복사해 보관하는 GPU 내부의 거대한 메모리 화물칸이다.
+*   **VAO (Vertex Array Object):** 이 VBO 화물칸에 실린 1차원 데이터 더미를, "몇 개씩 잘라서 어떤 셰이더 슬롯에 꽂아 넣을지" 그 배선 설정 매뉴얼(상태 정보)을 녹화해두는 기억 장치다. 
 
-*   **VBO (Vertex Buffer Object):** 버텍스 데이터를 GPU 메모리에 저장하는 버퍼다. CPU의 데이터를 GPU로 효율적으로 전달하는 역할을 한다.
-*   **VAO (Vertex Array Object):** 버텍스 속성(위치, 색상, 텍스처 좌표 등)의 설정 상태를 저장하는 객체다. 셰이더에서 어떤 속성을 어떻게 사용할지 미리 정의해두면, 매번 속성을 설정할 필요 없이 VAO만 바인딩하여 사용할 수 있다.
+전송된 데이터를 셰이더가 해석할 수 있도록 **버텍스 속성(Vertex Attribute)** 의 맵핑 규격을 정의하고 직렬화한다.
 
-각 속성은 Vertex Attribute로 설정되어 버텍스 셰이더의 입력 변수로 전달된다. 쉽게 말해, 각 속성(위치, 색상, 텍스처 좌표)을 버텍스 셰이더가 이해할 수 있는 형태로 설정하는 과정이다.
-
-## 버텍스 속성 바인딩
-
-```c++
+```cpp
+// 0번 슬롯: 위치 데이터 (stride 8, offset 0)
 glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 glEnableVertexAttribArray(0);
 
+// 1번 슬롯: 색상 데이터 (stride 8, offset 3)
 glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 glEnableVertexAttribArray(1);
 
+// 2번 슬롯: 텍스처 좌표 (stride 8, offset 6)
 glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 glEnableVertexAttribArray(2);
 ```
+{: file="main.cpp" }
 
-각각의 속성을 버텍스 셰이더의 입력 변수에 매칭한다.
+이 직렬화 코드를 통해 향후 셰이더 코드 내의 슬롯 번호(`location = 0, 1, 2`)와 물리적 데이터 덩어리가 정확히 일대일로 체결된다.
 
-*   aPos (location = 0) → (x, y, z)
-*   aColor (location = 1) → (r, g, b)
-*   aTexCoord (location = 2) → (s, t)
+---
 
-## 3. 버텍스 셰이더 동작
+## 3. 버텍스 셰이더 동작 (파이프라인 1단계)
+
+버텍스 셰이더는 GPU 파이프라인의 수문장이다. 하드웨어로 흘러 들어온 정점 데이터의 공간을 재배치하고, 다음 단계로 토스할 추가 속성값들을 우회 패스(Pass-through) 시킨다.
 
 ```glsl
 #version 330 core
+// C++의 glVertexAttribPointer와 체결되는 입력(In) 슬롯
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
 
+// 프래그먼트 셰이더로 던져버릴 출력(Out) 변수
 out vec3 ourColor;
 out vec2 TexCoord;
 
 void main()
 {
-    gl_Position = vec4(aPos, 1.0); // aPos를 4차원 벡터로 변환 (1.0은 동차 좌표계의 w 값)
-    ourColor = aColor;
-    TexCoord = vec2(aTexCoord.x, aTexCoord.y);
+    // 위치 데이터를 4차원 동차 좌표로 포맷팅하여 시스템 내장 변수에 대입
+    gl_Position = vec4(aPos, 1.0); 
+    ourColor = aColor; // 색상 패스
+    TexCoord = aTexCoord; // 텍스처 좌표 패스
 }
 ```
+{: file="shader.vert" }
 
-## 데이터 흐름
-
-*   aPos (버텍스 위치) → `gl_Position`으로 변환 (클립 공간 좌표)
-*   aColor (색상 정보) → ourColor로 전달 (프래그먼트 셰이더로 전달)
-*   aTexCoord (텍스처 좌표) → TexCoord로 전달 (프래그먼트 셰이더로 전달)
-
-```버텍스 셰이더의 입력값은 aPos, aColor, aTexCoord 총 3개이며, 출력값은 gl_Position, ourColor, TexCoord 로 총 3개다. 하지만, 프래그먼트 셰이더로 직접 전달되는 데이터는 ourColor와 TexCoord 총 2개다. gl_Position은 래스터라이제이션 단계에서 사용되어 프래그먼트의 위치를 결정하는 데 사용되며, 프래그먼트 셰이더로는 전달되지 않는다.```
-
-## 4. 래스터라이제이션 과정
-
-버텍스 셰이더에서 정의한 정점이 화면에 매핑될 픽셀 단위의 **프래그먼트**를 생성하는 과정이다. 이 과정에서 **각 프래그먼트의 색상 및 텍스처 좌표가 보간(Interpolation)**된다. 즉, 삼각형 내부의 픽셀들은 정점의 색상과 텍스처 좌표를 바탕으로 선형 보간을 통해 자신만의 색상과 텍스처 좌표를 갖게 된다.
-
-## 5. 프래그먼트 셰이더 동작
-
-```glsl
-#version 330 core
-out vec4 FragColor;
-
-in vec3 ourColor;
-in vec2 TexCoord;
-
-uniform sampler2D texture1; // 텍스처 샘플러
-
-void main()
-{
-    FragColor = texture(texture1, TexCoord);
-}
-```
-
-## 데이터 흐름
-
-*   TexCoord → 보간된 텍스처 좌표 값 (프래그먼트별로 다름)
-*   `uniform sampler2D texture1;` → 텍스처를 샘플링하기 위한 객체. 텍스처 이미지를 GPU에 로드하고, 셰이더에서 텍스처에 접근할 수 있도록 해준다.
-*   texture(texture1, TexCoord) → 텍스처에서 해당 좌표의 색상을 가져온다.
-*   FragColor → 최종 픽셀 색상 출력
-
-## 정리
-
-→ 버텍스 셰이더에서 전달받은 텍스처 좌표(TexCoord)를 기반으로  
-→ 텍스처에서 해당 좌표의 색상을 샘플링(`texture(texture1, TexCoord)`)하여  
-→ 화면에 픽셀 색상을 최종 출력하는 역할을 한다.
-
-## 6. 최종 출력
-
-이제 모든 데이터가 GPU에서 픽셀 단위로 변환되어 화면에 렌더링된다.
-
-*   버텍스 데이터의 각 정점(네 개의 꼭짓점)이 버텍스 셰이더를 통해 위치를 결정한다.
-*   래스터라이제이션을 통해 삼각형 내부 픽셀들이 보간된다.
-*   프래그먼트 셰이더에서 각 픽셀의 텍스처 좌표를 사용하여 텍스처 이미지에서 해당 위치의 색상을 가져와 최종 픽셀 색상으로 사용한다. 이를 통해 텍스처 매핑이 이루어진다.
-*   최종적으로 GPU가 색상을 렌더링하여 화면에 사각형 형태로 텍스처가 출력된다.
-
-## 전체 데이터 흐름 요약 (간결하게)
-
-1.  **정점 정의:** 위치, 색상, 텍스처 좌표 정의
-2.  **GPU 전송:** VAO/VBO를 통해 OpenGL에 데이터 전달
-3.  **정점 셰이더:** 정점 위치 변환 (`gl_Position`), 프래그먼트 셰이더에 데이터 전달
-4.  **래스터라이제이션:** 픽셀 단위 프래그먼트 생성 및 보간
-5.  **프래그먼트 셰이더:** 텍스처 샘플링 후 픽셀 색상 결정
-6.  **화면 렌더링:** 최종 픽셀 색상으로 화면에 출력
+> [!note] 
+> 셰이더 입력 변수는 `aPos`, `aColor`, `aTexCoord` 3개였으나, 하위 단계인 프래그먼트 셰이더로 토스되는 변수는 `ourColor`, `TexCoord` 단 2개뿐이다. 가장 중요한 좌표인 `gl_Position`은 파이프라인의 코어 래스터라이저 단계에서 화면 매핑 용도로 바로 쓰여버리기 때문에, 프래그먼트 셰이더 개발자의 접근 권한 밖으로 사라진다.
 
 ---
 
+## 4. 래스터라이제이션 (Rasterization) 과정
 
+버텍스 셰이더가 점 세계(3D 공간) 좌표를 픽셀 세계(2D 스크린 공간)로 욱여넣고 뼈대 프레임을 치면, 파이프라인 중간에 위치한 하드웨어 유닛인 래스터라이저가 **프레임 뼈대 내부의 빈 공간을 촘촘한 픽셀 단위 조각(Fragment)들로 잘라 채색 준비를 한다.**
+
+이 과정에서 가장 무서운 마법인 **선형 보간(Linear Interpolation)** 이 터진다. 
+왼쪽 정점의 빨간색 텍스처 파라미터와 오른쪽 정점의 파란색 텍스처 파라미터 값이 래스터라이저를 통과하면, 삼각형 내부를 채우는 수백 개의 프래그먼트마다 물리적인 거리에 비례하여 부드럽게 섞인 중간 좌표/색상값(그라데이션)을 하나씩 부여받아 독립적인 객체로 탄생한다.
+
+---
+
+## 5. 프래그먼트 셰이더 동작 (파이프라인 끝단)
+
+독립된 각자의 컬러/텍스처 좌표값과 함께 도마 위에 올라온 수백만 개의 픽셀(프래그먼트) 파편들은, 최후의 채색 공정인 프래그먼트 셰이더에서 색상 심사 판정을 받는다. 
+
+```glsl
+#version 330 core
+out vec4 FragColor; // 최종 모니터에 영사될 픽셀 색상
+
+// 래스터라이저가 보간을 마쳐 던져준 속성들
+in vec3 ourColor;
+in vec2 TexCoord;
+
+// GPU 메모리에 묶여(Bind)있는 0번 텍스처 이미지를 찌를 샘플러 바늘
+uniform sampler2D texture1;
+
+void main()
+{
+    // 텍스처 이미지(texture1)에서 TexCoord xy 지점의 RGBA 픽셀 도트 색을 추출(Sampling)한다.
+    FragColor = texture(texture1, TexCoord);
+}
+```
+{: file="shader.frag" }
+
+`TexCoord`는 정점 끝에서 전달된 투박한 `0.0` 이나 `1.0` 이 아니다. 래스터라이저가 수백 단계로 쪼개 놓은 `0.45`, `0.88` 과 같은 극비율 보간 좌표이며, `texture` 내장 함수는 이 정밀한 좌표에 대응하는 질감 이미지 텍셀(Texel)의 원본 색상을 날카롭게 찍어내어 화면 픽셀의 `FragColor` 로 도색한다.
+
+---
+
+## 6. 전체 Dataflow 총정리
+
+1.  **Cpu 영역 빌드**: C++ 램에 위치, 색상, 매핑 좌표 배열(`vertices[]`)을 박아 넣는다.
+2.  **GPU 밀어넣기 (VBO/VAO)**: PCIe 고속 버스를 태워 데이터를 GPU VRAM 화물칸(VBO)에 적재하고 배선 슬롯 상태(VAO)를 녹화한다.
+3.  **버텍스 셰이더 (도형 비틀기)**: 들어온 각 꼭짓점마다 공간 변환 행렬 연산을 수행해 2D 스크린 클립 좌표계(`gl_Position`)로 투영시키고 픽셀 속성 전파를 지시한다.
+4.  **래스터라이제이션 (도화지 쪼개기)**: 점들의 프레임을 면적 단위의 프래그먼트 픽셀 조각으로 분쇄하고 텍스처 좌표(UV)를 삼각형 거리에 비례하여 선형 보간(Interpolation) 믹스한다. 
+5.  **프래그먼트 셰이더 (도색 마감)**: 보간되어 건네받은 좌표를 들고 GPU 텍스처 메모리 공간을 바늘(`Sampler2D`)로 찔러 질감을 추출해 `FragColor` 를 최종 도색 처리한다.
+6.  **Framebuffer 디스플레이**: 마감된 픽셀 컬러 배열이 Swap Buffer 과정을 거쳐 네 눈앞의 LCD 모니터 픽셀 소자로 송출된다.

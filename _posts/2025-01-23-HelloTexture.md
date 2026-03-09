@@ -1,259 +1,258 @@
 ---
-categories: graphics
+categories: [Graphics]
 tags: [graphics, opengl, texture, tutorial]
-toc: true
-toc_sticky: true
-author_profile: false
-use_math: true 
-thumbnail: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
+math: true
+image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
 ---
+## 요약
+> **요약**: 텍스처(Texture)의 기본 개념과 텍스처 좌표 매핑을 이해하고, 이미지를 씌울 때 발생하는 경계선 래핑 모드, 텍스처 필터링, 그리고 밉맵(Mipmap) 최적화에 대해 학습한다.
 
-## 텍스처 (Texture)  
+## 목차
+* TOC
+{:toc}
+
+---
 
 **자료 출처**: [LearnOpenGL](https://learnopengl.com/)
 
-텍스처는 일반적으로 2D 이미지이며, 오브젝트에 씌우면 오브젝트의 겉모습과 무늬가 쉽게 변한다.
+## 텍스처 (Texture)
 
-![alt text](/images/image-1.png)
+텍스처는 일반적으로 2D 이미지 데이터이며, 폴리곤(오브젝트)의 표면에 씌우면 복잡한 겉모습과 질감을 매우 적은 연산 비용으로 표현할 수 있다.
 
-위 그림은 삼각형에 텍스처를 입힌 모습이다. 이러한 결과를 얻기 위해서는 삼각형의 각 정점이 텍스처의 어느 부분에 해당하는지를 알아야 한다. 이를 **텍스처 좌표 (texture coordinate)** 와 매핑하는 것이라고 한다. 텍스처 좌표는 (u, v)로 나타내며, 보통 0.0 ~ 1.0 사이의 정규화된 값을 사용한다. (*아래 사진*)
+![Textured Triangle](/images/image-1.png){: width="400" }
+_삼각형에 벽돌 텍스처를 성공적으로 입힌 결과_
 
-![alt text](/images/image-2.png)
+이러한 결과를 얻기 위해서는 삼각형의 각 기하학적 정점이 2D 텍스처 이미지의 어느 포인트에 매핑되어야 하는지를 수학적으로 규정해야 한다. 이를 **텍스처 좌표 매핑 (Texture Coordinate Mapping)** 이라고 한다. 
 
-위 삼각형을 예로 들면 다음과 같다.
+> [!info] 
+> 텍스처 좌표는 보통 **(u, v) 또는 (s, t)** 변수로 표기하며, 보통 $0.0 \sim 1.0$ 사이의 정규화(Normalized)된 실수값을 사용한다.
 
-*   삼각형의 왼쪽 하단을 텍스처 좌표에서 (0,0)으로 한다.
-*   오른쪽 하단을 텍스처 좌표에서 (1,0)으로 한다.
-*   가운데 위를 텍스처 좌표에서 (0.5, 1)으로 한다.
+![Texture Coordinate System](/images/image-2.png){: width="500" }
+_2D 텍스처의 (s, t) 좌표계와 삼각형 버텍스의 대응 구조_
+
+위 삼각형의 매핑 구조를 좌표로 정리하면 다음과 같다.
+
+*   삼각형의 왼쪽 하단 점 $\rightarrow$ 텍스처 좌표 $(0.0, 0.0)$
+*   오른쪽 하단 점 $\rightarrow$ 텍스처 좌표 $(1.0, 0.0)$
+*   가운데 위 정점 $\rightarrow$ 텍스처 좌표 $(0.5, 1.0)$
+
+도출된 텍스처 좌표를 버텍스 셰이더(Vertex Shader)에 전달하면, 시스템은 파이프라인 정점 사이의 공간을 보간하여 프래그먼트 셰이더(Fragment Shader)로 전달한다. 프래그먼트 셰이더는 이 보간된 텍스처 좌표를 픽셀에 대응시켜 최종적으로 이미지를 그려낸다.
 
 ---
 
-이렇게 나온 텍스처 좌표를 버텍스 셰이더 (vertex shader)에 전달하면, 버텍스 셰이더는 이를 프래그먼트 셰이더 (fragment shader)로 전달한다. 프래그먼트 셰이더는 선택받지 못한 (3점을 제외한 나머지) 픽셀의 위치가 텍스처에서 어디에 해당하는지 보간하여 처리한다.
+## 텍스처 래핑 모드 (Texture Wrapping Mode)  
 
-### 텍스처 래핑 모드 (Texture Wrapping Mode)  
+텍스처 좌표의 정상적인 범위는 $(0,0) \sim (1,1)$이라고 하였다. 만약 프로그래머가 고의든 실수든 **이 범위를 초과하는 좌표**를 참조하게 된다면 시스템이 어떻게 처리할까? OpenGL은 범위를 벗어난 영역을 처리하는 4가지 **텍스처 래핑 모드 (Texture Wrapping Mode)** 를 제공한다.
 
-텍스처 좌표의 범위는 (0,0) ~ (1,1)이라고 하였다. 만약 ***이 범위를 벗어나면*** 처리할 수 있는 방식은 크게 4가지이며, 이를 **텍스처 래핑 모드 (Texture Wrapping Mode)** 라고 한다.
+![Texturing Wrapping Modes](/images/Fragment_Interpolation.png){: width="700" }
+_좌측부터 GL_REPEAT, GL_MIRRORED_REPEAT, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER 모드_
 
-![alt text](/images/Fragment_Interpolation.png)
+1.  **GL_REPEAT** : 기본값(Default). 텍스처 이미지를 벽지처럼 반복 타일링한다.
+2.  **GL_MIRRORED_REPEAT** : 반복 시 거울처럼 이미지를 반전시켜 끊김 없는 패턴을 유도한다.
+3.  **GL_CLAMP_TO_EDGE** : 텍스처의 가장자리 픽셀 색상을 쭉 늘여서 여백을 채운다.
+4.  **GL_CLAMP_TO_BORDER** : 범위를 벗어난 좌표 공간에 사용자가 임의로 지정한 특정 단색(단일 색상) 컬러를 도포한다.
 
-*   **GL_REPEAT** {#gl_repeat}: 텍스처 이미지를 반복한다.
-
-*   **GL_MIRRORED_REPEAT** {#gl_mirrored_repeat}: 반복 시 거울처럼 이미지가 반전된다.
-
-*   **GL_CLAMP_TO_EDGE** {#gl_clamp_to_edge}: 텍스처의 가장자리 색상을 사용하여 값을 채우는 방식이다. (텍스처 좌표가 0.0보다 작을 경우 → 0.0에 해당하는 가장자리 색상 사용 & 텍스처 좌표가 1.0보다 클 경우 → 1.0에 해당하는 가장자리 색상 사용)
-
-*   **GL_CLAMP_TO_BORDER** {#gl_clamp_to_border}: 범위를 벗어난 좌표는 사용자가 지정한 색으로 처리한다.
-
-위 4가지 래핑 모드는 `glTexParameter` 함수를 사용해서 하나씩 설정할 수 있다. 텍스처가 2D이면 s, t (x = s, y = t, r은 3D 텍스처에서 정의되면 z값과 같다)를 사용한다.
+래핑 모드는 `glTexParameteri` 함수를 사용하여 s축(x), t축(y) 각각 독립적으로 설정할 수 있다.
 
 ```cpp
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 ```
 
-만일 `GL_CLAMP_TO_BORDER` 모드라면, 좌표를 벗어난 부분의 경계색도 지정해야 하므로, 매개변수가 하나 더 있는 함수인 `glTexParameterfv`를 사용하여 `GL_TEXTURE_BORDER_COLOR` 옵션으로 float 값을 넘겨주어야 한다.
+만일 `GL_CLAMP_TO_BORDER` 모드를 채택했다면, 초과 영역을 무슨 색으로 채울지 프레임워크에 추가로 알려주어야 한다. 이때는 배열 값을 넘길 수 있는 `glTexParameterfv` 함수를 활용한다.
 
 ```cpp
-float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f };
-glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor); // 경계색 인자 (GL_TEXTURE_BORDER_COLOR) 추가
+float borderColor[] = { 1.0f, 1.0f, 0.0f, 1.0f }; // 노란색 불투명 색상 지정
+glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 ```
 
 ---
 
-### 텍스처 필터링 (Texture Filtering) 
+## 텍스처 필터링 (Texture Filtering) 
 
-만일 삼각형이 텍스처보다 훨씬 크다면, 텍스처를 입혔을 때 해상도가 깨진 상태가 될 것이다. 이를 극복하기 위해서 **텍스처 필터링 (Texture Filtering)** 기술로 이를 보완할 수 있다. 텍스처 필터링이란 텍스처 샘플링 중에 픽셀 크기와 텍스처 좌표가 일치하지 않을 때 부드러운 결과를 생성하기 위해 사용하는 기법을 의미한다.
+만일 폴리곤(삼각형) 화면 상의 크기가 텍스처 원본 크기보다 훨씬 크다면, 텍스처 픽셀이 확대되면서 해상도가 깨지거나 모자이크처럼 보이는 현상이 일어난다. 반대로 축소될 때도 픽셀이 소실되며 어색해진다. 이를 극복하고 부드러운 화질을 유지하기 위해 **텍스처 필터링 (Texture Filtering)** 기술을 사용한다.
 
-텍스처는 **텍셀 (texel)** 이라는 기본 픽셀 단위로 구성되는데, 텍셀은 텍스처와 화면에 대응되도록 하는 텍스처상의 픽셀을 의미한다.
+> [!info]
+> **텍스처 필터링**이란 텍스처 샘플링 중에 화면 픽셀 크기와 텍스처 좌표가 정확히 일치하지 않을 때, 렌더링 파이프라인이 어떤 방식으로 색상을 추산해서 칠할지 결정하는 기법이다.
 
-필터링 방식은 매우 다양하지만, 여기서는 대표적으로 `GL_NEAREST`와 `GL_LINEAR`를 소개한다.
+텍스처는 **텍셀 (Texel)** 이라는 기본 픽셀 단위로 구성된다. (Texture Elements의 약자). 화면의 모니터 픽셀과 텍스처의 텍셀을 매핑하는 과정에서 필터링이 개입한다. 가장 흔히 쓰이는 방식은 `GL_NEAREST`와 `GL_LINEAR`다.
 
-#### GL_NEAREST
+### GL_NEAREST (근접 필터링)
 
-![alt text](/images/texture3.png)
+![GL_NEAREST Filter](/images/texture3.png){: width="500" }
 
-`GL_NEAREST`는 OpenGL에서 기본으로 적용하는 필터링 방식이다. 텍스처 좌표가 있으면 이 위치에서 가장 가까운 텍셀을 선택해서 적용한다. 위 그림을 보면 텍스처 좌표는 왼쪽 위 텍셀의 중심과 가장 가깝기 때문에 이 텍셀로 샘플링하여 색을 결정한다.
+`GL_NEAREST`는 OpenGL의 기본(Default) 텍스처 필터링 방식이다. 소수점을 포함한 텍스처 좌표가 주어지면, 수학적으로 **가장 거리가 가까운 단 하나의 텍셀**을 선택해서 그 색상을 100% 그대로 입힌다. 위 그림을 보면 중심점이 가스레인지 불꽃 마크 텍셀 구간에 위치하므로, 해당 텍셀 컬러가 그대로 반영되는 것을 볼 수 있다. 확대 시 도트 스파이크(계단 현상)가 명확하게 보이는 것이 특징이다 (레트로 픽셀 아트 게임에 적합).
 
-#### GL_LINEAR 
+### GL_LINEAR (선형 보간 필터링)
 
-![alt text](/images/texture4.png)
+![GL_LINEAR Filter](/images/texture4.png){: width="500" }
 
-`GL_LINEAR` 방식은 텍스처 좌표가 있고 그 좌표값에 인접한 텍셀들에 대해서 가까운 만큼 (비율에 맞게) 혼합적으로 보간을 해줘서 최종 텍셀을 생성한다.
+`GL_LINEAR` 방식은 텍스처 좌표 주변에 **인접한 4개의 텍셀**을 찾은 뒤, 각 텍셀 중심과 텍스처 좌표 간의 거리에 비례하여 **선형 보간(Linear Interpolation)** 덧셈 연산을 수행해 최종 색상을 도출해낸다. 가까운 텍셀의 색상 지분이 더 크게 섞이며 결괏값이 부드럽게 흐려진다(블러링).
 
-![alt text](/images/texture5.png)
+![Filtering Comparison](/images/texture5.png){: width="600" }
+_확대 시 GL_NEAREST (좌) 와 GL_LINEAR (우) 의 차이. 우측이 확연히 부드럽다._
 
-필터링 방식에 따라 픽셀이 두드러질 수도 있고, 부드러워질 수도 있다.
+텍스처가 확대(Magnification)될 때와 축소(Minification)될 때 각각 다른 필터링 방식을 적용할 수 있다.
 
 ```cpp
+// 텍스처가 축소될 때는 가장 가까운 텍셀 하나만 샘플링
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+// 텍스처가 화면에 확대될 때는 매끄러운 선형 보간 적용
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 ```
 
-위 코드는 텍스처 필터링이 확대되거나 축소되는 경우 어떤 방식으로 필터링할지 결정할 수 있음을 보여준다. 첫 번째 라인은 텍스처가 축소될 때 가장 가까운 텍셀 하나만 샘플링하는 `GL_NEAREST` 방식을, 두 번째 라인은 확대될 때 주변 텍셀 값들에 선형 보간을 적용한 `GL_LINEAR` 방식을 사용한다.
+## 밉맵 (Mipmap) 
 
----
+오브젝트에 고해상도 텍스처를 입힌 후 멀리서 관찰한다고 가정해보자. 카메라는 멀리 있는데 텍스처는 불필요하게 초고해상도라면, 프래그먼트 셰이더는 극도로 작은 면적 안에서 컬러를 결정하기 위해 방대한 텍셀 풀에서 샘플링을 해야 하므로 **캐시 미스(Cache Miss)가 발생하고 심각한 메모리 대역폭 낭비와 앨리어싱(Aliasing) 노이즈**를 초래한다.
 
-### 밉맵 (Mipmap) 
+그래서 탄생한 기법이 기존 텍스처 이미지를 사전에 여러 단계로 축소해놓은 **밉맵 (Mipmap)** 이다. 밉맵은 다단계 해상도를 의미하며, 해상도를 1/2로 줄여나가며 여러 레벨의 이미지를 메모리에 캐싱해 둔 텍스처 체인이다.
 
-오브젝트에 텍스처를 입혔을 때, 가까이 있건 멀리 있건 계속 고해상도 상태로 유지된다면, 멀리 있을 때는 텍스처를 구체적으로 표현할 이유가 없기도 하고 메모리 낭비이므로 고해상도 텍스처가 될 필요가 없게 된다.
+```mermaid
+graph TD
+    A[원본 텍스처 512x512] -->|거리 멀어짐| B[Mip Level 1: 256x256]
+    B -->|더 멀어짐| C[Mip Level 2: 128x128]
+    C -->|아주 멀리| D[Mip Level N: 1x1]
+```
 
-그래서 미리 기존의 텍스처 이미지를 **밉맵 (Mipmap)** 하는 방식을 사용한다. 밉맵은 ***텍스처 이미지를 여러 크기로 줄여서 저장해 놓은 것*** 으로, 대개 2배 기준으로 작게 만들고 이를 따로 저장해 둔다.
+![Mipmap Concept](/images/texture6.png){: width="500" }
+_하나의 텍스처에 귀속되는 밉맵 레벨 체인 예시_
 
-![alt text](/images/texture6.png)
+카메라에서 오브젝트까지의 뎁스(거리가 특정 값 이상)를 계산해 OpenGL은 그때 그때 해상도 수지타산이 맞는 최적의 밉맵 텍스처를 자동으로 꺼내 쓴다. 프로그래머가 밉맵을 포토샵으로 일일이 만들 필요 없이 화면 로딩 시 `glGenerateMipmap` 함수를 호출하면 하드웨어가 알아서 전체 밉맵 체인을 자동 생성한다.
 
-만약 텍스처가 적용되는 object까지의 거리가 특정 값 이상으로 넘어가면 거기에 알맞은 밉맵 텍스처를 적용시키는 것이다. 위 사진은 밉맵을 모아둔 한 예이다.
+> [!warning]
+> 밉맵 교체 시기가 찾아와서 해상도가 변형될 때(Level 간의 전환), 이 또한 필터링 이슈가 생긴다. OpenGL은 밉맵 레벨 간 전환 필터링 규칙도 유저가 통제하게 해준다. 
 
-밉맵은 텍스처 하나하나마다 생성시키기 번거로우니, `glGenerateMipmap` 함수를 써서 자동으로 밉맵을 생성할 수 있다.
+### 밉맵 필터링 옵션 
 
-그런데 이전에 설명했듯 텍스처의 크기가 늘어나거나 줄어들 때, **텍스처 필터링 (Texture Filtering)** 을 할 수 있다고 하였다. 텍스처가 적용되는 거리가 특정 값을 넘어가는 경우 텍스처가 사이즈가 변하게 될 텐데, 이때도 마찬가지로 필터링 기술을 적용할 수 있다. 이 역시 대표적으로 `NEAREST`, `LINEAR`가 있고, 옵션은 크게 4가지로 나뉜다.
+축소 필터(`GL_TEXTURE_MIN_FILTER`)에만 보통 밉맵 필터를 혼합하여 적용하며, 대표적 옵션 4가지는 다음과 같다.
 
-#### 밉맵 필터링 옵션 
-
-*   **GL_NEAREST_MIPMAP_NEAREST** {#gl_nearest_mipmap_nearest-1}: 밉맵 중에서 픽셀 크기에 가장 가까운 하나를 고르고, 그 레벨에서 **가장 가까운 텍셀 (근접 보간)** 을 가져온다.
-
-*   **GL_LINEAR_MIPMAP_NEAREST** {#gl_linear_mipmap_nearest-1}: 밉맵 중에서 픽셀 크기에 가장 가까운 하나를 고르고, 그 레벨에서 여러 텍셀을 선형 보간하여 값을 가져온다.
-
-*   **GL_NEAREST_MIPMAP_LINEAR** {#gl_nearest_mipmap_linear-1}: 픽셀 크기에 가장 가까운 두 개의 밉맵을 고르고, 둘을 섞은 다음에 근접 보간으로 텍셀 값을 가져온다.
-
-*   **GL_LINEAR_MIPMAP_LINEAR** {#gl_linear_mipmap_linear-1}: 픽셀 크기에 가장 가까운 두 개의 밉맵을 고르고, 둘을 섞은 다음, 각각의 밉맵에서 선형 보간하여 값을 가져온다.
-
----
+*   `GL_NEAREST_MIPMAP_NEAREST` : 현재 화면 픽셀 크기에 가장 잘 맞는 단 하나의 밉맵 해상도를 고른 뒤, 그 안에서 `GL_NEAREST`(최근접)로 텍셀을 샘플링한다.
+*   `GL_LINEAR_MIPMAP_NEAREST` : 가장 잘 맞는 단일 밉맵 버전을 고르고, 그 안에서 `GL_LINEAR`(선형 보간)로 텍셀을 샘플링한다.
+*   `GL_NEAREST_MIPMAP_LINEAR` : 화면 픽셀 크기에 인접한 위아래 **2개의 밉맵 레벨 버전을 고른 뒤 선형 보간하여 섞고**, 최종 샘플링은 **최근접**으로 한다.
+*   `GL_LINEAR_MIPMAP_LINEAR` : **(가장 부드럽고 무거움)** 인접한 두 밉맵 레벨을 고른 뒤 선형 보간하여 섞고, 텍셀 자체도 선형 보간하여 최종값을 계산한다. 이를 Trilinear 필터링이라고 부른다.
 
 ```cpp
+// 밉맵 레벨 간 전환은 선형보간, 텍셀 샘플링도 선형보간 (Trilinear 필터링)
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+// 확대 시에는 밉맵이 없으므로 단순 선형 보간만 적용
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 ```
 
-위 코드는 아까와 같은 함수 (`glTexParameteri`)인데, 필터링 방식이 위 4가지로 수정된 것 뿐이다.
+> [!tip]
+> 확대(`GL_TEXTURE_MAG_FILTER`)에는 밉맵 필터링 옵션을 주면 안 된다. 밉맵은 축소에만 관여하는 기법이기 때문에 런타임 오류나 `GL_INVALID_ENUM`을 뱉어낼 수 있다.
 
-### stb_image.h 라이브러리 및 #define 키워드 
+---
 
-`stb_image.h`는 웬만한 이미지를 로드할 수 있는 라이브러리이다. 사용 시 다음과 같은 코드를 입력한다.
+## stb_image.h 라이브러리 및 매크로 키워드 
+
+`stb_image.h`는 C/C++ 환경에서 웬만한 확장자의 이미지 파일(JPG, PNG 등)을 손쉽게 로드할 수 있게 해주는 싱글 헤더 라이브러리다. 코드에 포함시킬 때는 다음과 같은 패턴을 사용한다.
 
 ```cpp
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 ```
 
-`#define`은 라이브러리에서 특정 구현을 활성화할 때 자주 쓴다. 예를 들어 `stb_image.h`에서 `#define STB_IMAGE_IMPLEMENTATION`은 함수 구현을 활성화하기 위해 사용한다.
+C/C++ 생태계에서 `#define` 전처리기 매크로는 라이브러리의 특정 구현부를 켜고 끌 때 자주 쓰인다. `stb_image.h`는 독특하게도 함수 선언부뿐만 아니라 실제 기능이 작동하는 구현부까지 헤더 파일 패키지 안에 모두 밀어넣은 형태다. 
 
-```C
-#ifdef STB_IMAGE_IMPLEMENTATION
-// 실제 함수 구현 코드
-unsigned char *stbi_load(const char *filename, int *x, int *y, int *comp, int req_comp) {
-    // 이미지 로드하는 함수 구현
-    return NULL; // 예시를 위해 NULL 반환
-}
-#endif
-```
+따라서 단순히 `#include`만 하면 함수 껍데기(선언)만 가져오게 되며, 그 직전에 반드시 `#define STB_IMAGE_IMPLEMENTATION` 매크로를 선언해야만 비로소 내부의 C 코드가 컴파일된다.
 
-`std_image.h`는 일반적인 헤더 파일과는 다르게 함수 선언뿐 아니라 구현부까지 넣어놓았다. 즉 `define` 키워드를 내가 실행할 파일에서 사용해야 함수 부분을 활성화시킬 수 있다는 것이다.
+> [!warning]
+> **중복 정의(Multiple Definition) 오류 주의**  
+> 이 매크로 지정은 **프로젝트 전체를 통틀어 단 하나의 `.cpp` 소스 파일에서만** 딱 한 번 선언되어야 한다. 여러 파일에서 `STB_IMAGE_IMPLEMENTATION`을 활성화하면 링킹 단계에서 동일한 함수가 여러 번 구현되었다면서 충돌 오류(LNK2005 등)가 터지게 된다.
 
-단, 프로그램 내에서 단 한 번만 선언해야 한다. 프로그램을 만들 때 여러 개의 실행 파일들이 존재할 텐데, 그 파일들 중 여러 개는 `stb_image.h`의 함수를 사용하게 될 것이다. 그렇더라도 모든 파일 말고 단 한 개의 파일에서 한 번의 선언만 하면 된다.
+---
 
-여러 번 `define` 키워드로 활성화시킬 경우, 동일 함수가 여러 번 구현되어 오류가 나기 때문이다.
+## 텍스처 객체(Object) 생성 및 데이터 바인딩
 
-#### #define STB_IMAGE_IMPLEMENTATION 
+비로소 `stb_image.h` 세팅이 끝났다면, 텍스처 이미지를 로드하고 관리할 준비를 해야 한다.
 
-#### 중복 정의 오류 {#중복-정의-오류}
-
-### 텍스처 사용 시작 {#텍스처-사용-시작}
-
-`stb_image.h` 함수를 활성화 했다면 코드 작성으로 텍스처 이미지를 사용하겠다는 표시를 해주어야 한다.
+### 1. 이미지 파일 로드
 
 ```cpp
 int width, height, nrChannels;
+// 지정된 로컬 경로에서 이미지를 읽어들여 픽셀 데이터 포인터를 반환한다.
 unsigned char *data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
 ```
 
-폭, 너비, 색상 채널 수를 선언하고, texture 이미지를 사용하기 위해 `stbi_load` 함수를 사용한다. 선언했던 `int`들이 인자로 넘어간 것을 볼 수 있다.
+`stbi_load` 함수는 이미지의 메타데이터(폭, 높이, 색상 채널 수)를 참조 매개변수를 통해 전달해주고, 실제 그림 데이터가 들어있는 메모리 블록의 첫 주소를 반환해준다.
 
-#### 이미지 로드 {#이미지-로드}
-
-#### 텍스처 객체 생성 및 바인딩
+### 2. 텍스처 객체 생성
 
 ```cpp
 unsigned int texture;
-glGenTextures(1, &texture); // 1개의 텍스처 오브젝트를 만들고 이 ID를 texture 변수에 저장.
+glGenTextures(1, &texture); // 1개의 텍스처 오브젝트를 만들고 이 ID를 texture 변수에 부여한다.
 ```
 
-이 코드는 마치 VAO를 만들었을 때랑 유사하다. 텍스처도 다른 오브젝트처럼 ID를 담아서 참조하는 것이다. 결국 texture ID를 생성하는 코드이다. 그리고 여느 오브젝트들이 그래왔듯 바인딩으로 활성화 시키고 그 활성화된 오브젝트를 조정한다.
+과거 VAO, VBO를 다루던 방식과 완벽하게 동일하다. 텍스처 역시 여타 OpenGL 오브젝트처럼 정수 ID를 할당받아 참조된다. 
+
+### 3. 바인딩 및 텍스처 이미지 주입
+
+텍스처 ID를 발급받았으면 이를 활성화(바인딩)하고, 앞서 `stbi_load`로 넘겨받은 픽셀 데이터를 텍스처 객체 내부로 펌핑(Pumping)해 넣어야 한다.
 
 ```cpp
+// 2D 텍스처 모드로 바인딩
 glBindTexture(GL_TEXTURE_2D, texture);
 
+// 로드한 이미지 데이터를 메모리로 복사하여 텍스처를 본격 생성한다
 glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+// 필요에 따라 위에서 배운 다단계 밉맵을 자동 파생시킨다
 glGenerateMipmap(GL_TEXTURE_2D);
 ```
 
-`glTexImage2D`는 텍스처 이미지를 생성하는 함수이다.
+가장 핵심이 되는 `glTexImage2D` 함수의 파라미터를 해부해보자.
 
-#### 텍스처 이미지 생성 (glTexImage2D) 
+1.  **타겟 (Target)**: `GL_TEXTURE_2D` 등 생성할 텍스처의 차원을 지정한다.
+2.  **밉맵 레벨 (Mipmap Level)**: 수동으로 특정 레벨의 밉맵을 지정할 때 쓰며, 베이스 이미지는 항상 0이다.
+3.  **내부 포맷 (Internal Format)**: 그래픽카드(GPU)가 텍스처를 **어떤 픽셀 규격으로 보관**할지 결정한다. (예: `GL_RGB`)
+4.  **너비 (Width)**: 로드된 이미지의 가로 크기.
+5.  **높이 (Height)**: 로드된 이미지의 세로 크기.
+6.  **테두리 (Border)**: 레거시 호환성용 매개변수이므로 무조건 0을 유지한다.
+7.  **입력 포맷 (Format)**: 전달된 **원본 데이터 포인터의 포맷**을 명시한다. RGB 이미지 파일이라면 `GL_RGB`다.
+8.  **입력 데이터 타입 (Type)**: 포인터 안의 값들이 어떤 C 데이터형으로 이루어져 있는지 명시한다 (`GL_UNSIGNED_BYTE`).
+9.  **데이터 포인터 (Data)**: 실제 픽셀값들이 나열된 메모리 포인터.
 
-```cpp
-glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-```
-
-1.  **텍스처 타겟 (첫 번째 인수)**: 첫 번째 인수는 어떤 종류의 텍스처를 생성할지 정하는 인수이다. `GL_TEXTURE_2D`를 쓴다면 2D 텍스처를 사용하겠다는 뜻이다.
-
-2.  **Mipmap 레벨 (두 번째 인수)**: 두 번째 인수는 Mipmap은 텍스처의 여러 해상도 버전을 말한다. 이 인수는 어떤 Mipmap 레벨을 설정할지 지정한다. 보통 기본 레벨인 0을 사용한다.
-
-3.  **텍스처 저장 형식 (세 번째 인수)**: 세 번째 인수는 OpenGL이 텍스처를 어떤 형식으로 저장할지 결정한다. 예를 들어, 이미지가 RGB 값만 가지고 있다면, `GL_RGB`와 같은 형식을 사용한다.
-
-4.  **텍스처의 너비와 높이 (네 번째와 다섯 번째 인수)**: 네 번째, 다섯 번째는 텍스처의 크기, 높이를 지정한다. 예를 들어, 256x256 픽셀의 텍스처를 생성하려면 너비와 높이를 각각 256으로 설정한다.
-
-5.  **레거시 요소 (여섯 번째 인수)**: 여섯 번째는 항상 0으로 설정한다. 이는 과거의 호환성을 위해 남겨진 것이다.
-
-6.  **소스 이미지 형식과 데이터 유형 (일곱 번째와 여덟 번째 인수)**: 일곱 번째, 여덟 번째 인수들은 소스 이미지의 형식과 데이터 유형을 지정한다. 예를 들어, 이미지가 RGB 형식이고 각 픽셀이 바이트 (8비트)로 저장되어 있다면, `GL_RGB`와 `GL_UNSIGNED_BYTE`를 사용한다.
-
-7.  **이미지 데이터 (마지막 인수)**: 마지막 인수는 실제 이미지 데이터를 전달한다. 이 데이터는 픽셀 값들의 배열로, 텍스처로 로드될 것이다.
-
-이렇게 `glTexImage2D`를 정상 호출했다면 텍스처 오브젝트 (texture)는 텍스처 이미지 (data)를 갖게 된다. 그리고 다음 라인에 `glGenerateMipmap`을 사용하면 필요한 모든 밉맵이 생성된다.
-
-#### 밉맵 생성 (glGenerateMipmap) 
-
-밉맵 생성을 완료하면 이미지 메모리는 지워주도록 한다.
-
-#### 메모리 해제 (stbi_image_free) 
+> [!tip] 
+> GPU 메모리에 이미지를 성공적으로 업로드하고 나면 램(RAM)에 띄워두었던 원본 데이터는 쓸모가 없어진다. 누수 방지를 위해 반드시 `stbi_image_free(data);` 로 찌꺼기 메모리를 날려주어야 한다.
 
 ```cpp
-stbi_image_free(data); // 이미지 메모리 지움.
+stbi_image_free(data); // 이미지 로딩용 임시 메모리 해제
 ```
 
-### 텍스처 적용하기 
+---## 텍스처 파이프라인 적용 실전
 
-이전에 사각형을 그릴 때 썼던 `glDrawElements` 코드를 발전시킬 것이다. vertex data에서 texture coordinate (텍스처 좌표)를 추가하면,
+기존 사각형을 그리기 위해 VBO에 `positions`(위치)와 `colors`(색상)를 넣었던 것을 기억할 것이다. 여기에 방금 배운 `texture coords`(텍스처 좌표)를 추가하여 데이터 속성(Attribute)을 확장하자.
 
-#### 버텍스 데이터 수정 (텍스처 좌표 추가) 
+### 1. 버텍스 데이터 확장
 
 ```cpp
 float vertices[] = {
-    // positions          // colors           // texture coords
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left
+    // positions (x,y,z)  // colors (R,G,B)   // texture coords (s,t)
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 우측 상단
+     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 우측 하단
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 좌측 하단
+    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 좌측 상단
 };
 ```
 
-이렇게 되면 vertex attribute는 다음과 같아진다.
+이렇게 되면 버텍스 데이터의 메모리 레이아웃은 세 가지 속성이 교차된 형태의 구조를 띤다.
 
-![alt text](/images/texture7.png)
+![Interleaved Vertex Attributes](/images/texture7.png){: width="700" }
 
-이렇다면 각 attribute마다 보폭 (stride)는 32, 즉 `8 * sizeof(float)`가 된다. position, color, texture 모두 보폭을 설정해준다. (`glVertexAttribPointer`)
+해당 VBO를 읽어내기 위한 보폭(Stride)은 속성이 총 8개의 float로 늘어났으므로 `8 * sizeof(float)` 로 모두 늘려주어야 하며, 텍스처 좌표의 시작점(Offset)은 `6 * sizeof(float)` 지점이 된다.
 
-이제 버텍스 셰이더 코드를 수정하고 프래그먼트 셰이더에게 넘겨준다.
+### 2. 버텍스 셰이더 수정
 
-#### 버텍스 셰이더 수정
+VBO 0번, 1번 버텍스 속성에 이어 텍스처 속성을 2번(`location = 2`)으로 포착하여 다음 파이프라인으로 토스해야 한다.
 
-```cpp
+```glsl
 #version 330 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
 
 out vec3 ourColor;
-out vec2 TexCoord;
+out vec2 TexCoord; // 프래그먼트 셰이더로 넘길 텍스처 좌표
 
 void main()
 {
@@ -262,119 +261,105 @@ void main()
     TexCoord = aTexCoord;
 }
 ```
+{: file="shader.vert" }
 
-이렇게 버텍스 셰이더에서 넘겨주면 프래그먼트 셰이더에서 `aTexCoord` 변수를 받는 것이다.
+### 3. 프래그먼트 셰이더 수정 
 
-#### 프래그먼트 셰이더 수정 
+이쪽 파이프에서는 토스받은 `TexCoord` 변수와 GPU 칩에 바인딩된 텍스처 객체를 맞물려 실질적인 색을 뽑아내야 한다.
 
-```cpp
+```glsl
 #version 330 core
 out vec4 FragColor;
   
 in vec3 ourColor;
 in vec2 TexCoord;
 
-uniform sampler2D ourTexture;
+// CPU 영역에서 바인딩된 텍스처 오브젝트를 참조할 샘플러 유니폼
+uniform sampler2D ourTexture; 
 
 void main()
 {
+    // texture 내장 함수를 통해 특정 uv 좌표 픽셀 컬러를 추출한다.
     FragColor = texture(ourTexture, TexCoord);
 }
 ```
+{: file="shader.frag" }
 
-프래그먼트 셰이더는 텍스처 오브젝트에 접근해서 텍스처 이미지를 가져와야 한다. GLSL에는 텍스처 오브젝트를 가져오는 타입인 `sampler1D`, `sampler2D`, `sampler3D` 같은 타입이 존재한다. 2D 텍스처이므로 `sampler2D`를 사용하여 유니폼 변수로 `ourTexture`라는 변수를 선언해준다.
+GLSL에는 텍스처 오브젝트를 가져와서 참조하는 전용 자료형인 `sampler1D`, `sampler2D`, `sampler3D` 등이 존재한다. `ourTexture`라는 `sampler2D` 유니폼 변수를 선언하고, `texture(...)` 내장 함수를 호출하면 OpenGL이 알아서 샘플러의 텍스처 데이터를 뒤져서 현재 `TexCoord` 위치에 맞는 최종 $rgba$ 픽셀 색상값을 추출(Sample)해준다.
 
-GLSL에서 `texture`라는 함수를 사용하여 좌표에 해당하는 텍스처에서 color를 샘플링한다. 결국 텍스처 좌표 (`TexCoord`)를 사용해 텍스처 (`ourTexture`)에서 색상을 가져와 픽셀에 적용한다. 여기서 말하는 픽셀은 우리가 보는 화면의 픽셀이다.
+---
 
-### 텍스처 유닛 (Texture Unit) 
+## 텍스처 멀티플라이: 텍스처 유닛 (Texture Unit) 
 
-텍스처 유닛은 텍스처가 저장되는 곳으로 셰이더에서 여러 개의 텍스처를 동시에 사용할 수 있도록 도와준다. 사용하려면 해당 텍스처 유닛을 바인딩 단계 이전에 활성화 시켜야 한다.
+만약 화면 하나의 오브젝트에 텍스처를 2개 이상 섞어 쓰고 싶다면 어떻게 해야 할까? 렌더링 파이프라인에는 여러 텍스처를 동시에 연결해둘 수 있는 다수의 **텍스처 유닛(Texture Unit)** 슬롯이 존재한다.
 
-#### 텍스처 유닛 활성화 (glActiveTexture) 
+### 텍스처 유닛 활성화와 바인딩
+
+이전까지 우리는 `glActiveTexture` 함수를 부른 적도 없는데 텍스처가 잘 적용되었다. 이는 OpenGL이 기본적으로 `GL_TEXTURE0` 이라는 슬롯 0번 텍스처 유닛을 디폴트로 활성화시켜 두기 때문이다.
 
 ```cpp
-unsigned int texture;
-glGenTextures(1, &texture); // 텍스처 객체 생성, ID 저장
-.
-..
-...
-glActiveTexture(GL_TEXTURE0); // 텍스처 유닛 활성화
-glBindTexture(GL_TEXTURE_2D, texture); // 텍스처 바인딩
+glActiveTexture(GL_TEXTURE0); // 1번 슬롯(유닛 0) 선택 활성화
+glBindTexture(GL_TEXTURE_2D, texture1); // 1번 슬롯에 텍스처 1을 결합
+
+glActiveTexture(GL_TEXTURE1); // 2번 슬롯(유닛 1) 선택 활성화
+glBindTexture(GL_TEXTURE_2D, texture2); // 2번 슬롯에 텍스처 2를 결합
+
+// 바인딩이 끝났으므로 렌더링을 호출한다.
+glBindVertexArray(VAO);
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 ```
 
-`glActiveTexture`로 텍스처 유닛을 활성화하면 이후의 `glBindTexture` 호출은 해당 텍스처 유닛에 텍스처를 바인딩한다. 기본적으로 `GL_TEXTURE0` 텍스처 유닛이 활성화되어 있기 때문에 이전 섹션에서는 `glActiveTexture`를 호출하지 않아도 문제가 없었다.
+### 샘플러(Sampler)와 텍스처 유닛 매칭
 
-#### 여러 개의 텍스처 사용 
-
-여러 텍스처를 사용하려면 프래그먼트 셰이더에 샘플러를 추가로 정의해야 한다. 예시는 다음과 같다.
+여러 텍스처를 사용하려면 프래그먼트 셰이더의 샘플러도 2개가 되어야 한다.
 
 ```glsl
 #version 330 core
 
 uniform sampler2D texture1;
-uniform sampler2D texture2; // 사용할 텍스처 2개!
+uniform sampler2D texture2; 
 
 void main()
 {
+    // mix 함수: texture1과 texture2 픽셀 색상을 8:2 비율로 혼합
     FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0.2);
 }
 ```
+{: file="shader.frag" }
 
-위 코드에서 `mix` 함수는 두 텍스처의 색상을 섞어준다. 세 번째 인자가 0.0이면 첫 번째 텍스처만, 1.0이면 두 번째 텍스처만 사용한다. 0.2를 넣으면 첫 번째 텍스처의 80%와 두 번째 텍스처의 20%가 섞인 결과를 반환한다.
-
-텍스처 코드는 수정했고, 이제 다시 본 코드로 돌아가 텍스처를 하나 더 추가해준다. 예를 들어, `awesomeface.png` 이미지를 로드한다.
+그리고 가장 중요한 단계가 남았다. C++ 코드에서 각 `sampler` 유니폼 변수가 정확히 **몇 번 텍스처 유닛 슬롯(0, 1, 2...)**을 읽어야 하는지 알려주는 교통정리가 필요하다.
 
 ```cpp
+ourShader.use(); // 유니폼에 값을 넣기 전 프로그램 활성화는 필수
+
+// 셰이더 내의 "texture1" 변수는 GL_TEXTURE0 (0번 슬롯)을 참조하게 설정
+glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0); 
+// 셰이더 내의 "texture2" 변수는 GL_TEXTURE1 (1번 슬롯)을 참조하게 설정
+ourShader.setInt("texture2", 1); 
+
+while(!glfwWindowShouldClose(window)) 
+{ /* 렌더링 루프... */ }
+```
+
+이렇게 명시적으로 정수 인덱스 값을 할당해주면 아래의 다이어그램과 같은 연결망(Architecture)이 완성된다.
+
+![Sampler Texture Unit Connection](/images/texture8.png){: width="600" }
+
+### 이미지 상하 반전 문제 해결 
+
+OpenGL에서 이미지를 묶어 렌더링해보면 사진이 상하로 뒤집혀 출력되는 어이없는 참사를 목격할 때가 많다. 이는 OpenGL은 수학적으로 $Y$축의 0.0 (원점) 값을 화면의 최하단 맨 밑바닥에서 시작한다고 철석같이 믿는데, PNG나 JPG 같은 대부분의 이미지 포맷은 데이터 스트림을 짤 때 $Y=0.0$을 좌측 상단 최상단 꼭대기로 상정하고 저장하기 때문이다. 기준 좌표계가 서로 반대다.
+
+이럴 때는 이미지 로드 시퀀스 맨 첫 단락에 `stb_image`의 내장 기능을 켜주면 말끔히 해결된다. 이미지를 로드하면서 알아서 배열을 거꾸로 뒤집어준다.
+
+```cpp
+stbi_set_flip_vertically_on_load(true); // 이미지 로드 시 Y축을 물리적으로 뒤집는다.
 unsigned char *data = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
-if (data)
-{
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    glGenerateMipmap(GL_TEXTURE_2D);
-}
-```
-
-아래와 같은 코드를 사용해 두 텍스처를 각각의 텍스처 유닛에 바인딩한다.
-
-```cpp
-glActiveTexture(GL_TEXTURE0);
-glBindTexture(GL_TEXTURE_2D, texture1);
-
-glActiveTexture(GL_TEXTURE1);
-glBindTexture(GL_TEXTURE_2D, texture2);
-
-glBindVertexArray(VAO);
-glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-```
-
-그리고 셰이더의 샘플러가 어떤 텍스처 유닛과 연결되어있는지 알려줘야 한다. 그럴 땐 `glUniformli` 함수를 사용하여 샘플러 설정을 한다. 이건 렌더 루프 밖에서 한 번 해주면 된다.
-
-#### 샘플러 설정 (glUniform1i 및 glUniformli) 
-
-```cpp
-ourShader.use(); // 유니폼을 설정하기 전에 셰이더를 활성화하는 것을 잊지 마세요!
-glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0); // 수동으로 설정
-ourShader.setInt("texture2", 1); // 또는 셰이더 클래스 사용
-
-while(...)
-{
-    [...]
-}
-```
-
-이렇게 하면 uniform sampler가 텍스처 유닛과 연결되어 아래와 같은 사진이 된다.
-
-![alt text](/images/texture8.png)
-
-### 이미지 뒤집힘 문제 해결 (stbi_set_flip_vertically_on_load) 
-
-사진이 뒤집어져 있는데, 이는 OpenGL이 y축에서 0.0 좌표를 이미지의 하단에 위치시키기를 기대하는 반면에 보통 이미지에서는 0.0이 상단에 위치하기 때문에 그렇다. 그래서 `stb_image.h`는 이미지를 로드할 때 y축을 뒤집을 수 있는 기능을 제공한다. 아래와 같은 코드를 추가한다.
-
-```cpp
-stbi_set_flip_vertically_on_load(true); // y축 뒤집기 명령임.
 ```
 
 ### 최종 결과
 
-![alt text](/images/texture9.png)
+목재 박스 텍스처 위에 익살스러운 웃는 얼굴 텍스처가 8:2 비율로 블렌딩(Mix)된 다중 텍스처링의 결과물이다.
+
+![Final Texture Blending Result](/images/texture9.png){: width="400" }
 
 ---

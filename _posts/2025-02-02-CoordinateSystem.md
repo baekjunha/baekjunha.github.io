@@ -1,346 +1,205 @@
 ---
-categories: graphics
+categories: [Graphics]
 tags: [graphics, opengl, coordinate, transformation]
-toc: true
-toc_sticky: true
-author_profile: false
-use_math: true 
-thumbnail: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
+math: true
+image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
 ---
 
-### 좌표 변환 과정 해석  
+## 요약
+> **요약**: 3D 공간의 정점(Vertex)이 2D 화면 픽셀(Fragment)로 그려지기까지 거치는 5단계 좌표계 변환 과정(로컬 ➡️ 월드 ➡️ 뷰 ➡️ 클립 ➡️ 스크린)과 모델(Model), 뷰(View), 투영(Projection) 행렬의 수학적 역할을 다룬다.
+
+## 목차
+* TOC
+{:toc}
+
+---
 
 **자료 출처**: [LearnOpenGL](https://learnopengl.com/)
 
-# Coordinate Systems
+## 1. 정규화 장치 좌표계 (NDC)와 5단계 변환
 
-그래픽스 파이프라인에서 정점(Vertex)의 좌표는 여러 단계의 좌표 변환을 거쳐 Normalized Device Coordinates(NDC) 범위인 [-1, +1]로 변환된다. 이를 위해 오브젝트의 Vertex 좌표를 여러 단계의 Coordinate System을 따라 변환하는 과정이 필요하다.
+그래픽스 렌더링 파이프라인에서 3D 공간상의 버텍스(Vertex) 좌표는 최종 디스플레이 픽셀로 변환되기 위해 여러 단계의 공간(Space) 좌표계 변환을 거쳐야 한다. OpenGL은 최종적으로 모든 렌더링 좌표가 $[-1.0, 1.0]$ 범위의 **정규화 장치 좌표계(Normalized Device Coordinates, NDC)** 안에 들어오기를 요구한다. 이 범위를 벗어난 기하 좌표는 화면 밖으로 간주되어 잘려나간다(Clipping).
 
-그래픽스 파이프라인에서 거치는 좌표 변환 단계는 다음과 같다.
-- Local Space (Object Space)
-- World Space
-- View Space (Eye Space)
-- Clip Space
-- Screen Space
+하나의 버텍스가 온전히 프래그먼트로 도달하기 위해서는 행렬(Matrix) 연산의 도움을 받아 다음 5단계의 공간을 릴레이로 거치게 된다.
 
-이러한 좌표 변환 과정을 모두 거친 후, 최종적으로 정점(Vertex)은 NDC 좌표로 변환되어 래스터라이제이션을 통해 Fragment로 변환된다.
-
-<img src="https://learnopengl.com/img/getting-started/coordinate_systems.png" style="background-color:white;">
-
-사진을 보면 알 수있듯이 5단계를 거치는 것을 알 수있다.
-각 단계를 거치기 위해선 중간에 행렬(matrix)의 도움이 필요하다. 각각 MODEL,VIEW,PROJECTION 행렬이 그것이다.  
-각 단계를 요약하자면 버텍스가 프래그먼트가 되기위한 과정은 로컬 - 월드 - 뷰 - 클립 - 스크린 coordinate 순을 거치게 된다는 것이다.
-
-
-### 좌표 변환 과정 해석
-
-1. **로컬 좌표 (Local Coordinates)**
-
-로컬 좌표는 객체의 원점(local origin)을 기준으로 한 좌표를 의미한다. 이는 객체가 처음 정의될 때 사용되는 좌표이며, 모델링 단계에서 주어진다.  
-예를 들어, Blender 같은 모델링 소프트웨어에서 큐브를 만들었다고 가정하면,
-이 큐브의 원점(origin)은 **(0,0,0)** 일 가능성이 높다.
-
----
-
-2. **월드 좌표 (World Coordinates)**
-
-다음 단계는 로컬 좌표를 월드 좌표로 변환하는 것이다.
-월드 좌표는 객체가 전체 세계(global world) 내에서 어디에 위치하는지 나타내는 좌표이다.
-즉, 여러 개의 객체가 존재하는 하나의 큰 세계에서, 각 객체가 월드의 원점(global origin)을 기준으로 배치되는 좌표계라고 할 수 있다.
-즉, 모든 정점(Vertex)들이 월드 원점(0,0,0) 기준으로 배치된 좌표계이다.  
-
-우리는 객체를 배치할 때 **모델 행렬(Model Matrix)** 을 사용하여 로컬 좌표를 월드 좌표로 변환하게 된다.
-
-모델 행렬(Model Matrix)이 하는 일:
-- 객체를 이동(Translate)
-- 객체를 회전(Rotate)
-- 객체를 크기 조절(Scale)  
-  
-예를 들어, 집 모델을 생각해 보자.
-원래 모델링한 집의 크기가 너무 크다면, 모델 행렬을 이용해 **축소(Scale Down)** 할 수 있다.
-이 집을 서브 도시(suburb)로 **이동(Translate)** 시켜 배치할 수 있다.
-주변 건물과 정렬되도록 **Y축을 기준으로 조금 회전(Rotate)** 할 수도 있다.
-
-이전 장에서 특정 위치에 컨테이너를 배치하기 위해 사용했던 행렬도 일종의 모델 행렬이라고 볼 수 있다.
-즉, 로컬 좌표(Local Coordinates)를 특정 위치(World)로 변환하는 과정이 모델 행렬의 역할이다.
-  
----
-
-3. **뷰 좌표 (View Coordinates)**
-
-이제 월드(world) 좌표를 뷰 좌표(view-space coordinates)로 변환해야 한다.
-이 단계에서는 모든 객체가 카메라(또는 관찰자)의 시점에서 보이는 좌표로 변환된다.
-즉, 객체들이 “카메라의 위치와 방향”을 기준으로 어떻게 보이는지를 결정하는 변환이다.  
-카메라가 위치하는 좌표를 중심으로 장면을 변환하는 과정이다.
-이를 위해 **뷰 행렬(View Matrix)** 을 사용하며, 이 행렬은 보통 **회전(Rotation)과 이동(Translation)** 으로 구성된다.
-
-예를 들어,
-- 특정 객체를 화면 정중앙에 보이도록 하려면, 카메라를 이동해야 한다.
-- 특정 객체를 다른 각도에서 보려면, 카메라를 회전해야 한다.
-
-이 모든 변환을 **뷰 행렬(View Matrix)** 이 담당하며,
-뷰 행렬을 적용하면 **월드 좌표 → 카메라 좌표(View Space)** 로 변환된다.
-
----
-
-4. **클립 좌표 (Clip Coordinates)**
-
-뷰 좌표가 구해지면, 이제 이를 클립 좌표(clip-space coordinates)로 변환해야 한다.
-이 과정에서는 -1.0에서 1.0 사이의 범위로 좌표를 변환하여, 화면에 표시될 정점을 결정한다.  
-
-(특히 **투영 변환(Projection Transformation)** 을 적용하면 원근감을 추가할 수 있다.
-이때 사용되는 투영 방식에는 **원근 투영(Perspective Projection)** 과 **직교 투영(Orthographic Projection)** 이 있다.)
-
-각 정점(Vertex)이 Vertex Shader를 통과한 후, OpenGL은 각 좌표가 특정 범위 안에 있는지 검사한다.
-이 과정에서 해당 범위를 벗어난 좌표는 잘려(Clip) 버려지고, 남은 좌표들만 화면에 출력한다.
-이러한 이유로, 이 공간을 **클립 공간(Clip Space)** 이라고 부른다.
-
-하지만..
-- 모든 좌표를 -1.0 ~ 1.0 범위에 맞춰 직접 지정하는 것은 어렵다. 
-- 따라서, 우리는 좀 더 직관적인 좌표계를 사용하고, 이를 NDC(Normalized Device Coordinates)로 변환하는 과정을 거친다.
-
-이 변환을 담당하는 것이 **투영 행렬(Projection Matrix)** 이다.
-이 행렬은 뷰 공간(View Space) 좌표를 클립 공간(Clip Space)으로 변환하며,
-이 과정에서 특정 **가시 영역(Frustum)** 을 정의한다.
-
-예를 들어,
-- 우리가 지정한 범위가 **(-1000, 1000)** 이라고 가정하면,
-- 좌표 (1250, 500, 750)는 X축 범위를 초과하므로,
-- NDC 범위를 벗어나며 잘려(Clipped) 화면에 보이지 않게 한다.
-
-
-### 💡 참고! 
+```mermaid
+graph LR
+    A[Local Space] -->|Model Matrix| B[World Space]
+    B -->|View Matrix| C[View Space]
+    C -->|Projection Matrix| D[Clip Space]
+    D -->|Viewport Transform| E[Screen Space]
 ```
-- 만약 삼각형의 일부만 클리핑 범위를 벗어난다면?
-→ OpenGL은 삼각형을 다시 구성하여 화면에 맞도록 자동으로 변형한다.  
 
-투영 행렬(Projection Matrix)의 역할은?
-- 3D 좌표를 2D 정규화 좌표(NDC)로 변환 ⬅️ 이 과정을 투영(Projection)이라고 함
-- 우리가 정한 가시 범위를 Frustum이라 함
+![Coordinate Systems Concept](https://learnopengl.com/img/getting-started/coordinate_systems.png){: width="700" style="background-color:white;" }
+_버텍스가 프래그먼트로 도달하는 5단계 변환 체인._
 
-투영 행렬에는 두 가지 방식이 있다.
-	1.	직교 투영(Orthographic Projection)
-	2.	원근 투영(Perspective Projection)
-```
-clip space 변환 후 perspective division이라는 계산과정이 포함되는데, 여기선 x,y,z와 같은 벡터 성분을 w값으로 나누어 준다.
+각 공간으로 넘어가는 관문마다 **모델(Model), 뷰(View), 투영(Projection)** 이라는 변환 행렬들이 개입하여 좌표계의 기준을 탈바꿈시킨다. 이 과정을 **MVP 변환**이라고도 부른다.
 
 ---
-### 직교 투영(Orthographic Projection)
 
-직교 투영 행렬(orthographic projection matrix)은 정육면체 모양의 frustum(절두체) 을 정의하는데, 이 frustum 상자의 바깥에 있는 모든 정점(vertex)은 잘려나가게 된다.(clip). 직교 투영 행렬을 만들 때, 우리는 frustum의 가로(width), 세로(height), 깊이(depth)를 지정한다. 이 frustum 내부에 있는 모든 좌표는 변환된 후 NDC(Normalized Device Coordinates, 정규화 장치 좌표) 범위(-1.0 ~ 1.0) 안에 들어오게 되며, 그렇지 않은 좌표들은 잘려 나간다.
+## 2. 좌표 변환 과정 상세 해석
 
-### 직교 투영의 특징
-- Frustum은 가로, 세로, 깊이(near, far plane) 로 정의된다.
-- Near plane 앞의 좌표는 잘리고, 마찬가지로 far plane 뒤의 좌표도 잘린다.
-- 변환된 벡터의 w 컴포넌트를 변경하지 않으므로, 원근 왜곡이 없다.
-- 즉, 원근감이 적용되지 않고, 모든 물체가 같은 크기로 보이게 된다.
-   
-<img src="https://learnopengl.com/img/getting-started/orthographic_frustum.png" style="background-color:white;">  
+### 1단계: 로컬 좌표 (Local / Object Space)
 
-위 사진에서 만들어지는 입체도형이 절두체라고 보면 된다.  
-(직교 투영에서 왜 직교가 들어가냐면, 투영선과 투영 평면이 직교하기 때문이라고 한다...)  
-그래서 원근 투영과 다르게 원근감이 존재하지 않는다.  
+로컬 좌표는 객체 자기 자신의 고유한 원점(Local Origin, 보통 $(0,0,0)$)을 기준으로 한 상대 좌표다. 3D 모델링 툴(블렌더, 마야 등)에서 모델러가 스페이스바 중앙에 큐브를 모델링할 때 사용하는 바로 그 좌표계다. 프로그래머가 코드에 직접 입력하는 정점(Vertex) 데이터 배열(`float vertices[] = {...}`)이 바로 로컬 좌표다. 아직 세상(World)에 배치되지 않은 태아 상태와 같다.
 
-직교 투영 행렬은 glm::ortho 함수를 이용하여 생성한다.
+### 2단계: 월드 좌표 (World Space)
+
+우리가 만든 큐브 수십 개를 하나의 거대한 게임 스테이지(Global World)에 뿌리려면, 각 객체가 우주의 절대 원점을 기준으로 어디에 위치할지 정의해야 한다. 이것이 월드 좌표다. 모든 객체의 `로컬 좌표` 정점들을 통합 월드 원점 기준 좌표로 일괄 변환한다.
+
+이 변환을 수행하는 것이 **모델 행렬 (Model Matrix)** 다.
+모델 행렬은 각 객체의 위치를 지정(Translation), 방향을 조절(Rotation), 크기를 조정(Scale)하여 월드에 알맞게 세팅하는 역할을 수행한다.
+
+### 3단계: 뷰 좌표 (View / Eye Space)
+
+월드에 배치된 객체들을 이번에는 카메라(관찰자)의 렌즈를 기준으로 재배치한다. 아무리 거대한 월드라도 결국 모니터에 출력되는 것은 카메라의 시야뿐이기 때문이다. 카메라의 위치가 공간의 새로운 원점 $(0,0,0)$ 이 되고, 카메라가 바라보는 방향이 Z축이 되도록 모든 세상 만물들의 월드 좌표를 역산해 변환한다.
+
+이를 수행하는 행렬이 **뷰 행렬 (View Matrix)** 이다. 뷰 행렬은 보통 카메라의 회전과 이동 변환값으로 구성된다.
+
+### 4단계: 클립 좌표 (Clip Space)
+
+뷰 공간 좌표를 모니터 화면 비율에 맞게 깎아내고 찌그러뜨려 상자 모양으로 가공하는 단계다. 화면에 보이지 않는 위치의 객체 정점들을 솎아내어 버리는 역할을 하는데, 이 절단 범위를 **가시 영역 (Frustum, 절두체)** 이라고 부른다.
+
+이 변환을 지휘하는 것이 **투영 행렬 (Projection Matrix)** 이다.
+투영 행렬은 3D 입체 좌표계의 공간적 느낌을 유지하면서 최종적으로 $[-1.0, 1.0]$ 범위를 갖는 정규화 좌표(NDC)로 압축 및 맵핑(Mapping)하는 연산을 담당한다. 가시 영역 밖의 좌표 지표들은 전부 잘려나가(Clipping) GPU의 렌더링 부하를 줄인다.
+
+> [!info] 
+> **퍼스펙티브 디비전 (Perspective Division, 원근 나눗셈)**  
+> 투영 행렬이 곱해져 클립 공간으로 넘어간 뒤, 내부적으로 $x, y, z$ 좌표 요소들을 동차 좌표계의 $w$ 요소로 일제히 나누는 수학 연산이 일어난다. 이 나눗셈 결과물 비로소 최종 NDC 좌표계 범위 $[-1.0, 1.0]$ 에 온전히 안착하게 된다.
+
+투영 행렬을 구성하는 방식에는 시야각(원근감)의 유무에 따라 크게 두 가지 기법이 존재한다.
+
+---
+
+## 3. 직교 투영과 원근 투영
+### 직교 투영 (Orthographic Projection)
+
+직교 투영 행렬은 카메라의 시야 역할을 하는 가시 영역을 **직육면체 평행 상자(Box) 공간**으로 정의한다. 투영 입사선과 투영 평면이 완전히 90도 직교(Orthogonal)하기 때문에 거리에 따른 크기 변화(원근감)가 철저히 배제된다. 멀리 있는 물체나 가까이 있는 물체나 모니터 상의 픽셀 크기가 동일하게 그려진다.
+
+따라서 건축 설계 도면, CAD 프로그램, 혹은 심티시류의 2D 아이소메트릭(Isometric) 그래픽 전략 게임을 렌더링할 때 주로 쓰인다.
+
+![Orthographic Frustum](https://learnopengl.com/img/getting-started/orthographic_frustum.png){: width="500" style="background-color:white;" }  
+
+GLM에서는 `glm::ortho` 함수를 통해 이 육면체 상자의 좌/우/상/하/앞/뒤 한계경계 좌표값을 지정하여 직교 투영 행렬을 뽑아낸다. 직육면체 밖의 좌표는 전부 모가지가 잘려 클리핑 아웃된다.
+
 ```cpp
-glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f); //매개변수 6개
-
-//각 매개변수 설명
-//left, right : frustum의 좌/우 경계 (여기서는 0~800)
-//bottom, top : frustum의 아래/위 경계 (여기서는 0~600)
-//near, far : 가까운 면과 먼 면의 거리 (여기서는 0.1~100)
-
-이 행렬은 지정한 x, y, z 범위 내의 모든 좌표를 NDC(-1.0 ~ 1.0) 범위로 변환하게 된다.
+// left, right, bottom, top, near plane, far plane
+glm::mat4 proj = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, 0.1f, 100.0f); 
 ``` 
 
+### 원근 투영 (Perspective Projection)
 
-### 원근 투영(Perspective Projection)
+인간의 안구 구조를 모방하여, 카메라 렌즈에서 사물이 멀어질수록 화면상의 투사가 작게 소실점(Vanishing Point)으로 수렴하도록 만드는 스탠다드 3D 투영 기법이다. 대부분의 3D 그래픽 엔진이 기본 뼈대로 채택한다.
 
-<img src="https://learnopengl.com/img/getting-started/perspective_frustum.png" style="background-color:white;">  
+가시 영역 공간이 육면체가 아닌 끝이 잘린 각뿔 형태인 **절두체(Frustum)** 형상을 띤다.
 
-현실에서 사물을 보면 멀리 있는 물체가 더 작게 보이는 현상(원근감, Perspective)이 있다. 예를 들어, 기차 선로를 보면 먼 곳으로 갈수록 선로가 좁아지는 것처럼 보이다. 원근 투영은 이와 같은 원근감을 반영하는 투영 방법이다.
+![Perspective Frustum](https://learnopengl.com/img/getting-started/perspective_frustum.png){: width="500" style="background-color:white;" }  
 
-원근 투영 행렬은 frustum을 clip space로 변환할 때 w 값도 조작하여, 멀리 있는 정점이 더 작게 보이도록 만든다. 즉, z 값이 클수록(=멀수록) w 값도 커지며, 최종 좌표는 w로 나누어지므로 더 작아진다. 이를 원근 나눗셈(Perspective Division) 이라고 한다.
+원근 투영 행렬은 거리가 멀수록(Z값이 클수록) $w$값을 의도적으로 비대하게 조작한다. 이후 파이프라인에서 자동으로 수행되는 일제 나눗셈(Perspective Division: $x/w, y/w, z/w$) 과정에서 분모인 $w$가 워낙 크다 보니 최종 $x, y$ 화면 투영 좌표값이 상대적으로 확 쪼그라들게 되어버리며 시각적인 원근의 깊이감이 창출된다.
 
-### 원근 투영 행렬 변환 과정
-- w 컴포넌트가 조작됨
-- 변환 후 clip space에서 x, y, z를 각각 w로 나누어(원근 나눗셈) 멀리 있는 정점이 작게 보이도록 만듦
-- 변환 후 NDC(-1.0 ~ 1.0) 범위 내에 있는 좌표만 화면에 렌더링됨  
+GLM 구현 코드는 다음과 같다.
 
-원근 투영 행렬은 다음 코드로 실행 된다.
 ```cpp
+// fov각도(라디안), 윈도우 종횡비(가로/세로), 근경계(Near), 원경계(Far)
 glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)width/(float)height, 0.1f, 100.0f);
-
-//매개변수 설명
-fov(Field of View, 시야각): 일반적으로 45도 정도가 현실적인 값이며, 값이 클수록 더 넓은 영역을 볼 수 있음.
-
-aspect ratio(종횡비): 뷰포트 너비를 높이로 나눈 값. ➡️ (float)width/(float)height
-
-near, far: 카메라에서 가까운 평면과 먼 평면 거리 (일반적으로 0.1f ~ 100.0f)
 ```
-![alt text](https://learnopengl.com/img/getting-started/perspective_orthographic.png)
 
-➡️ 다음과 같이 직교투영과 원근투영시 결과가 다른 것을 알 수있다.
-(직교 투영에선 perspective div의 효과가 없는 상태로 clip space에 매핑.)  
-***매핑(mapping)“은 3D 공간의 좌표나 데이터를 다른 공간으로 변환하는 과정을 의미***
+> [!tip]
+> `near` 평면 값을 `0.0f`로 설정하면 심각한 깊이 버퍼(Depth), Z-파이팅 렌더링 오류가 터진다. 보통 `0.1f` 이상의 근사치를 할당한다.
 
-투영행렬이 가시영역(절두체)를 정의하는 거고, 원근 나누기 과정이 정점 데이터를 NDC로 변환해주는 과정이다.
+![Perspective vs Orthographic](https://learnopengl.com/img/getting-started/perspective_orthographic.png){: width="600" }
+_좌측: 원근 투영 적용 / 우측: 직교 투영 적용_
 
 ---
 
-5. 화면 좌표 (Screen Coordinates) & 뷰포트 변환 (Viewport Transform)
+### 5단계: 화면 좌표 (Screen Space 좌표 매핑)
 
-마지막으로, 클립 좌표를 **화면 좌표(Screen Coordinates)** 로 변환하는 단계이다.
-이 과정은 **뷰포트 변환(Viewport Transform)** 이라고 하며, glViewport 함수에 의해 정의된 화면 크기에 맞게 NDC 좌표(-1.0 ~ 1.0)를 실제 픽셀 단위의 화면 좌표로 변환한다.
-변환된 좌표들은 **래스터라이저(Rasterizer)** 에 의해 프래그먼트(Fragments)로 변환되어 픽셀을 생성하는 과정으로 넘어가게 된다.
+투영 행렬과 퍼스펙티브 디비전 트리거를 모두 거치고 살아남은 $[-1.0, 1.0]$ 규격의 순수한 NDC 제원들은 이제 최종적으로 C++ 코드 극초반에 선언했던 `glViewport` 함수를 타고 들어간다. 여기서 실제 모니터 윈도우 해상도(예: 800x600 픽셀) 규격에 맞게 쫙 펼쳐지면서 최종 **화면 좌표계(Screen Coordinates)** 로 스케일링된다. 그리고 래스터라이저(Rasterizer)를 타고 화려한 프래그먼트 유닛으로 잘게 쪼개져 픽셀을 장식한다.
 
-```
-요약
-1. Local Coordinates → 객체의 로컬 원점을 기준으로 한 좌표
-2. World Coordinates → 월드 원점을 기준으로 배치된 좌표
-3. View Coordinates → 카메라 시점에서 본 좌표
-4. Clip Coordinates → -1.0 ~ 1.0 범위로 변환된 좌표 (투영 변환 적용)
-5. Screen Coordinates → glViewport를 사용해 실제 픽셀 단위의 화면 좌표로 변환됨
-```
+---
 
-이후 **래스터라이저(Rasterizer)** 가 화면 좌표를 **프래그먼트(Fragments)** 로 변환하여 최종 픽셀을 생성한다. 
+## MVP 파이프라인 수식 결합 (Putting it together)
 
-<img src="https://learnopengl.com/img/getting-started/coordinate_systems.png" style="background-color:white;">
+수학적으로 공간 이동(행렬의 곱셈)은 교환 법칙이 성립하지 않는다. 우측부터 좌측으로 곱해 나가는 벡터 수식의 관례에 따라 정점의 변환 공식은 다음과 같이 거꾸로 서술되어 곱해진다. 결과론적으로 원본 정점 $V_{local}$은 MVP 행렬을 두들겨 맞고 최종 $V_{clip}$이 되어 셰이더 결과물인 `gl_Position` 변수로 산출된다.
 
+$$
+V_{clip} = M_{projection} \cdot M_{view} \cdot M_{model} \cdot V_{local}
+$$
 
+> [!warning]
+> **행렬 곱셈 순서**  
+> 코드 작성 시에도 반드시 $Projection \times View \times Model$ 순서 구조로 행렬을 곱해야 정상 작동을 보장한다.
 
-## putting in together
-이제 각 과정을 위해 필요한 행렬들 MODEL,VIEW,PROJECTION 행렬을 생성하여 오른쪽에서 왼쪽 방향으로 곱해준다면 clip coordination에 범위에 맞는 정점인 
-$ V_{\text{clip}} $
-를 구할 수 있다.  
+---
 
-$ 
-V_{\text{clip}} = M_{\text{projection}} \cdot M_{\text{view}} \cdot M_{\text{model}} \cdot V_{\text{local}} 
-$
+## 3D 입체 투영 실전 렌더링 (Going 3D)
 
-## Going 3D
+이론 기반으로 다듬은 MVP 시스템을 이용해 본격적으로 입체 3D 공간을 회전하는 정육면체 큐브를 코드로 구현해보자.
 
-이제부터 위에서 설명한 것들을 코드로 구현할 때이다.	우리는 객체를 배치할 때 **모델 행렬(Model Matrix)** 을 사용하여 로컬 좌표를 월드 좌표로 변환하게 된다고 하였다.  
+### 1단계: 모델 행렬 (Model Matrix) 
 
-### 1. 모델 행렬(Model Matrix) 수행하기 : 바닥 쪽으로 눕히기
-- 객체를 이동(Translate)
-- 객체를 회전(Rotate)
-- 객체를 크기 조절(Scale)  
+우선 큐브를 바닥 지면을 향해 살짝 눕혀 X축을 기울이는 회전 모델 행렬을 선언해 월드 좌표로 탈바꿈시킨다.
 
 ```cpp
 glm::mat4 model = glm::mat4(1.0f);
+// X축(1.0, 0.0, 0.0)을 피벗으로 -55도 가량 고개를 뒤로 젖힌다
 model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 ```
-model 이라는 기본 4x4 항등행렬을 생성하고, 그 행렬을 회전한 모습이다. 회전 축은 X축임을 세번째 인수로 알 수있다.  
-MODEL 행렬을 곱한다면 vertex 좌표를 world 좌표로 변환하는 1단계가 이루어진다.  
-X축을 잡고 돌린다고 생각하면, 결국 바닥쪽으로 눕혀지는 모습이 나오게 될 것이다.
 
-### 2. 뷰 행렬(View Matrix) & 투영 행렬 수행하기 : 멀어지는 방향으로
-이제 월드 좌표를 뷰 행렬과 곱합으로서 카메라 시점인 뷰 좌표로 변환시켜주어야 한다.  
-기억해야 할것은 "카메라가 뒤로 멀어지는 것과 scene이 앞으로 당겨지는것은 같은 방향이다." 
-즉 view(카메라)가 뒤로 이동하는 효과를 위해 scene를 z축의 음의 방향으로 이동(Translation)해주면 된다.
+### 2단계: 뷰 투영 (View Matrix) 
 
-![alt text](/images/coordinate_system1.png)  
-참고로 OpenGL은 ***오른손 시스템*** 을 사용한다.   
-```
-엄지 = X축 양의 방향  
-검지 = Y축 양의 방향
-중지 = Z축 양의 방향
-```
+큐브를 월드에 세워놨다고 해서 카메라 렌즈 바로 앞 눈두덩이에 바짝 붙여놓으면 아무것도 보이지 않는다. 카메라 촬영자가 뒤로 몇 발자국 물러서서 시야를 확보해야 한다. **"카메라가 뒤로 물러나는 것"은 수학적으로 "월드 전체의 사물들을 카메라의 반대 방향으로 밀어내는 것"과 물리적으로 완벽한 동치다.**
 
-아무튼 뷰 행렬을 설정, 생성해보면... 
+OpenGL은 근본적으로 오른손 좌표계(Right-Handed System)를 차용하고 있다. 카메라 렌지가 바라보는 시야 전방 뷰 방향은 $Z$축의 음수 방향($-Z$)에 해당한다. 따라서 뷰 매트릭스를 반대 음수 방위로 이격시킨다.
+
 ```cpp
 glm::mat4 view = glm::mat4(1.0f);
-// 우리가 이동하고자 하는 방향의 반대 방향으로 장면을 이동시키는 것을 주의하세요
+// 세계의 뷰를 내 눈 앞 Z축 음수 방향으로 3미터 쯤 밀어낸다
 view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 ```
-view라는 이름의 항등행렬을 생성하고 , 이후 translate 함수를 이용하여 Z축의 음의 방향으로 이동시킨 것을 볼 수있다.  
-다음은 투영 행렬 코드이다. 	
-```cpp
-glm::mat4 projection;
-projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-```
-projection 이라는 행렬을 선언하고, (투영 행렬은 항등행렬로 초기화하는 과정이 없다.) 바로 투영 과정을 설정한다.
+
+### 3단계: 투영 및 셰이더 송신 (Projection Matrix)
+
+원근감을 위해 투영 행렬을 주조한다.
 
 ```cpp
+glm::mat4 projection = glm::mat4(1.0f); // 선언 시 굳이 항등행렬로 안 덮어도 됨
+// 가로세로 800:600 비율의 윈도우 스크린용 45도 시야각(FOV) 절두체를 주조한다
+projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+```
+
+이제 버텍스 셰이더 GLSL 스크립트에 접속하여 이 거대한 MVP 행렬들을 각각 유니폼 변수로 연결하고 위치 변형을 촉발시킨다.
+
+```glsl
 #version 330 core
 layout (location = 0) in vec3 aPos;
-...
+// ... 생략 ...
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
 void main()
 {
-    // 행렬 곱셈을 오른쪽에서 왼쪽으로 읽는다는 것을 주의하세요
-    gl_Position = projection * view * model * vec4(aPos, 1.0);
-    ...
+    // Projection * View * Model 최후의 그랑블루 연산. 곱셈 순서를 반드시 확인할 것.
+    gl_Position = projection * view * model * vec4(aPos, 1.0f);
+    // ...
 }
 ```
-버텍스 셰이더에는 이렇게 코드를 작성해주면 된다. 
+{: file="shader.vert" }
 
-OpenGL의 코드에는 아래와 같이 작성한다.
+렌더링 루프 C++ 로직에 위치 참조를 걸고 값을 송신하는 과정은 이전과 완벽히 동일하다.
 
 ```cpp
+// 셰이더 내부의 유니폼 레지스터 ID 쿼리
 int modelLoc = glGetUniformLocation(ourShader.ID, "model");
 glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-... // View Matrix와 Projection Matrix도 동일하게 처리해줄것.
+// View, Projection 도 똑같이 송신
 ```
 
+![3D Coordinate Application System](/images/coordinate_system2.png){: width="500" }  
+_MVP 변환을 모두 거친 후 원근감이 적용되어 바닥으로 살짝 눕혀진 컨테이너 박스의 모습._
 
-결과는 다음과 같다.  
-
-![alt text](/images/coordinate_system2.png)  
-
-
-## 3D 큐브 렌더링하기
-큐브는 삼각형 2개 * 6개의 평면이므로 36개의 정점 데이터를 받는다.
-
-```cpp
-float vertices[] = {
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-};
-```
+3D 육면체 큐브(Cube)를 온전히 그리려면 정면에 보이는 사각형 1개(삼각형 2조각)만이 아니라 6개의 입체면(총 36개의 점 배열 데이터 배열)이 방대하게 VBO 버퍼에 로딩되어 있어야 한다. VBO 구조체를 늘려서 드로우콜을 날리면 완벽한 큐브가 화면에 돌아가기 시작한다.
 
 
 
