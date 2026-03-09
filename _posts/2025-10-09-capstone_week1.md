@@ -94,6 +94,7 @@ async UniTask<string> GetRequestAsync(string uri) {
 
 UniTask를 적용한 기초적인 `LLMApiClient`를 작성한다.
 
+{% raw %}
 ```csharp
 using Cysharp.Threading.Tasks;
 using UnityEngine.Networking;
@@ -121,6 +122,7 @@ public class LLMApiClient {
     }
 }
 ```
+{% endraw %}
 {: file="LLMApiClient.cs" }
 
 ---

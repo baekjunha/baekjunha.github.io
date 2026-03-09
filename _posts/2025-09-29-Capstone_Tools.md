@@ -310,6 +310,7 @@ jobs:
           name: build-StandaloneWindows64
           path: build/StandaloneWindows64
 ```
+{% endraw %}
 {: file="unity-build.yml" }
 
 *(출처: 5주차_구현 가이드.pdf, 3.2. 구현 가이드: GitHub Actions를 이용한 Unity 빌드 자동화)*
