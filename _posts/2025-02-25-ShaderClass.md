@@ -3,7 +3,7 @@ categories: [graphics]
 tags: [graphics, opengl, shader, class, cpp]
 math: true 
 image:
-  path: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
+  path: https://upload.wikimedia.org/wikipedia/commons/2/2f/GLSL_Logo_%28Unofficial%29.svg
 ---
 
 > **요약**: 매번 C++ 소스 코드 최상단에 지저분하게 하드코딩했던 셰이더 문자열을 제거하고, 외부 `.vs`, `.fs` 파일에서 동적으로 셰이더 코드를 읽어 들여 컴파일 및 링크까지 한 번에 처리해 주는 모듈화된 `Shader` 클래스 구축 과정을 다룬다.

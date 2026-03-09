@@ -4,7 +4,7 @@ date: 2025-10-09 13:11:43 +0900
 categories: [Capstone, Development]
 tags: [capstone, ai, unity, architecture, unitask]
 image:
-  path: https://mastermixmovies.wordpress.com/wp-content/uploads/2017/10/2001.gif?w=1241&h=546
+  path: https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/1200px-GitHub_Invertocat_Logo.svg.png
   alt: AI Simulation Concept
 math: true
 mermaid: true

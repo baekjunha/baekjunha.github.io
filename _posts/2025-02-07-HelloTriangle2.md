@@ -3,7 +3,7 @@ categories: [graphics]
 tags: [graphics, opengl, triangle, tutorial]
 math: true 
 image:
-  path: https://learnopengl.com/img/getting-started/pipeline.png
+  path: https://learnopengl.com/img/getting-started/triangle_indices.png
 ---
 
 > **요약**: 3D 그래픽스의 가장 기초인 삼각형을 화면에 렌더링하기 위한 모조리 분해된 그래픽 파이프라인의 개념과, 셰이더(Shader) 작성, 그리고 정점 데이터를 GPU로 넘겨주는 일련의 핵심 과정을 학습한다.

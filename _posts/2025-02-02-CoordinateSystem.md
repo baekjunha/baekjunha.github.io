@@ -2,7 +2,8 @@
 categories: [Graphics]
 tags: [graphics, opengl, coordinate, transformation]
 math: true
-image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
+image:
+  path: https://learnopengl.com/img/thumbnails/coordinate_systems.png
 ---
 
 ## 요약

@@ -2,7 +2,8 @@
 categories: [Graphics]
 tags: [graphics, opengl, texture, tutorial]
 math: true
-image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
+image:
+  path: https://learnopengl.com/img/thumbnails/textures.png
 ---
 ## 요약
 > **요약**: 텍스처(Texture)의 기본 개념과 텍스처 좌표 매핑을 이해하고, 이미지를 씌울 때 발생하는 경계선 래핑 모드, 텍스처 필터링, 그리고 밉맵(Mipmap) 최적화에 대해 학습한다.

@@ -3,7 +3,7 @@ categories: [graphics]
 tags: [graphics, opengl, shader, texture, gpu]
 math: true
 image:
-  path: https://learnopengl.com/img/getting-started/pipeline.png
+  path: https://learnopengl.com/img/thumbnails/textures.png
 ---
 
 > **요약**: C++ 애플리케이션의 메모리에 올라와 있는 버텍스 데이터가 어떻게 GPU의 VRAM으로 전송되고, 셰이더 파이프라인(Vertex -> Rasterization -> Fragment)을 거쳐 최종 텍스처 픽셀 색상으로 스크린에 렌더링되는지 그 일련의 데이터 흐름(Dataflow)을 단계별로 요약한다.

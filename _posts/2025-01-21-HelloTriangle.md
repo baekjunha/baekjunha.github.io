@@ -2,7 +2,8 @@
 categories: [Graphics]
 tags: [graphics, opengl, tutorial]
 math: true
-image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
+image:
+  path: https://learnopengl.com/img/thumbnails/getting_started.png
 ---
 
 ## 요약

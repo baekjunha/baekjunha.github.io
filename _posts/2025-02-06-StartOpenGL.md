@@ -1,8 +1,6 @@
----
-categories: [Graphics]
-tags: [graphics, opengl, tutorial, setup]
 math: true
-image: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf6c44cGdSVe9jPWgeQWwXyCdwjADxP6NrLA&s
+image:
+  path: https://upload.wikimedia.org/wikipedia/commons/3/3f/OpenGL_logo.svg
 ---
 
 ## 요약
