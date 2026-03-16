@@ -264,6 +264,7 @@ public class RelationshipEventSO : ScriptableObject
 *   **역할**: **GitHub Actions** 기반의 헤드리스 유니티 빌드 환경을 구축해, 소스 코드 변경이 트리거될 때마다 **빌드**²³와 릴리즈 아티팩트 생성을 **완전 자동화**한다. 이를 통해 치명적 버그 수정이나 라이브 업데이트를 유저에게 논스톱으로 딜리버리한다.
 *   **구현**: 프로젝트 리포지토리 루트에 `.github/workflows/unity-build.yml` 명세서를 작성하여 **워크플로우**²⁴ 트리거를 오픈한다.
 
+{% raw %}
 ```yaml
 # unity-build.yml
 name: Unity Build CI

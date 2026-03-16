@@ -83,6 +83,7 @@ async UniTask<string> GetRequestAsync(string uri) {
 
 ### 2.2. LLM API 클라이언트 구현
 
+{% raw %}
 ```csharp
 using Cysharp.Threading.Tasks;
 using UnityEngine.Networking;
@@ -110,6 +111,7 @@ public class LLMApiClient {
     }
 }
 ```
+{% endraw %}
 {: file="LLMApiClient.cs" }
 
 ---
