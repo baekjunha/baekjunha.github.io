@@ -3,7 +3,7 @@ categories: [graphics]
 tags: [graphics, opengl, shader, class, cpp]
 math: true 
 image:
-  path: https://upload.wikimedia.org/wikipedia/commons/2/2f/GLSL_Logo_%28Unofficial%29.svg
+  path: /assets/img/thumbnails/opengl-shaders.png
 ---
 
 > **요약**: 매번 C++ 소스 코드 최상단에 지저분하게 하드코딩했던 셰이더 문자열을 제거하고, 외부 `.vs`, `.fs` 파일에서 동적으로 셰이더 코드를 읽어 들여 컴파일 및 링크까지 한 번에 처리해 주는 모듈화된 `Shader` 클래스 구축 과정을 다룬다.
@@ -270,7 +270,7 @@ private:
 모든 준비가 끝났다. `main.cpp` 최상단에서 이렇게 지저분한 코드는 모두 제거하고,
 
 ```cpp
-// 이제 이 지옥 같은 하드코딩 볼륨은 영원히 안녕이다.
+// 이제 이 비효율적인 하드코딩 볼륨은 지양해야 한다.
 const char *vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
@@ -282,7 +282,7 @@ const char *vertexShaderSource = "#version 330 core\n"
 딱 한 줄 인스턴스화로 교체하면 끝이다.
 
 ```cpp
-// 객체 생성 순간 내부 로직이 돌아가 파일 I/O부터 컴파일, 링크 지옥이 알아서 원큐에 해결됨
+// 객체 생성 순간 내부 로직이 돌아가 파일 I/O부터 컴파일, 복잡한 링킹 과정이 효율적으로 해결됨
 Shader ourShader("3.3.shader.vs", "3.3.shader.fs"); 
 
 // ... 렌더링 영역 ...

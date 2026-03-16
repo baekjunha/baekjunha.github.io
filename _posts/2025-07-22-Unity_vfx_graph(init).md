@@ -6,7 +6,7 @@ toc_sticky: true
 author_profile: false
 use_math: true   
 image:
-  path: https://upload.wikimedia.org/wikipedia/commons/b/b1/Official_unity_logo.png
+  path: /assets/img/thumbnails/ai-character-core.png
 ---
 
 # Unity VFX Graph - Initialize Context 정리

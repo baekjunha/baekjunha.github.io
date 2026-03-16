@@ -6,7 +6,7 @@ tags: [capstone, ai, unity, guide]
 date: 2025-09-29 17:11:43 +0900
 math: true 
 image:
-  path: https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/JetBrains_Logo_2016.svg/1024px-JetBrains_Logo_2016.svg.png
+  path: /assets/img/thumbnails/web-crawling.png
 ---
 
 > **요약**: 캡스톤 프로젝트 성공을 위해 직성된 **'살아있는' AI 캐릭터 구현 핵심 가이드라인**이다. 각 기술 스택(코어, 클라이언트, 게임플레이, UX)이 왜 필요한지, 어떻게 작동하는지, 그리고 실제 코드 구현은 어떻게 진행하는지 구체적으로 해부한다.
