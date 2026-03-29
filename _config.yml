@@ -75,7 +75,7 @@ analytics:
 
 # Page views settings
 pageviews:
-  provider: goatcounter # 'goatcounter'로 설정하여 조회수 기능을 활성화합니다.
+  provider: goatcounter
 
 # Prefer color scheme setting.
 #
