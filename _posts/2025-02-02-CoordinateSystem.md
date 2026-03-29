@@ -3,7 +3,7 @@ categories: [Graphics]
 tags: [graphics, opengl, coordinate, transformation]
 math: true
 image:
-  path: /assets/img/thumbnails/opengl-coordinate-systems.png
+  path: /images/coordinate_system1.png
 ---
 
 ## 요약

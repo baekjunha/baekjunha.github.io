@@ -4,7 +4,7 @@ date: 2025-10-09 13:11:43 +0900
 categories: [Capstone, Development]
 tags: [capstone, ai, unity, architecture, unitask]
 image:
-  path: /assets/img/thumbnails/async-core.png
+  path: /images/image-2.png
   alt: AI Simulation Concept
 math: true
 mermaid: true

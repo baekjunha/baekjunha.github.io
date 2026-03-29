@@ -3,7 +3,7 @@ categories: [graphics]
 tags: [graphics, opengl, triangle, tutorial]
 math: true 
 image:
-  path: /assets/img/thumbnails/opengl-triangle-indices.png
+  path: /images/image.png
 ---
 
 > **요약**: 3D 그래픽스의 기초인 삼각형 렌더링을 위해 그래픽 파이프라인의 핵심 구조를 고찰합니다. 셰이더(Shader) 구현 및 정점 데이터를 GPU로 전송하는 일련의 과정을 상세히 학습합니다.

@@ -3,7 +3,7 @@ categories: [Graphics]
 tags: [graphics, opengl, tutorial]
 math: true
 image:
-  path: /assets/img/thumbnails/opengl-getting-started.png
+  path: /images/image.png
 ---
 
 ## 요약

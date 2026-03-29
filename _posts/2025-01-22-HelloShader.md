@@ -3,7 +3,7 @@ categories: [Graphics]
 tags: [graphics, opengl, shader, tutorial]
 math: true
 image:
-  path: /assets/img/thumbnails/opengl-shaders.png
+  path: /images/Fragment_Interpolation.png
 ---
 ## 요약
 > **요약**: 셰이더의 기본 개념과 GLSL 코드의 구조를 이해하고, 버텍스 셰이더와 프래그먼트 셰이더 간의 데이터 전달 및 유니폼(Uniform) 변수의 활용 원리를 알아본다.

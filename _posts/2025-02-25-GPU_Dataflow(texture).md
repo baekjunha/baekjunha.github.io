@@ -3,7 +3,7 @@ categories: [graphics]
 tags: [graphics, opengl, shader, texture, gpu]
 math: true
 image:
-  path: /assets/img/thumbnails/opengl-textures.png
+  path: /images/vertex_attribute_pointer_interleaved.png
 ---
 
 > **요약**: CPU 메모리에 상주하는 정점 데이터가 GPU VRAM으로 전송된 후, 셰이더 파이프라인(Vertex -> Rasterization -> Fragment)을 거쳐 최종 픽셀로 렌더링되는 데이터 흐름(Dataflow)을 분석합니다.

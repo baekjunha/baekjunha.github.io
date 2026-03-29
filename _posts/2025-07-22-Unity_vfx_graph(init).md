@@ -6,7 +6,7 @@ toc_sticky: true
 author_profile: false
 use_math: true   
 image:
-  path: /assets/img/thumbnails/ai-character-core.png
+  path: /images/image-1.png
 ---
 
 # Unity VFX Graph - Initialize Context 정리

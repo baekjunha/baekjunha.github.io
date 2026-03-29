@@ -1,7 +1,7 @@
 ---
 math: true
 image:
-  path: /assets/img/thumbnails/opengl-logo-v2.png
+  path: /images/coordinate_system2.png
 ---
 
 ## 요약
