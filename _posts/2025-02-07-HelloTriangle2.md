@@ -1,13 +1,11 @@
 ---
-categories: [graphics]
+categories: [Graphics]
 tags: [graphics, opengl, triangle, tutorial]
 math: true 
-image:
-  path: /images/image.png
 ---
 
-> **요약**: 3D 그래픽스의 기초인 삼각형 렌더링을 위해 그래픽 파이프라인의 핵심 구조를 고찰합니다. 셰이더(Shader) 구현 및 정점 데이터를 GPU로 전송하는 일련의 과정을 상세히 학습합니다.
-{: .prompt-info }
+## 요약
+> **요약**: 3D 그래픽스의 기초인 삼각형 렌더링을 위해 그래픽 파이프라인의 핵심 구조를 고찰한다. 셰이더(Shader) 구현 및 정점 데이터를 GPU로 전송하는 일련의 과정을 상세히 학습한다.
 
 ## 목차
 * TOC

@@ -3,16 +3,12 @@ title: "AI 캐릭터 구현 가이드 (1): 비동기 통신 코어 구축"
 date: 2025-10-09 13:11:43 +0900
 categories: [Capstone, Development]
 tags: [capstone, ai, unity, architecture, unitask]
-image:
-  path: /images/image-2.png
-  alt: AI Simulation Concept
 math: true
 mermaid: true
 ---
 
 ## 요약
-> **요약**: 대화형 AI 캐릭터 프로젝트의 1주차 과제인 비동기 통신 코어 구축 및 PC 플랫폼 최적화 가이드를 기술합니다. UniTask를 활용한 비차단(Non-blocking) 통신 계층 설계와 Unity 초기 설정 프로세스를 설명합니다.
-{: .prompt-info }
+> **요약**: 대화형 AI 캐릭터 프로젝트의 1주차 과제인 비동기 통신 코어 구축 및 PC 플랫폼 최적화 가이드를 기술한다. UniTask를 활용한 비차단(Non-blocking) 통신 계층 설계와 Unity 초기 설정 프로세스를 설명한다.
 
 ## 목차
 * TOC
@@ -22,13 +18,13 @@ mermaid: true
 
 ## 1. 프로젝트 초기화 및 플랫폼 최적화
 
-프로젝트의 시각적 품질과 개발 방향성을 결정하는 초기 설정 단계입니다.
+프로젝트의 시각적 품질과 개발 방향성을 결정하는 초기 설정 단계다.
 
 ### 1.1. Unity 환경 설정
 
-*   **Unity 버전**: **Unity 2022.3.x LTS** 사용을 권장합니다.
+*   **Unity 버전**: **Unity 2022.3.x LTS** 사용을 권장한다.
 *   **Target Platform**: **PC, Mac & Linux Standalone** (Architecture: **x86_64**).
-*   **컬러 스페이스**: 물리 기반 렌더링을 위해 **Linear**로 설정합니다.
+*   **컬러 스페이스**: 물리 기반 렌더링을 위해 **Linear**로 설정한다.
 
 ### 1.2. 렌더 파이프라인 분석 (URP vs HDRP)
 
@@ -39,26 +35,25 @@ mermaid: true
 | **학습 곡선** | 상대적으로 낮음 | 높음 (물리 기반 렌더링 지식 필요) |
 
 > [!important]
-> 렌더 파이프라인은 상호 호환되지 않으므로 프로젝트의 시각적 목표에 따라 결정해야 합니다.
-{: .prompt-warning }
+> 렌더 파이프라인은 상호 호환되지 않으므로 프로젝트의 시각적 목표에 따라 결정해야 한다.
 
 ### 1.3. UniTask 통합
 
-Unity 환경에 최적화된 비동기 처리를 위해 **UniTask**를 도입합니다. 이는 표준 `Task` 대비 가비지 컬렉션(GC) 발생을 최소화하여 성능 유지에 기여합니다.
+Unity 환경에 최적화된 비동기 처리를 위해 **UniTask**를 도입한다. 이는 표준 `Task` 대비 가비지 컬렉션(GC) 발생을 최소화하여 성능 유지에 기여한다.
 
 #### 설치 프로세스
-1.  [UniTask GitHub](https://github.com/Cysharp/UniTask/releases)에서 `.unitypackage`를 확보합니다.
-2.  Unity 프로젝트의 `Assets` 폴더에 임포트합니다.
+1.  [UniTask GitHub](https://github.com/Cysharp/UniTask/releases)에서 `.unitypackage`를 확보한다.
+2.  Unity 프로젝트의 `Assets` 폴더에 임포트한다.
 
 ---
 
 ## 2. UniTask 기반 비동기 프로그래밍
 
-`IEnumerator` 코루틴의 한계를 보완하는 현대적인 비동기 워크플로우를 구축합니다.
+`IEnumerator` 코루틴의 한계를 보완하는 현대적인 비동기 워크플로우를 구축한다.
 
 ### 2.1. async UniTask 전환
 
-코루틴 대비 가독성이 높고 예외 처리가 용이한 UniTask를 활용합니다.
+코루틴 대비 가독성이 높고 예외 처리가 용이한 UniTask를 활용한다.
 
 ```csharp
 // [기존 방식] IEnumerator 코루틴
@@ -118,11 +113,11 @@ public class LLMApiClient {
 
 ## 3. 네트워크 계층 가용성 설계
 
-불안정한 네트워크 환경에 대비한 타임아웃 및 재시도 로직을 구현합니다.
+불안정한 네트워크 환경에 대비한 타임아웃 및 재시도 로직을 구현한다.
 
 ### 3.1. 지수 백오프 (Exponential Backoff) 적용
 
-실패 시 대기 시간을 점진적으로 늘려 재시도하는 전략을 적용합니다.
+실패 시 대기 시간을 점진적으로 늘려 재시도하는 전략을 적용한다.
 
 ### 3.2. RobustApiClient 구현
 
@@ -151,7 +146,7 @@ public async UniTask<string> SendWithRetryAsync(string prompt, CancellationToken
 
 ### 4.1. 환경 변수 활용
 
-코드 내 하드코딩을 방지하기 위해 시스템 환경 변수를 참조합니다.
+코드 내 하드코딩을 방지하기 위해 시스템 환경 변수를 참조한다.
 
 ```csharp
 string apiKey = System.Environment.GetEnvironmentVariable("MY_LLM_API_KEY");
@@ -160,7 +155,7 @@ string apiKey = System.Environment.GetEnvironmentVariable("MY_LLM_API_KEY");
 
 ### 4.2. 프록시 서버 아키텍처
 
-클라이언트에서의 유출 방지를 위해 서버 측에서 API 호출을 대행하는 프록시 구조를 권장합니다.
+클라이언트에서의 유출 방지를 위해 서버 측에서 API 호출을 대행하는 프록시 구조를 권장한다.
 
 ---
 
@@ -182,4 +177,4 @@ string apiKey = System.Environment.GetEnvironmentVariable("MY_LLM_API_KEY");
 
 ## 결론
 
-1주차 과정을 통해 플랫폼 최적화 및 안정적인 비동기 통신 계층을 구축했습니다. 이는 고품질 AI 캐릭터 경험을 위한 기술적 기초가 됩니다.
+1주차 과정을 통해 플랫폼 최적화 및 안정적인 비동기 통신 계층을 구축했다. 이는 고품질 AI 캐릭터 경험을 위한 기술적 기초가 된다.

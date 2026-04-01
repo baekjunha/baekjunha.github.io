@@ -2,8 +2,6 @@
 categories: [Graphics]
 tags: [graphics, opengl, texture, tutorial]
 math: true
-image:
-  path: /images/texture1.png
 ---
 ## 요약
 > **요약**: 텍스처(Texture)의 기본 개념과 텍스처 좌표 매핑을 이해하고, 이미지를 적용할 때 발생하는 경계선 래핑 모드, 텍스처 필터링, 그리고 밉맵(Mipmap) 최적화에 대해 학습한다.
@@ -48,7 +46,7 @@ _2D 텍스처 좌표계와 삼각형 정점의 대응 구조_
 ![Texturing Wrapping Modes](/images/Fragment_Interpolation.png){: width="700" }
 _좌측부터 GL_REPEAT, GL_MIRRORED_REPEAT, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER 모드_
 
-1.  **GL_REPEAT** : 기본값. 텍스처를 반복하여 배치한다.
+1.  **GL_REPEAT** : 기본값이다. 텍스처를 반복하여 배치한다.
 2.  **GL_MIRRORED_REPEAT** : 이미지를 반전 반복하여 연속적인 패턴을 생성한다.
 3.  **GL_CLAMP_TO_EDGE** : 텍스처의 가장자리 픽셀 색상을 확장하여 나머지 영역을 채운다.
 4.  **GL_CLAMP_TO_BORDER** : 범위를 벗어난 영역에 사용자가 지정한 특정 색상을 적용한다.
@@ -292,7 +290,7 @@ OpenGL은 기본적으로 `GL_TEXTURE0` 유닛을 활성화한다. 다중 텍스
 ```cpp
 glActiveTexture(GL_TEXTURE0); // 0번 유닛 활성화
 glBindTexture(GL_TEXTURE_2D, texture1); 
-
+  
 glActiveTexture(GL_TEXTURE1); // 1번 유닛 활성화
 glBindTexture(GL_TEXTURE_2D, texture2); 
 
