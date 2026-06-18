@@ -184,7 +184,7 @@ graph LR
 [^56]: [A Beginner's Guide to Interleaving by Tanisha Paul - Center for Teaching and Learning](https://ctl.wustl.edu/learningcenter/articles/a-beginners-guide-to-interleaving-by-tanisha-paul/)
 [^57]: [L2L Strategy - Interleaving - Academic Affairs - The University of Arizona](https://academicaffairs.arizona.edu/l2l-strategy-interleaving)
 [^61]: [The Effectiveness of Analogy Learning as a Learning Practice Condition in Primary Physical Education - Institute for Education](https://ife.edu.mt/wp-content/uploads/2023/11/MJE-vol.-04-no.-02-pp-47-66.pdf)
-[^62]: [Analogy-Enhanced Pedagogy: Class Activities to Engage Students in Learning - University System of Georgia](https://www.usg.edu/teaching-and-learning-excellence/assets/facultydevelopment/documents/ebook/JosephMayo.pdf)
+[^62]: [Analogy co-construction as a learning strategy in life-span development classes](https://csuepress.columbusstate.edu/pil/vol19/iss1/6)
 [^65]: [Learning To Learn: Embrace Analogies - BetterExplained](https://betterexplained.com/articles/learning-to-learn-embrace-analogies/)
 [^66]: ["일 자꾸 미루는 사람, 뇌가 다르다" | 연합뉴스](https://www.yna.co.kr/view/AKR20180907039800009)
 [^70]: [Sleep's Crucial Role in Preserving Memory - Yale School of Medicine](https://medicine.yale.edu/news-article/sleeps-crucial-role-in-preserving-memory/)
