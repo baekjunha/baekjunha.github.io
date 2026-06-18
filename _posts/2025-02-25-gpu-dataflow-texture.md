@@ -11,6 +11,22 @@ math: true
 * TOC
 {:toc}
 
+> 💡 **OpenGL 기초 학습 시리즈**
+>
+> 1. [OpenGL 시작하기 — GLFW, GLAD 초기화](/posts/StartOpenGL/)
+> 2. [Hello Triangle — 삼각형 렌더링 기초 (VBO, EBO, 셰이더)](/posts/HelloTriangle/)
+> 3. [Hello Triangle 2 — 그래픽 파이프라인 심화](/posts/HelloTriangle2/)
+> 4. [Hello Shader — 셰이더 구조와 데이터 흐름](/posts/HelloShader/)
+> 5. [Hello Texture — 텍스처 매핑과 필터링](/posts/HelloTexture/)
+> 6. 📌 **[현재 글] GPU 데이터 플로우 — CPU→GPU 렌더링 흐름 분석**
+> 7. [Shader Class — 셰이더 모듈화](/posts/ShaderClass/)
+> 8. [GLM — 벡터/행렬 수학 라이브러리](/posts/HelloGLM/)
+> 9. [좌표계 변환 — Local→Screen 5단계](/posts/CoordinateSystem/)
+> 10. [카메라 (1) — 정의와 구성](/posts/camera/)
+> 11. [카메라 (2) — 이동과 시점 전환](/posts/camera2/)
+> 12. [카메라 (3) — FPS 시점 제어와 클래스화](/posts/camera3/)
+{: .prompt-info }
+
 ---
 
 ## 1. 정점 데이터 정의 (CPU)

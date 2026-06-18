@@ -1,0 +1,77 @@
+/* 
+ * Custom UI/UX improvements for Paik's GithubPages
+ * Premium design aesthetics & Micro-animations
+ */
+
+:root[data-mode="dark"] {
+  /* Customize Theme Colors for a Cyberpunk / Dev vibe */
+  --link-color: #00e676 !important;
+  --link-underline-color: #00c853 !important;
+  --sidebar-active-color: #00e676 !important;
+  --prompt-info-bg: rgba(0, 230, 118, 0.1) !important;
+  --prompt-info-icon-color: #00e676 !important;
+  --toc-highlight: #00e676 !important;
+}
+
+:root[data-mode="light"] {
+  --link-color: #00c853 !important;
+  --link-underline-color: #00a040 !important;
+  --sidebar-active-color: #00c853 !important;
+  --prompt-info-bg: rgba(0, 200, 83, 0.1) !important;
+  --prompt-info-icon-color: #00c853 !important;
+  --toc-highlight: #00c853 !important;
+}
+
+/* 1. Micro-animation on Post Cards (Homepage & Archives) */
+#post-list .card, .post-preview {
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: transform, box-shadow;
+}
+
+#post-list .card:hover, .post-preview:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 10px 20px rgba(0, 230, 118, 0.1), 0 6px 6px rgba(0, 0, 0, 0.1) !important;
+  border-color: rgba(0, 230, 118, 0.3) !important;
+}
+
+/* 2. Avatar subtle glow and scale on hover */
+#avatar img {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  border: 2px solid transparent;
+}
+
+#avatar:hover img {
+  transform: scale(1.05) rotate(-3deg);
+  box-shadow: 0 0 15px rgba(0, 230, 118, 0.5);
+  border-color: rgba(0, 230, 118, 0.8);
+}
+
+/* 3. Sidebar Navigation links hover effect */
+.nav-link {
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-item:not(.active) .nav-link:hover {
+  color: #00e676 !important;
+  transform: translateX(4px);
+}
+
+/* 4. Markdown content links underline animation */
+.post-content a {
+  position: relative;
+  text-decoration: none !important;
+  background-image: linear-gradient(var(--link-color), var(--link-color));
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 2px;
+  transition: background-size 0.3s ease;
+}
+
+.post-content a:hover {
+  background-size: 100% 2px;
+}
+
+/* Fix specific prompt box borders */
+.prompt-info {
+  border-left-color: var(--prompt-info-icon-color) !important;
+}

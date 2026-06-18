@@ -4,7 +4,8 @@ title: "효과적인 학습을 위한 인지 과학적 원리와 전략"
 categories: [study]
 tags: [guide, learning]
 date: 2025-10-08 10:00:00 +0900
-math: true 
+math: true
+mermaid: true
 ---
 
 ## 요약
@@ -27,6 +28,16 @@ math: true
 ## 1. 인지 모드의 이해: 집중 모드와 분산 모드
 
 효과적인 학습을 위해서는 뇌가 정보를 처리하는 두 가지 상반된 인지 상태인 **집중 모드(Focused Mode)**와 **분산 모드(Diffuse Mode)**의 특성을 이해하고, 이를 전략적으로 전환해야 한다.
+
+```mermaid
+graph LR
+    A["🔍 집중 모드<br/>Focused Mode"] -->|"25분 집중 후 이완"| B["🌊 분산 모드<br/>Diffuse Mode"]
+    B -->|"통찰력 획득 후 복귀"| A
+    A -->|"전전두피질 Prefrontal Cortex"| C["분석적·순차적 문제 해결"]
+    B -->|"기본 모드 네트워크 DMN"| D["창의적 통찰·전체 구조 파악"]
+    E["⏱️ 뽀모도로 기법"] -.->|"전략적 전환 도구"| A
+    E -.-> B
+```
 
 ### 1.1. 각 모드의 정의와 신경망 활성화 패턴
 

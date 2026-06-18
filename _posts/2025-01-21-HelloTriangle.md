@@ -11,7 +11,137 @@ math: true
 * TOC
 {:toc}
 
+> 💡 **OpenGL 기초 학습 시리즈**
+>
+> 1. [OpenGL 시작하기 — GLFW, GLAD 초기화](/posts/StartOpenGL/)
+> 2. 📌 **[현재 글] Hello Triangle — 삼각형 렌더링 기초 (VBO, EBO, 셰이더)**
+> 3. [Hello Triangle 2 — 그래픽 파이프라인 심화](/posts/HelloTriangle2/)
+> 4. [Hello Shader — 셰이더 구조와 데이터 흐름](/posts/HelloShader/)
+> 5. [Hello Texture — 텍스처 매핑과 필터링](/posts/HelloTexture/)
+> 6. [GPU 데이터 플로우 — CPU→GPU 렌더링 흐름 분석](/posts/gpu-dataflow-texture/)
+> 7. [Shader Class — 셰이더 모듈화](/posts/ShaderClass/)
+> 8. [GLM — 벡터/행렬 수학 라이브러리](/posts/HelloGLM/)
+> 9. [좌표계 변환 — Local→Screen 5단계](/posts/CoordinateSystem/)
+> 10. [카메라 (1) — 정의와 구성](/posts/camera/)
+> 11. [카메라 (2) — 이동과 시점 전환](/posts/camera2/)
+> 12. [카메라 (3) — FPS 시점 제어와 클래스화](/posts/camera3/)
+{: .prompt-info }
+
 ---
+
+<div class="webgl-demo-container" style="text-align: center; margin: 2.5rem 0; padding: 1.5rem; background: var(--card-bg); border-radius: 12px; box-shadow: var(--card-shadow); border: 1px solid var(--main-border-color);">
+  <h4 style="margin-top: 0; color: var(--heading-color);">🎮 실시간 WebGL 데모: Hello Triangle</h4>
+  <p style="font-size: 0.9em; color: var(--text-muted-color); margin-bottom: 1rem;">캔버스를 클릭하면 삼각형의 각 꼭짓점 색상이 무작위로 변경되고 보간(Interpolation)됩니다!</p>
+  <canvas id="glcanvas" width="400" height="400" style="max-width: 100%; height: auto; border-radius: 8px; background: #1a1a1c; cursor: pointer; border: 1px solid #333;"></canvas>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const canvas = document.querySelector("#glcanvas");
+  if (!canvas) return;
+  const gl = canvas.getContext("webgl");
+
+  if (!gl) {
+    console.error("WebGL is not supported");
+    return;
+  }
+
+  const vsSource = `
+    attribute vec4 aVertexPosition;
+    attribute vec4 aVertexColor;
+    varying lowp vec4 vColor;
+    void main(void) {
+      gl_Position = aVertexPosition;
+      vColor = aVertexColor;
+    }
+  `;
+
+  const fsSource = `
+    varying lowp vec4 vColor;
+    void main(void) {
+      gl_FragColor = vColor;
+    }
+  `;
+
+  function initShaderProgram(gl, vsSource, fsSource) {
+    const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+    const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+    const shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) return null;
+    return shaderProgram;
+  }
+
+  function loadShader(gl, type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+  const programInfo = {
+    program: shaderProgram,
+    attribLocations: {
+      vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+      vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
+    },
+  };
+
+  let colors = [
+    1.0, 0.0, 0.0, 1.0,
+    0.0, 1.0, 0.0, 1.0,
+    0.0, 0.0, 1.0, 1.0,
+  ];
+
+  function drawScene() {
+    gl.clearColor(0.1, 0.1, 0.1, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    const positions = [
+       0.0,  0.6,
+      -0.6, -0.6,
+       0.6, -0.6,
+    ];
+
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+    const colorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    gl.vertexAttribPointer(programInfo.attribLocations.vertexColor, 4, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
+
+    gl.useProgram(programInfo.program);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  drawScene();
+
+  canvas.addEventListener('click', () => {
+    colors = [
+      Math.random(), Math.random(), Math.random(), 1.0,
+      Math.random(), Math.random(), Math.random(), 1.0,
+      Math.random(), Math.random(), Math.random(), 1.0,
+    ];
+    drawScene();
+  });
+});
+</script>
 
 **자료 출처**: [LearnOpenGL](https://learnopengl.com/)
 
