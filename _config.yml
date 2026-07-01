@@ -216,6 +216,7 @@ exclude:
   - "*.config.js"
   - "package*.json"
   - Job_Search_OS
+  - 실시간_뉴스페이퍼_갱신.sh
 
 jekyll-archives:
   enabled: [categories, tags]
