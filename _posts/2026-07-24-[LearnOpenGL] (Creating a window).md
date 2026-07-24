@@ -10,7 +10,7 @@ tags: [opengl, cpp, graphics, translation, glfw, glad, window, renderloop]
 > * 원문 저작권은 **Joey de Vries**에게 있으며, **CC BY-NC 4.0** 라이선스를 준수합니다. 원문: [https://learnopengl.com/Getting-started/Creating-a-window](https://learnopengl.com/Getting-started/Creating-a-window)
 
 ---
-
+ 
 ## GLFW 설정
 
 이제 GLFW를 실제로 사용해봅시다. 먼저 새로운 `.cpp` 파일을 생성하고, 파일 최상단에 GLAD와 GLFW의 헤더 파일을 포함합니다.
