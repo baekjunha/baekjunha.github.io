@@ -6,20 +6,6 @@ tags: [opengl, cpp, graphics, translation]
 ---
 
 > 📢 **안내 및 출처 표기 (Attribution)**
-> 
-> * 본 포스팅은 Joey de Vries가 작성한 튜토리얼 **[LearnOpenGL.com](https://learnopengl.com/)**의 원문을 바탕으로 한 한국어 번역 및 학습 정리 기록입니다.
-> * 원문 저작권은 **Joey de Vries**에게 있으며, **CC BY-NC 4.0** 라이선스를 준수합니다.
-
----
-
----
-title: "[LearnOpenGL] 01. OpenGL"
-date: 2026-07-22 18:02:36 +0900
-categories: [Graphics, LearnOpenGL]
-tags: [opengl, cpp, graphics, translation]
----
-
-> 📢 **안내 및 출처 표기 (Attribution)**
 > * 본 포스팅은 Joey de Vries가 작성한 튜토리얼 **[LearnOpenGL.com](https://learnopengl.com/)**의 원문을 바탕으로 한 한국어 번역 및 학습 정리 기록입니다.
 > * 원문 저작권은 **Joey de Vries**에게 있으며, **CC BY-NC 4.0** 라이선스를 준수합니다.
 
@@ -28,6 +14,7 @@ tags: [opengl, cpp, graphics, translation]
 # OpenGL
 
 3D 그래픽스 여정을 시작하기 전, **"OpenGL이 도대체 하드웨어인가, 소프트웨어인가, 아니면 라이브러리인가?"**라는 질문부터 시작해 보겠습니다.
+
 
 ![OpenGL Logo](https://khronos.org/assets/images/api_logos/opengl.svg)
 
